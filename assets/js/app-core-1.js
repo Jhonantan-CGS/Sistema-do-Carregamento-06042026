@@ -184,23 +184,38 @@ const isSameDay = (a, b) => {
   return da.getTime() === db.getTime();
 };
 
-const extractPlaca = (obs) => {
-  const text = String(obs || '').toUpperCase();
-  if (/\bSEM\W*PLACAS?\b/.test(text)) {
-    return 'SEM PLACA';
+const plateRules = {
+  emptySentinel: 'SEM PLACA',
+  patterns: [
+    { key: 'intl', regex: /^[A-Z]{3}[0-9]{3}$/ }, // CAL042
+    { key: 'mercosul', regex: /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/ }, // ABC1D23
+    { key: 'legacy', regex: /^[A-Z]{3}[0-9]{4}$/ }, // ABC1234
+    { key: 'fleet', regex: /^[A-Z]{4}[0-9]{3}$/ } // ABCD123
+  ],
+  normalize(raw = '') {
+    return String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  },
+  isEmpty(raw = '') {
+    return /\bSEM\W*PLACAS?\b/.test(String(raw || '').toUpperCase());
+  },
+  isValid(raw = '') {
+    const normalized = this.normalize(raw);
+    if (!normalized) return false;
+    return this.patterns.some(({ regex }) => regex.test(normalized));
+  },
+  extract(text = '') {
+    const source = String(text || '').toUpperCase();
+    if (this.isEmpty(source)) return this.emptySentinel;
+    const candidates = source.match(/[A-Z0-9-]{6,8}/g) || [];
+    for (const candidate of candidates) {
+      const normalized = this.normalize(candidate);
+      if (this.isValid(normalized)) return normalized;
+    }
+    return '';
   }
-  const patterns = [
-    /\bPLACA[:\s-]*([A-Z]{3,4}-?[0-9]{3,4})\b/, // Padrão Genérico (ABC-123(4), CAL042, ABCD-123) com prefixo PLACA
-    /\bPLACA[:\s-]*([A-Z]{3}[0-9][A-Z0-9][0-9]{2})\b/, // Padrão Mercosul com prefixo PLACA
-    /\b([A-Z]{3,4}-?[0-9]{3,4})\b/, // Fallback geral automático
-    /\b([A-Z]{3}[0-9][A-Z0-9][0-9]{2})\b/ // Fallback Mercosul automático
-  ];
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) return match[1].replace(/[^A-Z0-9]/g, '');
-  }
-  return '';
 };
+
+const extractPlaca = (obs) => plateRules.extract(obs);
 
 const extrairHorarioObs = (obs) => {
   const text = String(obs || '');
@@ -338,9 +353,11 @@ const soundManager = {
     
     const sounds = {
       click: { freq: 800, dur: 0.05, type: 'sine', vol: 0.1 },
+      tab: { freqs: [460, 620], dur: 0.09, type: 'triangle', vol: 0.075 },
       success: { freq: 880, dur: 0.15, type: 'sine', vol: 0.15 },
       error: { freq: 220, dur: 0.3, type: 'sawtooth', vol: 0.1 },
       notify: { freq: 600, dur: 0.1, type: 'triangle', vol: 0.12 },
+      swoosh: { freqs: [320, 480, 720], dur: 0.08, type: 'triangle', vol: 0.055 },
       liberar: { freqs: [523, 659, 784], dur: 0.12, type: 'sine', vol: 0.12 },
       alert: { freqs: [400, 300], dur: 0.15, type: 'square', vol: 0.08 },
       criticalAlert: { freqs: [880, 660, 880, 520], dur: 0.14, type: 'triangle', vol: 0.11 }

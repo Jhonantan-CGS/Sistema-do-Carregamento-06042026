@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://sheets.googleapis.com https://*.googleapis.com https://*.googleusercontent.com https://api.open-meteo.com; worker-src 'self' blob:; font-src 'self' data:; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#1976D2">
+<meta name="theme-color" content="#0F172A">
 <meta name="description" content="Sistema de gestão logística CYSY LOG 360">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -159,63 +159,6 @@
   @keyframes bounce-soft {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-4px); }
-  }
-
-  /* Checklist Premium Styles */
-  .grid-check {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .check-card {
-    display: flex;
-    flex-direction: column;
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid #E2E8F0;
-    background: #FFFFFF;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .check-card h4 {
-    font-size: 14px;
-    margin-bottom: 12px;
-    color: #334155;
-    font-weight: 800;
-  }
-  .check-options {
-    display: flex;
-    gap: 12px;
-  }
-  .check-opt {
-    flex: 1;
-    min-height: 52px;
-    border-radius: 12px;
-    background: #F8FAFC;
-    color: #64748B;
-    border: 1px solid #E2E8F0;
-    font-size: 13px;
-    font-weight: 900;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-  }
-  /* States for cards based on data-value */
-  .check-card.sim { border-color: #22C55E; background: #F0FDF4; box-shadow: 0 8px 18px rgba(34, 197, 94, 0.1); }
-  .check-card.nao { border-color: #EF4444; background: #FEF2F2; box-shadow: 0 8px 18px rgba(239, 68, 68, 0.1); }
-
-  /* States for buttons inside cards */
-  .check-card.sim .check-opt[data-value="SIM"] { background: #22C55E; color: #FFFFFF; border-color: #22C55E; }
-  .check-card.nao .check-opt[data-value="NAO"] { background: #EF4444; color: #FFFFFF; border-color: #EF4444; }
-
-  .check-text-card textarea {
-    margin-top: 10px;
-    width: 100%;
-    min-height: 80px;
-    border-radius: 12px;
-    border: 1.5px solid #CBD5E1;
-    padding: 10px;
-    font-size: 13px;
-    font-weight: 600;
   }
 
   .header-dropdown { position: relative; }
@@ -3066,16 +3009,6 @@
     color: #4A5565;
   }
 
-  .check-opt.check-opt-success.is-selected {
-    background: #43A047;
-    color: #FFFFFF;
-  }
-
-  .check-opt.check-opt-danger.is-selected {
-    background: #E53935;
-    color: #FFFFFF;
-  }
-
   .section-map-ops,
   .map-stage-card,
   .map-ops-sheet {
@@ -3234,6 +3167,823 @@
       padding-bottom: 4px;
     }
   }
+
+  /* =========================================================
+     ULTRA MODERN VISUAL 2026
+  ========================================================= */
+  :root {
+    --bg-gradient: radial-gradient(circle at top left, rgba(59, 130, 246, 0.22), transparent 28%),
+      radial-gradient(circle at top right, rgba(139, 92, 246, 0.2), transparent 24%),
+      radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.14), transparent 26%),
+      linear-gradient(180deg, #0F172A 0%, #111827 38%, #0B1220 100%);
+    --glass-bg: rgba(30, 41, 59, 0.72);
+    --glass-bg-hover: rgba(51, 65, 85, 0.84);
+    --glass-border: rgba(255, 255, 255, 0.11);
+    --glass-blur: blur(16px);
+    --primary: #3B82F6;
+    --primary-hover: #60A5FA;
+    --secondary: #8B5CF6;
+    --accent: #38BDF8;
+    --bg-app: #0F172A;
+    --bg-card: rgba(30, 41, 59, 0.72);
+    --bg-input: rgba(15, 23, 42, 0.54);
+    --border: rgba(148, 163, 184, 0.22);
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --success: #10B981;
+    --success-bg: rgba(16, 185, 129, 0.18);
+    --danger: #EF4444;
+    --danger-bg: rgba(239, 68, 68, 0.18);
+    --warning: #F59E0B;
+    --warning-bg: rgba(245, 158, 11, 0.18);
+    --info: #38BDF8;
+    --info-bg: rgba(56, 189, 248, 0.16);
+    --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.22);
+    --shadow-glow: 0 18px 42px rgba(2, 6, 23, 0.36);
+    --shadow-md: 0 12px 28px rgba(2, 6, 23, 0.24);
+    --shell-mobile-bg: #0F172A;
+    --shell-mobile-surface: rgba(15, 23, 42, 0.96);
+    --shell-mobile-surface-soft: rgba(30, 41, 59, 0.88);
+    --shell-mobile-border: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    background: var(--bg-gradient);
+    color: var(--text-main);
+  }
+
+  body::before {
+    background:
+      radial-gradient(circle at 12% 12%, rgba(59, 130, 246, 0.18) 0%, transparent 32%),
+      radial-gradient(circle at 85% 8%, rgba(139, 92, 246, 0.16) 0%, transparent 24%),
+      radial-gradient(circle at 78% 82%, rgba(16, 185, 129, 0.12) 0%, transparent 24%);
+    opacity: 0.95;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: auto -12% -18% auto;
+    width: min(42vw, 420px);
+    height: min(42vw, 420px);
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, rgba(56, 189, 248, 0.06) 34%, transparent 68%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(14px);
+  }
+
+  .overlay {
+    background: rgba(2, 6, 23, 0.68);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .modal-box {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.98));
+    border-color: rgba(96, 165, 250, 0.16);
+    box-shadow: 0 28px 52px rgba(2, 6, 23, 0.44), 0 0 24px rgba(59, 130, 246, 0.12);
+  }
+
+  .modal-box h2,
+  .modal-box p {
+    color: var(--text-main);
+  }
+
+  .modal-box input {
+    background: rgba(15, 23, 42, 0.62);
+    border-color: rgba(96, 165, 250, 0.22);
+    color: var(--text-main);
+  }
+
+  .glass-card,
+  .section,
+  .table-wrapper,
+  .carga-card,
+  .check-card,
+  .sync-metric-card,
+  .mapa-hero-card,
+  .map-side-card,
+  .map-stage-card,
+  .map-instruction-card,
+  .map-tech-card,
+  .map-lote-card,
+  .map-empty-card,
+  .card,
+  .priority-alert-card,
+  .priority-alert-card-empty {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glow);
+  }
+
+  header {
+    box-shadow: 0 24px 44px rgba(2, 6, 23, 0.42);
+  }
+
+  .header-main,
+  .weather-bar,
+  .tabs {
+    background: rgba(15, 23, 42, 0.84);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-color: rgba(148, 163, 184, 0.14);
+  }
+
+  .header-main {
+    color: var(--text-main);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .logo-3d {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.94));
+    border-color: rgba(59, 130, 246, 0.26);
+    box-shadow: 0 20px 36px rgba(2, 6, 23, 0.4), 0 0 0 1px rgba(96, 165, 250, 0.08), 0 0 24px rgba(59, 130, 246, 0.22);
+  }
+
+  .header-title {
+    color: #F8FAFC;
+    text-shadow: 0 0 24px rgba(59, 130, 246, 0.28);
+    letter-spacing: 0.08em;
+  }
+
+  .header-user,
+  .header-last-update,
+  .weather-stats,
+  .weather-stats span,
+  .priority-alert-body,
+  .priority-modal-meta,
+  .section-header-note,
+  .map-side-note,
+  .map-stage-subtitle,
+  .map-registration-head span,
+  .map-selected-note,
+  .map-selected-meta,
+  .map-lote-location,
+  .map-tech-counter,
+  footer,
+  label {
+    color: var(--text-muted);
+  }
+
+  .status-badge {
+    background: rgba(15, 23, 42, 0.66);
+    color: var(--text-main);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 20px rgba(2, 6, 23, 0.24);
+  }
+
+  .status-badge.online,
+  .status-badge.syncing,
+  .status-badge.offline {
+    gap: 8px;
+  }
+
+  .status-badge.online::before,
+  .status-badge.syncing::before,
+  .status-badge.offline::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    display: inline-block;
+    background: currentColor;
+    box-shadow: 0 0 0 0 currentColor;
+    animation: pulse 2s infinite;
+  }
+
+  .status-badge.online {
+    background: rgba(16, 185, 129, 0.16);
+    color: #A7F3D0;
+    border-color: rgba(16, 185, 129, 0.42);
+  }
+
+  .status-badge.syncing {
+    background: rgba(59, 130, 246, 0.14);
+    color: #BFDBFE;
+    border-color: rgba(59, 130, 246, 0.38);
+  }
+
+  .status-badge.offline {
+    background: rgba(239, 68, 68, 0.14);
+    color: #FECACA;
+    border-color: rgba(239, 68, 68, 0.42);
+  }
+
+  .header-action-btn {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.94));
+    color: var(--text-main);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    box-shadow: 0 12px 24px rgba(2, 6, 23, 0.28);
+  }
+
+  .header-action-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(96, 165, 250, 0.36);
+    box-shadow: 0 18px 32px rgba(2, 6, 23, 0.34), 0 0 18px rgba(59, 130, 246, 0.18);
+  }
+
+  .header-action-btn.install-ready,
+  .header-action-btn.refresh {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.96) 0%, rgba(139, 92, 246, 0.94) 100%);
+    color: #F8FAFC;
+    border-color: rgba(125, 211, 252, 0.28);
+    box-shadow: 0 16px 30px rgba(59, 130, 246, 0.28), 0 0 18px rgba(139, 92, 246, 0.22);
+  }
+
+  .header-action-btn.sound {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(56, 189, 248, 0.14));
+    color: #E0F2FE;
+    border-color: rgba(56, 189, 248, 0.34);
+  }
+
+  .header-action-btn.exit,
+  .header-action-btn.danger {
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.96), rgba(239, 68, 68, 0.82));
+    color: #FEE2E2;
+    border-color: rgba(248, 113, 113, 0.34);
+  }
+
+  .header-dropdown-menu {
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .header-dropdown-item {
+    color: var(--text-main);
+  }
+
+  .header-dropdown-item:hover {
+    background: rgba(59, 130, 246, 0.12);
+  }
+
+  .priority-alert-bar {
+    background: linear-gradient(90deg, rgba(69, 10, 10, 0.88) 0%, rgba(120, 53, 15, 0.72) 100%);
+    border-top-color: rgba(248, 113, 113, 0.28);
+    border-bottom-color: rgba(249, 115, 22, 0.22);
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,0.04);
+  }
+
+  .priority-alert-title,
+  .priority-alert-card-title h3 {
+    color: #F8FAFC;
+  }
+
+  .priority-alert-chip {
+    background: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+  }
+
+  .priority-alert-btn.secondary,
+  .priority-alert-card-close {
+    background: rgba(15, 23, 42, 0.66);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .priority-alert-btn.primary {
+    background: linear-gradient(135deg, #EF4444 0%, #F97316 100%);
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    padding: 14px 20px 18px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  }
+
+  .tab-btn {
+    --tab-accent: var(--primary);
+    position: relative;
+    min-height: 74px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.76), rgba(15, 23, 42, 0.88));
+    color: var(--text-muted);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 12px 24px rgba(2, 6, 23, 0.22);
+    text-transform: none;
+    letter-spacing: 0;
+    border-bottom-width: 1px;
+  }
+
+  .tab-btn-pending { --tab-accent: #60A5FA; }
+  .tab-btn-release { --tab-accent: #10B981; }
+  .tab-btn-loss { --tab-accent: #F59E0B; }
+  .tab-btn-sync { --tab-accent: #8B5CF6; }
+  .tab-btn-map { --tab-accent: #38BDF8; }
+
+  .tab-btn:hover {
+    transform: translateY(-2px);
+    color: #E2E8F0;
+    border-color: rgba(96, 165, 250, 0.24);
+    box-shadow: 0 18px 32px rgba(2, 6, 23, 0.3);
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.22) 0%, rgba(139, 92, 246, 0.16) 100%);
+    color: #F8FAFC;
+    border-color: rgba(96, 165, 250, 0.3);
+    box-shadow: 0 18px 34px rgba(2, 6, 23, 0.34), 0 0 0 1px rgba(255,255,255,0.04), 0 0 18px rgba(59, 130, 246, 0.18);
+  }
+
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    inset: auto 16px 10px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, var(--tab-accent) 24%, transparent 100%);
+    opacity: 0;
+    transform: scaleX(0.6);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+
+  .tab-btn.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .tab-icon-3d {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    font-size: 20px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.32), rgba(255,255,255,0.02)),
+      linear-gradient(135deg, rgba(59, 130, 246, 0.34), rgba(139, 92, 246, 0.24));
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 18px rgba(2, 6, 23, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .tab-btn.active .tab-icon-3d {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.08)),
+      linear-gradient(135deg, var(--tab-accent), rgba(139, 92, 246, 0.86));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 14px 24px rgba(2, 6, 23, 0.32), 0 0 18px rgba(59, 130, 246, 0.24);
+  }
+
+  .tab-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .tab-copy strong {
+    font-size: 13px;
+    font-weight: 900;
+    color: currentColor;
+    line-height: 1.15;
+  }
+
+  .tab-copy small {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(148, 163, 184, 0.92);
+    line-height: 1.2;
+  }
+
+  .tab-btn.active .tab-copy small {
+    color: #BFDBFE;
+  }
+
+  .section {
+    border-radius: 24px;
+    padding: 26px;
+  }
+
+  .section-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .section-header h2 {
+    color: var(--text-main);
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .section-header h2::after {
+    content: '';
+    width: 34px;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%);
+    box-shadow: 0 0 16px rgba(59, 130, 246, 0.32);
+  }
+
+  input,
+  select,
+  textarea,
+  .map-side-card input,
+  .map-side-card select,
+  .map-side-card textarea {
+    background: rgba(15, 23, 42, 0.56);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    color: var(--text-main);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: rgba(59, 130, 246, 0.88);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18), 0 0 18px rgba(59, 130, 246, 0.2);
+  }
+
+  input[readonly] {
+    background: rgba(51, 65, 85, 0.78);
+    color: #CBD5E1;
+    border-color: rgba(148, 163, 184, 0.16);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94A3B8;
+  }
+
+  select option {
+    background: #111827;
+    color: #F8FAFC;
+  }
+
+  .file-upload-wrapper {
+    background: rgba(15, 23, 42, 0.42);
+    border-color: rgba(96, 165, 250, 0.24);
+  }
+
+  .img-preview {
+    color: #BFDBFE;
+  }
+
+  .img-preview span {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.92) 0%, rgba(139, 92, 246, 0.88) 100%);
+    border-color: rgba(125, 211, 252, 0.28);
+  }
+
+  .img-preview.has-image span {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.96), rgba(5, 150, 105, 0.92));
+    border-color: rgba(110, 231, 183, 0.3);
+  }
+
+  button:not(.header-dropdown-item) {
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 12px 24px rgba(2, 6, 23, 0.24);
+  }
+
+  button:not(.header-dropdown-item):hover,
+  .priority-alert-btn:hover,
+  .header-action-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-primary,
+  .sync-cta {
+    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+    color: #F8FAFC;
+    border-color: rgba(125, 211, 252, 0.26);
+    box-shadow: 0 16px 30px rgba(59, 130, 246, 0.26), 0 0 18px rgba(139, 92, 246, 0.18);
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: #F8FAFC;
+    box-shadow: 0 16px 28px rgba(16, 185, 129, 0.24), 0 0 16px rgba(16, 185, 129, 0.16);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+    color: #F8FAFC;
+    box-shadow: 0 16px 28px rgba(239, 68, 68, 0.24), 0 0 16px rgba(239, 68, 68, 0.18);
+  }
+
+  .btn-secondary,
+  .btn-ghost,
+  .sync-retry,
+  .btn-loss-add,
+  .map-stage-toggle,
+  .map-filter-chip,
+  .map-sheet-tab,
+  .btn-status-manual {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.96));
+    color: var(--text-main);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 12px 24px rgba(2, 6, 23, 0.24);
+  }
+
+  .btn-secondary:hover,
+  .btn-ghost:hover,
+  .sync-retry:hover,
+  .btn-loss-add:hover,
+  .map-stage-toggle:hover,
+  .map-filter-chip:hover,
+  .map-sheet-tab:hover,
+  .btn-status-manual:hover {
+    border-color: rgba(96, 165, 250, 0.32);
+    box-shadow: 0 16px 28px rgba(2, 6, 23, 0.28), 0 0 18px rgba(59, 130, 246, 0.16);
+  }
+
+  .table-wrapper {
+    background: rgba(15, 23, 42, 0.4);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .grid-header {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.14));
+    border-bottom-color: rgba(96, 165, 250, 0.26);
+  }
+
+  .grid-header > div,
+  .grid-cell,
+  .produto-nome,
+  .sync-group h3,
+  .mapa-mini-card .value,
+  .map-selected-code,
+  .map-selected-chip strong,
+  .map-lote-code,
+  #mapRegistrationTargetLabel,
+  .map-registration-head strong,
+  .map-tech-card summary,
+  .map-stage-title,
+  .mapa-hero-card h3,
+  .map-side-card h3,
+  .sync-metric-card .value,
+  .sync-metric-card .label,
+  .check-title,
+  .map-selected-connection strong,
+  .map-selected-product {
+    color: var(--text-main);
+  }
+
+  .grid-row {
+    background: transparent;
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .grid-row:hover {
+    background: rgba(59, 130, 246, 0.08);
+  }
+
+  .carga-card-header,
+  .carga-card-footer,
+  .produto-row,
+  .mapa-mini-card,
+  .map-selected-chip,
+  .map-selected-connection,
+  .map-empty-card,
+  .sync-metric-card {
+    background: rgba(15, 23, 42, 0.38);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .carga-placa {
+    background: rgba(15, 23, 42, 0.7);
+    color: #BAE6FD;
+    border-color: rgba(56, 189, 248, 0.34);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.18);
+  }
+
+  .produto-qtd {
+    color: #6EE7B7;
+  }
+
+  .badge-verde,
+  .sync-pill.ok,
+  .sync-pill.enviado {
+    background: rgba(16, 185, 129, 0.16);
+    color: #A7F3D0;
+    border-color: rgba(16, 185, 129, 0.32);
+  }
+
+  .badge-vermelho,
+  .sync-pill.erro,
+  .sync-pill.blocked {
+    background: rgba(239, 68, 68, 0.16);
+    color: #FECACA;
+    border-color: rgba(239, 68, 68, 0.34);
+  }
+
+  .sync-pill,
+  .sync-pill.enviando,
+  .sync-pill.waiting {
+    background: rgba(59, 130, 246, 0.14);
+    color: #BFDBFE;
+    border-color: rgba(59, 130, 246, 0.28);
+  }
+
+  .sync-metric-card .label {
+    color: var(--text-muted);
+  }
+
+  #syncCountPending { color: #FBBF24; }
+  #syncCountError { color: #F87171; animation: pulse 2.4s infinite; }
+  #syncCountSent { color: #34D399; }
+  #syncCountOps,
+  #syncCountMapOps { color: #C4B5FD; }
+
+  .check-card {
+    border-left-color: rgba(148, 163, 184, 0.18);
+  }
+
+  .check-card.sim {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(15, 23, 42, 0.66));
+    border-left-color: rgba(16, 185, 129, 0.9);
+  }
+
+  .check-card.nao {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(15, 23, 42, 0.66));
+    border-left-color: rgba(239, 68, 68, 0.9);
+  }
+
+  .check-options {
+    background: rgba(15, 23, 42, 0.56);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .check-opt {
+    color: #CBD5E1;
+  }
+
+  .check-opt:hover {
+    background: rgba(59, 130, 246, 0.12);
+    color: #F8FAFC;
+  }
+
+  .map-section {
+    background: linear-gradient(180deg, rgba(17, 24, 39, 0.82), rgba(15, 23, 42, 0.92));
+  }
+
+  .map-layout-clean {
+    grid-template-columns: minmax(320px, 380px) 1fr;
+    gap: 20px;
+  }
+
+  .map-instruction-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.92), rgba(15, 23, 42, 0.98));
+    color: var(--text-main);
+    border-color: rgba(96, 165, 250, 0.18);
+  }
+
+  .map-instruction-card p,
+  .mapa-hero-card p {
+    color: var(--text-muted);
+  }
+
+  .search-container {
+    background: rgba(15, 23, 42, 0.58);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  .search-icon {
+    color: #7DD3FC;
+  }
+
+  .search-input {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .search-input:focus {
+    box-shadow: none;
+  }
+
+  .map-registration,
+  .map-advanced,
+  .map-sheet-panel,
+  #mapSelectedContent > *,
+  #mapLotesList > *,
+  #mapMissingList > * {
+    background: rgba(15, 23, 42, 0.42);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .map-registration-actions {
+    align-items: stretch;
+  }
+
+  .map-sheet-panels {
+    gap: 14px;
+  }
+
+  .map-tech-card summary,
+  .map-tech-card[open] summary {
+    color: var(--text-main);
+  }
+
+  .map-tech-card summary::marker,
+  .map-tech-card summary::-webkit-details-marker {
+    color: #93C5FD;
+  }
+
+  .map-canvas,
+  #map {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 44px rgba(2, 6, 23, 0.36);
+  }
+
+  .lote-marker {
+    background: linear-gradient(180deg, rgba(96, 165, 250, 0.94), rgba(59, 130, 246, 0.82));
+    border: 2px solid rgba(255,255,255,0.76);
+    box-shadow: 0 12px 24px rgba(2, 6, 23, 0.34), 0 0 18px rgba(59, 130, 246, 0.28);
+  }
+
+  footer {
+    color: #CBD5E1;
+  }
+
+  footer a,
+  footer span[style*="background"] {
+    background: rgba(30, 41, 59, 0.68) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: #F8FAFC !important;
+  }
+
+  @media (max-width: 1024px) {
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      padding: 12px 14px 14px;
+      scroll-snap-type: x proximity;
+    }
+
+    .tab-btn {
+      flex: 0 0 260px;
+      scroll-snap-align: start;
+    }
+
+    .map-layout-clean {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    body {
+      background: var(--bg-gradient);
+    }
+
+    .header-main {
+      padding-inline: 14px;
+    }
+
+    .header-actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tab-btn {
+      min-width: 232px;
+      min-height: 70px;
+      padding: 12px 14px;
+      gap: 12px;
+    }
+
+    .tab-icon-3d {
+      width: 40px;
+      height: 40px;
+      flex-basis: 40px;
+      font-size: 18px;
+    }
+
+    .tab-copy strong {
+      font-size: 12px;
+    }
+
+    .tab-copy small {
+      font-size: 10px;
+    }
+
+    .section {
+      padding: 18px 16px;
+      border-radius: 20px;
+    }
+
+    .grid-form {
+      gap: 14px;
+    }
+
+    .map-registration-actions {
+      flex-direction: column;
+    }
+  }
 </style>
 </head>
 <body>
@@ -3322,18 +4072,33 @@
     </div>
 
     <div class="tabs">
-      <div class="tab-btn active" data-tab="dash" onclick="uiBuilder.switchTab(event, 'dash')">📋 Pendentes</div>
-      <div class="tab-btn" data-tab="op" onclick="uiBuilder.switchTab(event, 'op')">🚛 Liberação</div>
-      <div class="tab-btn" data-tab="perdas" onclick="uiBuilder.switchTab(event, 'perdas')">⚠️ Perdas</div>
-      <div class="tab-btn" data-tab="sync" onclick="uiBuilder.switchTab(event, 'sync')">🔄 Sincronização</div>
-      <div class="tab-btn" data-tab="mapa" onclick="uiBuilder.switchTab(event, 'mapa')">🗺️ Mapa dos Lotes</div>
+      <div class="tab-btn tab-btn-pending active" data-tab="dash" onclick="uiBuilder.switchTab(event, 'dash')">
+        <span class="tab-icon-3d" aria-hidden="true">📋</span>
+        <span class="tab-copy"><strong>Pendentes</strong><small>Lotes e prioridades</small></span>
+      </div>
+      <div class="tab-btn tab-btn-release" data-tab="op" onclick="uiBuilder.switchTab(event, 'op')">
+        <span class="tab-icon-3d" aria-hidden="true">🚛</span>
+        <span class="tab-copy"><strong>Liberação</strong><small>Checklist e envio</small></span>
+      </div>
+      <div class="tab-btn tab-btn-loss" data-tab="perdas" onclick="uiBuilder.switchTab(event, 'perdas')">
+        <span class="tab-icon-3d" aria-hidden="true">⚠️</span>
+        <span class="tab-copy"><strong>Perdas</strong><small>Baixas e análise</small></span>
+      </div>
+      <div class="tab-btn tab-btn-sync" data-tab="sync" onclick="uiBuilder.switchTab(event, 'sync')">
+        <span class="tab-icon-3d" aria-hidden="true">🔄</span>
+        <span class="tab-copy"><strong>Sincronização</strong><small>Fila e integridade</small></span>
+      </div>
+      <div class="tab-btn tab-btn-map" data-tab="mapa" onclick="uiBuilder.switchTab(event, 'mapa')">
+        <span class="tab-icon-3d" aria-hidden="true">🗺️</span>
+        <span class="tab-copy"><strong>Mapa dos Lotes</strong><small>GPS e navegação</small></span>
+      </div>
     </div>
   </header>
 
   <div class="container">
     <div id="fatalError" style="display:none; background: var(--danger-bg); border: 2px solid var(--danger); border-radius: var(--radius-lg); padding: 24px; text-align: center; color: var(--danger); font-family: 'Montserrat'; font-weight: 800; font-size: 16px; margin-bottom: 20px;">
       ❌ Falha de Comunicação.<br><span style="font-size:12px; color:#7F1D1D;">Verifique sua conexão ou limpe os Logs no Terminal. O aplicativo continua rodando offline.</span><br>
-      <button onclick="appController.handleRefresh(true)" style="margin-top: 12px; background: var(--danger); color: white; border-radius: 8px;">🔄 TENTAR NOVAMENTE</button>
+      <button class="btn-danger" onclick="appController.handleRefresh(true)" style="margin-top: 12px; border-radius: 12px;">🔄 TENTAR NOVAMENTE</button>
     </div>
 
     <div id="tab-dash" class="tab-content active">
@@ -3423,7 +4188,7 @@
           </div>
         </div>
         <div class="grid-form" style="margin-top: 24px;">
-          <button type="button" id="btnAddPerdaRow" onclick="perdasController.addPerdaRow()" style="height: 60px; background:#FFFFFF; border:2px dashed #1D4ED8; color:#0F172A;">➕ ADICIONAR BLOCO DE PERDA</button>
+          <button type="button" id="btnAddPerdaRow" class="btn btn-secondary btn-loss-add" onclick="perdasController.addPerdaRow()" style="height: 60px;">➕ ADICIONAR BLOCO DE PERDA</button>
           <button class="btn-success" onclick="perdasController.submitPerda()" style="height: 60px;">✅ REGISTRAR BAIXA</button>
         </div>
       </section>
@@ -3435,8 +4200,8 @@
           <h2>🔁 Central de Sincronização</h2>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <div id="syncOnlineState" class="status-badge syncing">● Sincronizando...</div>
-            <button onclick="syncManager.processQueue()" style="min-height:44px; font-size:11px;">⟳ Sincronizar agora</button>
-            <button onclick="syncManager.retryAllErrors()" style="min-height:44px; font-size:11px; background:#7C3AED; color:white;">↺ Reenviar erros</button>
+            <button class="btn btn-primary sync-cta" onclick="syncManager.processQueue()" style="min-height:44px; font-size:11px;">⟳ Sincronizar agora</button>
+            <button class="btn btn-secondary sync-retry" onclick="syncManager.retryAllErrors()" style="min-height:44px; font-size:11px;">↺ Reenviar erros</button>
           </div>
         </div>
         <div class="sync-metrics">

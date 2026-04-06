@@ -8,19 +8,24 @@ const uiBuilder = {
   visibleEmptyRows: 1,
   selectedCargaItems: [],
   startupFullscreenHandled: false,
+  checklistState: {},
 
   init() {
     this.buildChecklistUI();
+    this.initChecklistInteractions();
     this.buildUnifiedGrid();
     this.updateGridVisibility();
     this.updateTimestamp();
-    const startupTab = new URLSearchParams(window.location.search).get('tab');
+    const startupTab = new URLSearchParams(window.location.search).get('tab')
+      || String(window.location.hash || '').replace(/^#tab-?/, '');
     if (startupTab && document.getElementById(`tab-${startupTab}`)) {
       this.switchTab(null, startupTab);
     }
   },
 
   switchTab(event, tabId) {
+    const previousTabId = document.querySelector('.tab-content.active')?.id?.replace(/^tab-/, '') || '';
+    const shouldPlayTabSound = Boolean(event?.currentTarget) && previousTabId !== tabId;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
@@ -32,6 +37,7 @@ const uiBuilder = {
     const tabEl = document.getElementById(`tab-${tabId}`);
     if (!tabEl) return;
     tabEl.classList.add('active');
+    if (shouldPlayTabSound && typeof soundManager !== 'undefined') soundManager.play('tab');
     if (typeof priorityAlertManager !== 'undefined') {
       if (tabId === 'op' || tabId === 'perdas') priorityAlertManager.hideOverlay();
       else setTimeout(() => priorityAlertManager.remindActiveAlerts(), 120);
@@ -76,6 +82,7 @@ const uiBuilder = {
   buildChecklistUI() {
     const cg = document.getElementById('checklistGrid');
     if (!cg) return;
+    this.checklistState = {};
     cg.innerHTML = config.checklist.map(c => {
       if (c.type === 'text') {
         return `<div class="check-card check-text-card" id="card_${c.id}">
@@ -90,34 +97,68 @@ const uiBuilder = {
       return `<div class="check-card" id="card_${c.id}" data-inverted="${isInv}" data-value="">
         <div class="check-title">${escapeHTML(c.lbl)}</div>
         <div class="check-options" role="radiogroup" aria-label="${groupLabel}">
-          <button type="button" class="check-opt ${simClass}" 
-            data-check-id="${c.id}" data-check-value="sim" 
-            role="radio" aria-checked="false"
-            onclick="uiBuilder.selectChecklistOption('${c.id}','sim')">SIM</button>
-          <button type="button" class="check-opt ${naoClass}" 
-            data-check-id="${c.id}" data-check-value="nao" 
-            role="radio" aria-checked="false"
-            onclick="uiBuilder.selectChecklistOption('${c.id}','nao')">NÃO</button>
+          <button type="button" class="check-opt ${simClass}"
+            data-check-id="${c.id}" data-check-value="sim"
+            role="radio" aria-checked="false">SIM</button>
+          <button type="button" class="check-opt ${naoClass}"
+            data-check-id="${c.id}" data-check-value="nao"
+            role="radio" aria-checked="false">NÃO</button>
         </div>
       </div>`;
     }).join('');
   },
 
-  selectChecklistOption(id, val) {
+  initChecklistInteractions() {
+    const container = document.getElementById('checklistGrid');
+    if (!container || container.dataset.bound === 'true') return;
+    container.dataset.bound = 'true';
+    container.addEventListener('click', (event) => {
+      const button = event.target.closest('.check-opt[data-check-id][data-check-value]');
+      if (!button) return;
+      this.selectChecklistOption(button.dataset.checkId, button.dataset.checkValue);
+    });
+    container.addEventListener('keydown', (event) => {
+      const button = event.target.closest('.check-opt[data-check-id][data-check-value]');
+      if (!button) return;
+      if (event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault();
+        this.selectChecklistOption(button.dataset.checkId, button.dataset.checkValue);
+        return;
+      }
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+      const options = Array.from(button.parentElement?.querySelectorAll('.check-opt[data-check-id]') || []);
+      if (options.length < 2) return;
+      event.preventDefault();
+      const currentIndex = options.indexOf(button);
+      const direction = (event.key === 'ArrowLeft' || event.key === 'ArrowUp') ? -1 : 1;
+      const nextButton = options[(currentIndex + direction + options.length) % options.length];
+      nextButton?.focus();
+      if (nextButton?.dataset.checkId && nextButton?.dataset.checkValue) {
+        this.selectChecklistOption(nextButton.dataset.checkId, nextButton.dataset.checkValue);
+      }
+    });
+  },
+
+  getChecklistValue(id) {
+    if (Object.prototype.hasOwnProperty.call(this.checklistState, id)) return this.checklistState[id];
+    const card = document.getElementById(`card_${id}`);
+    return card ? String(card.dataset.value || '') : '';
+  },
+
+  selectChecklistOption(id, val, options = {}) {
     const card = document.getElementById(`card_${id}`);
     if (!card) return;
-    
-    // Store value in dataset for easy retrieval
-    card.dataset.value = val;
-    
-    // Feedback visual imediato
-    this.updateChecklistVisualState(id, val);
-    
-    // Trigger business logic/UI changes
-    this.onCheckChange(id, val);
-    
-    // Haptic feedback simulation (sound)
-    if (typeof soundManager !== 'undefined') soundManager.play('click');
+    const normalizedValue = val === 'nao' ? 'nao' : 'sim';
+    this.checklistState[id] = normalizedValue;
+    const previousValue = String(card.dataset.value || '');
+    if (previousValue === normalizedValue) {
+      this.updateChecklistVisualState(id, normalizedValue);
+      return;
+    }
+    card.dataset.value = normalizedValue;
+    this.updateChecklistVisualState(id, normalizedValue);
+    this.onCheckChange(id, normalizedValue);
+    if (!options.silent && typeof soundManager !== 'undefined') soundManager.play('click');
   },
 
   updateChecklistVisualState(id, selectedValue = '') {
@@ -142,8 +183,21 @@ const uiBuilder = {
   },
 
   onCheckChange(id, val) {
-    // Hooks para outras validações podem ser adicionados aqui
     debugEngine.log(`Checklist [${id}] alterado para: ${val}`, 'info');
+  },
+
+  resetChecklistState() {
+    this.checklistState = {};
+    config.checklist
+      .filter((item) => item.type !== 'text')
+      .forEach((item) => {
+        const card = document.getElementById(`card_${item.id}`);
+        if (card) {
+          card.dataset.value = '';
+          card.classList.remove('sim', 'nao');
+        }
+        this.updateChecklistVisualState(item.id, '');
+      });
   },
 
   buildUnifiedGrid() {
@@ -313,17 +367,7 @@ const uiBuilder = {
       const sm = document.getElementById(`selMotivo_${i}`); if (sm) sm.value = '';
       const lbl = document.getElementById(`lblDestino_${i}`); if (lbl) { lbl.innerText = ''; lbl.style.display = 'none'; }
     }
-    document.querySelectorAll('.check-card').forEach(c => {
-      c.dataset.value = '';
-      c.classList.remove('sim', 'nao');
-      if (c.classList.contains('check-text-card')) {
-        const ta = c.querySelector('textarea');
-        if (ta) ta.value = '';
-      }
-    });
-    config.checklist
-      .filter((item) => item.type !== 'text')
-      .forEach((item) => this.updateChecklistVisualState(item.id, ''));
+    this.resetChecklistState();
     const ta = document.getElementById('chk_text_obs_geral');
     if (ta) ta.value = '';
     ['Frente', 'Traseira', 'Assoalho'].forEach(id => {

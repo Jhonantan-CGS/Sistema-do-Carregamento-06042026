@@ -195,16 +195,15 @@ const appController = {
     try {
       try {
         if ('serviceWorker' in navigator) {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(r => r.unregister()));
+          const regs = typeof cacheJanitor?.getScopedRegistrations === 'function'
+            ? await cacheJanitor.getScopedRegistrations()
+            : [];
+          await Promise.all(regs.map((registration) => registration.unregister()));
         }
       } catch (_) {}
 
       try {
-        if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.map(k => caches.delete(k)));
-        }
+        if (typeof cacheJanitor?.clearManagedCaches === 'function') await cacheJanitor.clearManagedCaches(true);
       } catch (_) {}
 
       try { await dbManager.clearAll(); } catch (_) {}
@@ -214,6 +213,7 @@ const appController = {
 
       const deleteDb = (name) => new Promise((resolve) => {
         try {
+          if (!name) return resolve();
           const req = indexedDB.deleteDatabase(name);
           req.onsuccess = () => resolve();
           req.onerror = () => resolve();
@@ -221,8 +221,20 @@ const appController = {
         } catch (_) { resolve(); }
       });
 
-      await Promise.all([deleteDb(dbManager.dbName), deleteDb(backupManager.dbName)]);
-      try { localStorage.clear(); } catch (_) {}
+      await Promise.all([
+        deleteDb(dbManager.dbName),
+        deleteDb(backupManager.dbName),
+        deleteDb(typeof mapPersistentStore?.dbName === 'string' ? mapPersistentStore.dbName : '')
+      ]);
+      try {
+        if (navigator.storage && typeof navigator.storage.getDirectory === 'function' && mapPersistentStore?.dirName) {
+          const root = await navigator.storage.getDirectory();
+          await root.removeEntry(mapPersistentStore.dirName, { recursive: true }).catch(() => {});
+        }
+      } catch (_) {}
+      try {
+        if (typeof cacheJanitor?.clearManagedLocalStorage === 'function') cacheJanitor.clearManagedLocalStorage(true);
+      } catch (_) {}
       try { sessionStorage.clear(); } catch (_) {}
 
       alert("Limpeza completa concluída. O sistema será recarregado.");
@@ -245,8 +257,10 @@ const appController = {
 
     let missingCheck = false;
     config.checklist.forEach(c => {
-      const rbValue = document.getElementById(`card_${c.id}`)?.dataset.value;
-      if (c.type !== 'text' && !rbValue) missingCheck = true;
+      const selectedValue = typeof uiBuilder.getChecklistValue === 'function'
+        ? uiBuilder.getChecklistValue(c.id)
+        : (document.getElementById(`card_${c.id}`)?.dataset.value || '');
+      if (c.type !== 'text' && !selectedValue) missingCheck = true;
     });
     if (missingCheck) return alert("⚠️ Responda todos os itens do Checklist.");
 
@@ -257,6 +271,16 @@ const appController = {
     const p = document.getElementById('inpPlaca');
     const m = document.getElementById('inpMotorista');
     const o = document.getElementById('inpObs');
+    const rawPlate = String(p ? p.value : '').trim();
+    const hasPlateText = rawPlate.length > 0;
+    const isEmptyPlateSentinel = typeof plateRules !== 'undefined' && plateRules.isEmpty(rawPlate);
+    const isValidPlate = typeof plateRules === 'undefined' ? Boolean(rawPlate) : plateRules.isValid(rawPlate);
+    if (hasPlateText && !isEmptyPlateSentinel && !isValidPlate) {
+      return alert("⚠️ Informe uma placa válida. Formatos aceitos: ABC1234, ABC1D23, ABCD123 e CAL042.");
+    }
+    const normalizedPlate = !hasPlateText
+      ? ''
+      : (isEmptyPlateSentinel ? 'SEM PLACA' : (typeof plateRules !== 'undefined' ? plateRules.normalize(rawPlate) : rawPlate.toUpperCase()));
 
     const payload = {
       tipo: "OPERACAO",
@@ -267,7 +291,7 @@ const appController = {
       pedido: ped,
       produto: '',
       quantidadeTotal: 0,
-      placa: p ? p.value : '',
+      placa: normalizedPlate,
       motorista: m ? m.value : '',
       obs: o ? o.value : '',
       linhasOperacao: [],
@@ -297,8 +321,9 @@ const appController = {
 
     config.checklist.forEach(c => {
       const textNode = document.getElementById(`chk_text_${c.id}`);
-      const card = document.getElementById(`card_${c.id}`);
-      const val = card ? card.dataset.value : '';
+      const val = typeof uiBuilder.getChecklistValue === 'function'
+        ? uiBuilder.getChecklistValue(c.id)
+        : (document.getElementById(`card_${c.id}`)?.dataset.value || '');
       payload.checklist[c.lbl] = c.type === 'text'
         ? (textNode ? textNode.value || 'Sem observações adicionais' : 'Sem observações adicionais')
         : (val || '');

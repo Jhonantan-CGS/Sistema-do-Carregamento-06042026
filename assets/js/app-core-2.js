@@ -1150,7 +1150,10 @@ const versionManager = {
         ].filter(Boolean);
         await Promise.all(
           keys
-            .filter((key) => !expectedPrefixes.some((prefix) => key === prefix || key.startsWith(prefix)))
+            .filter((key) =>
+              key.startsWith('cysy-') &&
+              !expectedPrefixes.some((prefix) => key === prefix || key.startsWith(prefix))
+            )
             .map((key) => caches.delete(key))
         );
       }
@@ -1205,7 +1208,7 @@ const cacheJanitor = {
   lastRunKey: 'cysyCacheJanitorLastRun',
   intervalMs: 8 * 60 * 60 * 1000, // 8 horas
   tileLimit: 1200,
-  firstBootKey: 'cysyFirstBootCacheClearV2',
+  firstBootKey: 'cysyFirstBootCacheClearV3',
   preserveStorageKeys: new Set([
     'cysyGoogleApiKey',
     'cysyMapPersistentBackendV2',
@@ -1236,12 +1239,61 @@ const cacheJanitor = {
     'cysyOfflineMapStateV2'
   ]),
 
-  clearTransientStorageArtifacts() {
+  getAppScopePath() {
     try {
-      this.transientStorageKeys.forEach((key) => {
-        if (!this.preserveStorageKeys.has(key)) safeStorage.removeItem(key);
+      return new URL('./', window.location.href).pathname;
+    } catch (_) {
+      return '/';
+    }
+  },
+
+  async getScopedRegistrations() {
+    if (!('serviceWorker' in navigator)) return [];
+    try {
+      const scopePath = this.getAppScopePath();
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      return registrations.filter((registration) => {
+        try {
+          return new URL(registration.scope).pathname.startsWith(scopePath);
+        } catch (_) {
+          return false;
+        }
+      });
+    } catch (_) {
+      return [];
+    }
+  },
+
+  async clearManagedCaches(forceAllManaged = false) {
+    if (!('caches' in window)) return;
+    const keepCaches = new Set([
+      `cysy-log360-v${config.app.buildTag}`,
+      `cysy-map-tiles-v${config.app.buildTag}`
+    ].filter(Boolean));
+    try {
+      const keys = await caches.keys();
+      await Promise.allSettled(
+        keys
+          .filter((key) => key.startsWith('cysy-') && (forceAllManaged || !keepCaches.has(key)))
+          .map((key) => caches.delete(key))
+      );
+    } catch (_) {}
+  },
+
+  clearManagedLocalStorage(includePersistent = false) {
+    try {
+      const removableKeys = new Set([
+        ...this.transientStorageKeys,
+        ...(includePersistent ? [...this.preserveStorageKeys] : [])
+      ]);
+      removableKeys.forEach((key) => {
+        if (key.startsWith('cysy')) safeStorage.removeItem(key);
       });
     } catch (_) {}
+  },
+
+  clearTransientStorageArtifacts() {
+    this.clearManagedLocalStorage(false);
     try { sessionStorage.clear(); } catch (_) {}
   },
 
@@ -1255,18 +1307,8 @@ const cacheJanitor = {
     const now = Date.now();
     if (reason !== 'force' && !this.shouldRun(now)) return;
 
-    const keepCaches = new Set([
-      `cysy-log360-v${config.app.buildTag}`,
-      `cysy-map-tiles-v${config.app.buildTag}`
-    ].filter(Boolean));
-
     try {
-      const keys = await caches.keys();
-      await Promise.allSettled(
-        keys
-          .filter((key) => key.startsWith('cysy-') && !keepCaches.has(key))
-          .map((key) => caches.delete(key))
-      );
+      await this.clearManagedCaches(false);
       await this.trimTileCache();
       safeStorage.setItem(this.lastRunKey, String(now));
       backupManager.addEntry('LIMPEZA_CACHE_AUTOMATICA', {
@@ -1279,14 +1321,9 @@ const cacheJanitor = {
   async firstBootClear() {
     if (safeStorage.getItem(this.firstBootKey, '') === 'done') return;
     try {
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.allSettled(regs.map((r) => r.unregister()));
-      }
-      if ('caches' in window) {
-        const keys = await caches.keys();
-        await Promise.allSettled(keys.map((k) => caches.delete(k)));
-      }
+      const registrations = await this.getScopedRegistrations();
+      await Promise.allSettled(registrations.map((registration) => registration.unregister()));
+      await this.clearManagedCaches(true);
       this.clearTransientStorageArtifacts();
     } catch (_) {}
     safeStorage.setItem(this.firstBootKey, 'done');

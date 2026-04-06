@@ -9,8 +9,8 @@
   "display_override": ["standalone", "minimal-ui", "browser"],
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#F5F5F5",
-  "theme_color": "#1976D2",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
   "launch_handler": {
     "client_mode": "focus-existing"
   },
@@ -20,13 +20,13 @@
     {
       "name": "Mapa dos lotes",
       "short_name": "Mapa",
-      "url": "./app-shell.html#tab-mapa",
+      "url": "./app-shell.html?tab=mapa",
       "description": "Abrir direto o mapa operacional dos lotes"
     },
     {
       "name": "Sincronização",
       "short_name": "Sync",
-      "url": "./app-shell.html#tab-sync",
+      "url": "./app-shell.html?tab=sync",
       "description": "Abrir a central de sincronização offline"
     }
   ],

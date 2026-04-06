@@ -56,7 +56,11 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => ![CACHE_NAME, TILE_CACHE].includes(k)).map(k => caches.delete(k)));
+    await Promise.all(
+      keys
+        .filter((key) => key.startsWith('cysy-') && ![CACHE_NAME, TILE_CACHE].includes(key))
+        .map((key) => caches.delete(key))
+    );
     await self.clients.claim();
   })());
 });

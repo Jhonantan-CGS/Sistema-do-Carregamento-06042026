@@ -168,11 +168,12 @@ const truckStatusManager = {
   },
 
   iniciarFaturamento(placa) {
-    const p = normalizeName(placa);
-    if (!p || p === 'SEM PLACA') {
+    const rawPlate = String(placa || '').trim();
+    if (!rawPlate || rawPlate.toUpperCase() === 'SEM PLACA' || (typeof plateRules !== 'undefined' && !plateRules.isValid(rawPlate))) {
       alert("Não é possível enviar para faturamento sem placa válida.");
       return;
     }
+    const p = typeof plateRules !== 'undefined' ? plateRules.normalize(rawPlate) : normalizeName(rawPlate);
     this.placaEmFluxo = p;
     const overlay = document.getElementById('faturamentoOverlay');
     const placaEl = document.getElementById('faturamentoPlaca');
