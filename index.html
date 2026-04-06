@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1976D2">
+<meta name="description" content="Entrada segura do aplicativo CYSY LOG 360 com suporte a instalação PWA.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="CYSY LOG 360">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260406r02">
+  <link rel="icon" href="./assets/icons/icon-192.png?v=20260406r02" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png?v=20260406r02">
+<title>CYSY LOG 360 | Inicializando</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #071120;
+    --panel: rgba(15, 23, 42, 0.88);
+    --panel-border: rgba(148, 163, 184, 0.24);
+    --accent: #38bdf8;
+    --accent-strong: #2563eb;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(37, 99, 235, 0.22), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.18), transparent 28%),
+      linear-gradient(160deg, #071120, #0b132b 58%, #0f172a);
+    color: var(--text);
+  }
+  .card {
+    width: min(620px, 100%);
+    border: 1px solid var(--panel-border);
+    border-radius: 24px;
+    background: var(--panel);
+    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.5);
+    padding: 30px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .brand img {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.9);
+    padding: 10px;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 28px rgba(56, 189, 248, 0.18);
+  }
+  h1 { margin: 0 0 6px; font-size: 28px; color: #dbeafe; }
+  .eyebrow {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  p { margin: 0 0 16px; line-height: 1.55; color: #cbd5e1; }
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    background: var(--accent-strong);
+    color: #fff;
+    border: 1px solid #60a5fa;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn.secondary {
+    background: rgba(15, 23, 42, 0.78);
+    color: var(--text);
+    border-color: var(--panel-border);
+  }
+  .sub { font-size: 13px; color: var(--muted); margin-top: 18px; }
+  .status {
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(15, 23, 42, 0.48);
+    font-size: 13px;
+    color: var(--text);
+  }
+  code { color: #bfdbfe; }
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    border: 2px solid rgba(191, 219, 254, .28);
+    border-top-color: var(--accent);
+    animation: spin 1s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 640px) {
+    body {
+      padding: 16px;
+      background:
+        linear-gradient(180deg, #071120 0%, #0b132b 58%, #0f172a 100%);
+    }
+    .card {
+      padding: 22px;
+      background: rgba(8, 17, 31, 0.98);
+      box-shadow: 0 16px 36px rgba(2, 6, 23, 0.28);
+    }
+    h1 { font-size: 24px; }
+    .actions { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand">
+      <img src="./assets/logo.svg" alt="Cysy Log 360">
+      <div>
+        <p class="eyebrow">Plataforma operacional</p>
+        <h1>Cysy Log 360</h1>
+      </div>
+    </div>
+    <p><span class="spinner"></span>A entrada principal foi preparada para instalação PWA e abertura segura do sistema.</p>
+    <p>Se o redirecionamento automático não acontecer em alguns instantes, use uma das ações abaixo.</p>
+    <div class="actions">
+      <a class="btn" href="./launch.html?v=20260406r02">Abrir sistema</a>
+      <button class="btn secondary" id="installEntryBtn" type="button">Instalar aplicativo</button>
+    </div>
+    <div class="status" id="entryStatus">Inicializando ambiente, service worker e manifesto de instalação...</div>
+    <p class="sub">Entrada recomendada: <code>.../Sistema%20do%20Carregamento/</code></p>
+  </main>
+  <script>
+    (() => {
+      const statusEl = document.getElementById('entryStatus');
+      const installBtn = document.getElementById('installEntryBtn');
+      let deferredPrompt = null;
+      let redirected = false;
+      let manualHold = false;
+
+      const setStatus = (message) => { if (statusEl) statusEl.textContent = message; };
+      const redirectToApp = () => {
+        if (redirected || manualHold) return;
+        redirected = true;
+          location.replace('./launch.html?v=20260406r02');
+      };
+      const getManualMessage = () => {
+        const ua = navigator.userAgent || '';
+        const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        if (isIOS) return 'No Safari, toque em Compartilhar e depois em "Adicionar à Tela de Início".';
+        if (/Android/.test(ua) && /Chrome|CriOS/.test(ua) && !/Edg|OPR|SamsungBrowser/.test(ua)) return 'No Chrome Android, abra o menu ⋮ e escolha "Instalar aplicativo".';
+        if (/SamsungBrowser/.test(ua)) return 'No Samsung Internet, abra o menu e escolha a opção de adicionar/instalar o aplicativo.';
+        if (/Edg\//.test(ua)) return 'No Microsoft Edge, abra o menu e use "Aplicativos" > "Instalar este site como aplicativo".';
+        if (/Chrome/.test(ua)) return 'No Chrome desktop, use o menu do navegador e procure a opção de instalar este aplicativo.';
+        return 'Use o menu do navegador para instalar ou adicionar este sistema à tela inicial.';
+      };
+
+      installBtn?.addEventListener('click', async () => {
+        manualHold = true;
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          await deferredPrompt.userChoice.catch(() => null);
+          deferredPrompt = null;
+          return;
+        }
+        alert(getManualMessage());
+      });
+
+      window.addEventListener('beforeinstallprompt', (event) => {
+        event.preventDefault();
+        deferredPrompt = event;
+        setStatus('Aplicativo pronto para instalação. Você pode instalar agora ou seguir para o sistema.');
+      });
+
+      window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        setStatus('Aplicativo instalado com sucesso. Abrindo a operação...');
+      });
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js?v=20260406r02', { scope: './' })
+          .then(() => setStatus('Ambiente validado. Abrindo o sistema operacional...'))
+          .catch(() => setStatus('Ambiente inicializado. Se a instalação não aparecer, abra o sistema e use o botão de instalar.'))
+          .finally(() => setTimeout(redirectToApp, 900));
+      } else {
+        setStatus('Navegador sem suporte completo a service worker. A abertura continua disponível.');
+        setTimeout(redirectToApp, 900);
+      }
+    })();
+  </script>
+</body>
+</html>
+
+
+
+

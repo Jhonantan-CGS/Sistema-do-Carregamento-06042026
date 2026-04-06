@@ -1,0 +1,57 @@
+{
+  "name": "Cysy Log 360",
+  "short_name": "Cysy360",
+  "description": "Sistema executivo de carregamento, geolocalização de lotes e faturamento.",
+  "lang": "pt-BR",
+  "id": "cysy-log-360-pwa",
+  "start_url": "./app-shell.html?v=20260406r02",
+  "scope": "./",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F5F5F5",
+  "theme_color": "#1976D2",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "prefer_related_applications": false,
+  "categories": ["business", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Mapa dos lotes",
+      "short_name": "Mapa",
+      "url": "./app-shell.html#tab-mapa",
+      "description": "Abrir direto o mapa operacional dos lotes"
+    },
+    {
+      "name": "Sincronização",
+      "short_name": "Sync",
+      "url": "./app-shell.html#tab-sync",
+      "description": "Abrir a central de sincronização offline"
+    }
+  ],
+  "icons": [
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
