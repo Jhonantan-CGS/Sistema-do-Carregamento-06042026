@@ -3567,6 +3567,22 @@
     padding: 26px;
   }
 
+  .form-group {
+    gap: 8px;
+    padding: 14px 16px 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(96, 165, 250, 0.14);
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.84), rgba(37, 99, 235, 0.12));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 28px rgba(2, 6, 23, 0.18);
+  }
+
+  #tab-op .form-group {
+    background:
+      linear-gradient(135deg, rgba(30, 41, 59, 0.92), rgba(59, 130, 246, 0.14)),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.88));
+    border-color: rgba(96, 165, 250, 0.18);
+  }
+
   .section-header {
     border-bottom-color: rgba(255, 255, 255, 0.08);
   }
@@ -3704,6 +3720,79 @@
     border-color: rgba(255, 255, 255, 0.08);
   }
 
+  .fill-guide-card {
+    margin-bottom: 18px;
+    padding: 18px;
+    border-radius: 20px;
+    background:
+      linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.16)),
+      linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(30, 41, 59, 0.76));
+    border: 1px solid rgba(125, 211, 252, 0.18);
+    box-shadow: 0 18px 32px rgba(2, 6, 23, 0.24);
+  }
+
+  .fill-guide-head {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .fill-guide-head strong {
+    font-size: 15px;
+    font-weight: 900;
+    color: #F8FAFC;
+  }
+
+  .fill-guide-head span {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #BFDBFE;
+    font-weight: 700;
+  }
+
+  .fill-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .fill-guide-item {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.46);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  .fill-guide-item h3 {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 900;
+    color: #F8FAFC;
+  }
+
+  .fill-guide-item p {
+    margin: 0 0 8px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #CBD5E1;
+    font-weight: 700;
+  }
+
+  .fill-guide-item small {
+    display: block;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #93C5FD;
+    font-weight: 700;
+  }
+
+  .fill-guide-highlight {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(15, 23, 42, 0.52));
+    border-color: rgba(16, 185, 129, 0.22);
+  }
+
   .grid-header {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.14));
     border-bottom-color: rgba(96, 165, 250, 0.26);
@@ -3738,6 +3827,14 @@
 
   .grid-row:hover {
     background: rgba(59, 130, 246, 0.08);
+  }
+
+  #materialsContainer .grid-row {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.42), rgba(30, 41, 59, 0.36));
+  }
+
+  #materialsContainer .grid-row:nth-child(even) {
+    background: linear-gradient(180deg, rgba(17, 24, 39, 0.52), rgba(30, 41, 59, 0.38));
   }
 
   .carga-card-header,
@@ -3976,8 +4073,22 @@
       border-radius: 20px;
     }
 
+    .form-group {
+      padding: 12px 14px 14px;
+      border-radius: 16px;
+    }
+
     .grid-form {
       gap: 14px;
+    }
+
+    .fill-guide-card {
+      padding: 16px;
+      border-radius: 18px;
+    }
+
+    .fill-guide-grid {
+      grid-template-columns: 1fr;
     }
 
     .map-registration-actions {
@@ -4142,6 +4253,44 @@
 
       <section class="section anim-slide-up">
         <div class="section-header"><h2>📦 Produtos e Lotes</h2></div>
+        <div class="fill-guide-card">
+          <div class="fill-guide-head">
+            <strong>Como preencher cada coluna</strong>
+            <span>Use este bloco como referência rápida antes de lançar os itens da carga.</span>
+          </div>
+          <div class="fill-guide-grid">
+            <article class="fill-guide-item">
+              <h3>1. Produto Liberado</h3>
+              <p>Selecione o material que realmente está sendo carregado para o cliente.</p>
+              <small>Exemplo: <b>UREIA 25KG</b>, <b>SULFATO DE AMÔNIO</b>, <b>SEMENTE MILHO HÍBRIDO</b>.</small>
+            </article>
+            <article class="fill-guide-item">
+              <h3>2. Qtd (t)</h3>
+              <p>Informe apenas a quantidade carregada naquele produto, em toneladas.</p>
+              <small>Exemplo: <b>12.500</b> para doze toneladas e quinhentos quilos.</small>
+            </article>
+            <article class="fill-guide-item">
+              <h3>3. Lote Utilizado</h3>
+              <p>Escolha o lote físico que saiu do estoque e gerou essa liberação.</p>
+              <small>Exemplo: <b>L3574</b>, <b>MAP240601</b> ou o lote disponível na lista.</small>
+            </article>
+            <article class="fill-guide-item">
+              <h3>4. Avaria (t)</h3>
+              <p>Preencha somente se houve perda no carregamento desse item.</p>
+              <small>Exemplo: <b>0.150</b> para 150 kg de perda. Se não houve, deixe <b>0</b> ou vazio.</small>
+            </article>
+            <article class="fill-guide-item">
+              <h3>5. Motivo da Avaria</h3>
+              <p>Obrigatório quando existir valor em avaria. Escolha a causa principal.</p>
+              <small>Exemplo: <b>Rasgo</b>, <b>Qualidade</b> ou <b>Transporte</b>.</small>
+            </article>
+            <article class="fill-guide-item fill-guide-highlight">
+              <h3>Regra prática</h3>
+              <p>Cada linha representa um produto/lote efetivamente usado na operação.</p>
+              <small>Se a carga usou dois produtos ou dois lotes diferentes, preencha em linhas separadas.</small>
+            </article>
+          </div>
+        </div>
         <div class="table-wrapper">
           <div class="unified-grid" id="materialsContainer">
             <div class="grid-header" style="grid-template-columns: minmax(200px, 3fr) 1.2fr 2fr 1.2fr 2fr;">
