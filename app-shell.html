@@ -3721,76 +3721,94 @@
   }
 
   .fill-guide-card {
-    margin-bottom: 18px;
-    padding: 18px;
-    border-radius: 20px;
-    background:
-      linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(139, 92, 246, 0.16)),
-      linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(30, 41, 59, 0.76));
-    border: 1px solid rgba(125, 211, 252, 0.18);
-    box-shadow: 0 18px 32px rgba(2, 6, 23, 0.24);
+    margin-bottom: 14px;
+    padding: 15px 16px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.74), rgba(30, 41, 59, 0.68));
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
   .fill-guide-head {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
+    gap: 4px;
+    margin-bottom: 12px;
   }
 
   .fill-guide-head strong {
-    font-size: 15px;
+    font-size: 11px;
     font-weight: 900;
-    color: #F8FAFC;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #93C5FD;
   }
 
   .fill-guide-head span {
     font-size: 12px;
     line-height: 1.5;
-    color: #BFDBFE;
-    font-weight: 700;
+    color: #CBD5E1;
+    font-weight: 600;
   }
 
   .fill-guide-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px;
   }
 
   .fill-guide-item {
-    padding: 14px;
+    padding: 12px 13px;
     border-radius: 16px;
-    background: rgba(15, 23, 42, 0.46);
+    background: rgba(15, 23, 42, 0.42);
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
   .fill-guide-item h3 {
-    margin: 0 0 8px;
-    font-size: 13px;
-    font-weight: 900;
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 800;
     color: #F8FAFC;
   }
 
   .fill-guide-item p {
-    margin: 0 0 8px;
-    font-size: 12px;
-    line-height: 1.55;
+    margin: 0 0 6px;
+    font-size: 11.5px;
+    line-height: 1.5;
     color: #CBD5E1;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .fill-guide-item small {
     display: block;
-    font-size: 11px;
+    font-size: 10.5px;
     line-height: 1.5;
-    color: #93C5FD;
-    font-weight: 700;
+    color: #94A3B8;
+    font-weight: 600;
   }
 
   .fill-guide-highlight {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(15, 23, 42, 0.52));
-    border-color: rgba(16, 185, 129, 0.22);
+    border-color: rgba(96, 165, 250, 0.18);
+  }
+
+  .fill-guide-footnote {
+    margin: 0 0 14px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #94A3B8;
+    font-weight: 600;
+  }
+
+  .lot-search-input {
+    min-height: 44px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+
+  .lot-search-input:disabled {
+    opacity: 0.72;
+    cursor: not-allowed;
   }
 
   .grid-header {
@@ -4083,7 +4101,7 @@
     }
 
     .fill-guide-card {
-      padding: 16px;
+      padding: 14px;
       border-radius: 18px;
     }
 
@@ -4255,42 +4273,43 @@
         <div class="section-header"><h2>📦 Produtos e Lotes</h2></div>
         <div class="fill-guide-card">
           <div class="fill-guide-head">
-            <strong>Como preencher cada coluna</strong>
-            <span>Use este bloco como referência rápida antes de lançar os itens da carga.</span>
+            <strong>Orientações rápidas</strong>
+            <span>Preencha cada campo apenas com a informação operacional correspondente.</span>
           </div>
           <div class="fill-guide-grid">
             <article class="fill-guide-item">
-              <h3>1. Produto Liberado</h3>
-              <p>Selecione o material que realmente está sendo carregado para o cliente.</p>
-              <small>Exemplo: <b>UREIA 25KG</b>, <b>SULFATO DE AMÔNIO</b>, <b>SEMENTE MILHO HÍBRIDO</b>.</small>
+              <h3>Produto Liberado</h3>
+              <p>Use o nome do material que está sendo carregado nesta linha.</p>
+              <small>Ex.: <b>UREIA 25KG</b> ou <b>SULFATO DE AMÔNIO</b>.</small>
             </article>
             <article class="fill-guide-item">
-              <h3>2. Qtd (t)</h3>
-              <p>Informe apenas a quantidade carregada naquele produto, em toneladas.</p>
-              <small>Exemplo: <b>12.500</b> para doze toneladas e quinhentos quilos.</small>
+              <h3>Qtd (t)</h3>
+              <p>Informe somente a quantidade efetivamente carregada, em toneladas.</p>
+              <small>Ex.: <b>12.500</b> para 12 toneladas e 500 kg.</small>
             </article>
             <article class="fill-guide-item">
-              <h3>3. Lote Utilizado</h3>
-              <p>Escolha o lote físico que saiu do estoque e gerou essa liberação.</p>
-              <small>Exemplo: <b>L3574</b>, <b>MAP240601</b> ou o lote disponível na lista.</small>
+              <h3>Lote Utilizado</h3>
+              <p>Escolha o lote físico do estoque usado nesse item. Você pode digitar parte do código para localizar mais rápido.</p>
+              <small>Ex.: <b>L3574</b> ou <b>MAP240601</b>.</small>
             </article>
             <article class="fill-guide-item">
-              <h3>4. Avaria (t)</h3>
-              <p>Preencha somente se houve perda no carregamento desse item.</p>
-              <small>Exemplo: <b>0.150</b> para 150 kg de perda. Se não houve, deixe <b>0</b> ou vazio.</small>
+              <h3>Avaria (t)</h3>
+              <p>Preencha apenas se houve perda real nesse item durante a operação.</p>
+              <small>Ex.: <b>0.150</b> para 150 kg. Se não houve avaria, deixe vazio ou <b>0</b>.</small>
             </article>
             <article class="fill-guide-item">
-              <h3>5. Motivo da Avaria</h3>
-              <p>Obrigatório quando existir valor em avaria. Escolha a causa principal.</p>
-              <small>Exemplo: <b>Rasgo</b>, <b>Qualidade</b> ou <b>Transporte</b>.</small>
+              <h3>Motivo da Avaria</h3>
+              <p>Preencha somente quando houver valor em avaria, informando a causa principal da perda.</p>
+              <small>Ex.: <b>Rasgo</b>, <b>Qualidade</b> ou <b>Transporte</b>.</small>
             </article>
             <article class="fill-guide-item fill-guide-highlight">
-              <h3>Regra prática</h3>
-              <p>Cada linha representa um produto/lote efetivamente usado na operação.</p>
-              <small>Se a carga usou dois produtos ou dois lotes diferentes, preencha em linhas separadas.</small>
+              <h3>Organização das linhas</h3>
+              <p>Cada linha representa uma combinação de produto e lote usada no carregamento.</p>
+              <small>Se a operação usar mais de um produto ou mais de um lote, lance cada combinação separadamente.</small>
             </article>
           </div>
         </div>
+        <p class="fill-guide-footnote">A busca do lote respeita a ordem do menor para o maior e aceita digitação parcial para facilitar a seleção.</p>
         <div class="table-wrapper">
           <div class="unified-grid" id="materialsContainer">
             <div class="grid-header" style="grid-template-columns: minmax(200px, 3fr) 1.2fr 2fr 1.2fr 2fr;">

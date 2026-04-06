@@ -204,9 +204,91 @@ const uiBuilder = {
     const m = document.getElementById('materialsContainer');
     if (!m) return;
     for (let i = 1; i <= 10; i++) {
-      m.insertAdjacentHTML('beforeend', `<div class="grid-row" id="gridRow_${i}"><div class="grid-cell" data-label="Produto Liberado"><div id="lblDestino_${i}" style="font-size: 10px; font-weight: 900; color: var(--secondary); margin-bottom: 8px; display: none;"></div><select id="selProd_${i}" onchange="uiBuilder.onProdChange(${i})" title="Selecione o produto liberado nesta linha"><option value="">Selecione o produto liberado...</option></select></div><div class="grid-cell" data-label="Carregado (t)"><input type="number" id="inpQtd_${i}" step="0.001" min="0" placeholder="Ex: 12.500" title="Informe a quantidade carregada em toneladas" oninput="uiBuilder.recalcularLinhas(${i})"></div><div class="grid-cell" data-label="Lote Utilizado"><select id="selLote_${i}" onchange="uiBuilder.onLoteChange(${i})" title="Escolha o lote fisico usado no carregamento"><option value="">Selecione o lote fisico...</option></select><div id="lblSaldo_${i}" style="font-size: 11px; font-weight: 800; color: var(--success); margin-top: 4px;"></div></div><div class="grid-cell" data-label="Avaria (t)"><input type="number" id="inpPerda_${i}" step="0.001" min="0" placeholder="Ex: 0.150" title="Preencha apenas se houve perda no item"></div><div class="grid-cell" data-label="Motivo Avaria"><select id="selMotivo_${i}" title="Obrigatorio quando houver avaria"><option value="">Selecione o motivo da avaria...</option><option value="Rasgo na embalagem">Rasgo</option><option value="Qualidade">Qualidade</option><option value="Transporte">Transporte</option></select></div></div>`);
+      m.insertAdjacentHTML('beforeend', `<div class="grid-row" id="gridRow_${i}"><div class="grid-cell" data-label="Produto Liberado"><div id="lblDestino_${i}" style="font-size: 10px; font-weight: 900; color: var(--secondary); margin-bottom: 8px; display: none;"></div><select id="selProd_${i}" onchange="uiBuilder.onProdChange(${i})" title="Selecione o produto liberado nesta linha"><option value="">Selecione o produto liberado...</option></select></div><div class="grid-cell" data-label="Carregado (t)"><input type="number" id="inpQtd_${i}" step="0.001" min="0" placeholder="Ex: 12.500" title="Informe a quantidade carregada em toneladas" oninput="uiBuilder.recalcularLinhas(${i})"></div><div class="grid-cell" data-label="Lote Utilizado"><input type="search" id="inpBuscaLote_${i}" class="lot-search-input" placeholder="Selecione primeiro o produto..." title="Digite parte do lote para localizar mais rapido" autocomplete="off" spellcheck="false" disabled oninput="uiBuilder.onLoteSearchInput(${i})"><select id="selLote_${i}" onchange="uiBuilder.onLoteChange(${i})" title="Escolha o lote fisico usado no carregamento" data-all-options="[]"><option value="">Selecione o lote fisico...</option></select><div id="lblSaldo_${i}" style="font-size: 11px; font-weight: 800; color: var(--success); margin-top: 4px;"></div></div><div class="grid-cell" data-label="Avaria (t)"><input type="number" id="inpPerda_${i}" step="0.001" min="0" placeholder="Ex: 0.150" title="Preencha apenas se houve perda no item"></div><div class="grid-cell" data-label="Motivo Avaria"><select id="selMotivo_${i}" title="Obrigatorio quando houver avaria"><option value="">Selecione o motivo da avaria...</option><option value="Rasgo na embalagem">Rasgo</option><option value="Qualidade">Qualidade</option><option value="Transporte">Transporte</option></select></div></div>`);
     }
     m.parentElement.insertAdjacentHTML('beforeend', `<div style="padding: 16px; text-align: center; background: linear-gradient(180deg, rgba(15, 23, 42, 0.68), rgba(30, 41, 59, 0.52)); border-top: 1px solid rgba(96, 165, 250, 0.12);"><button type="button" id="btnToggleGridRows" onclick="uiBuilder.toggleGridRows()" style="background: transparent; border: 2px dashed rgba(96, 165, 250, 0.42); color: #BFDBFE; box-shadow: none;">⬇ Expandir linha</button></div>`);
+  },
+
+  getSortedLoteEntries(lotesObj = {}) {
+    return Object.entries(lotesObj || {})
+      .filter(([lote]) => Boolean(String(lote || '').trim()))
+      .sort((a, b) => String(a[0]).localeCompare(String(b[0]), 'pt-BR', { numeric: true, sensitivity: 'base' }));
+  },
+
+  getStoredLoteEntries(index) {
+    const loteSelect = document.getElementById(`selLote_${index}`);
+    if (!loteSelect || !loteSelect.dataset.allOptions) return [];
+    try {
+      return JSON.parse(loteSelect.dataset.allOptions).map((item) => [item.value, item.saldo]);
+    } catch (error) {
+      debugEngine.log(`Falha ao recuperar lotes armazenados da linha ${index}: ${error.message}`, 'warn');
+      return [];
+    }
+  },
+
+  renderLoteOptions(index, loteEntries = [], filterTerm = '', preferredValue = '') {
+    const loteSelect = document.getElementById(`selLote_${index}`);
+    const loteSearch = document.getElementById(`inpBuscaLote_${index}`);
+    if (!loteSelect) return [];
+
+    const normalizedFilter = normalizeName(filterTerm || '');
+    const filteredEntries = normalizedFilter
+      ? loteEntries.filter(([lote]) => normalizeName(lote).includes(normalizedFilter))
+      : loteEntries.slice();
+
+    loteSelect.dataset.allOptions = JSON.stringify(loteEntries.map(([value, saldo]) => ({ value, saldo })));
+    loteSelect.innerHTML = `<option value="">${normalizedFilter ? 'Selecione o lote encontrado...' : 'Selecione o lote fisico...'}</option>`
+      + filteredEntries.map(([lote, saldo]) => `<option value="${escapeHTML(lote)}" data-saldo="${saldo}">${escapeHTML(lote)}</option>`).join('');
+
+    if (loteSearch) {
+      loteSearch.disabled = loteEntries.length === 0;
+      loteSearch.placeholder = loteEntries.length === 0
+        ? 'Sem lote disponivel para este produto'
+        : 'Digite para localizar o lote...';
+    }
+
+    if (preferredValue && filteredEntries.some(([lote]) => lote === preferredValue)) {
+      loteSelect.value = preferredValue;
+    }
+
+    return filteredEntries;
+  },
+
+  onLoteSearchInput(index) {
+    const loteSearch = document.getElementById(`inpBuscaLote_${index}`);
+    const loteSelect = document.getElementById(`selLote_${index}`);
+    const lblSaldo = document.getElementById(`lblSaldo_${index}`);
+    if (!loteSearch || !loteSelect) return;
+
+    const allEntries = this.getStoredLoteEntries(index);
+    const filteredEntries = this.renderLoteOptions(index, allEntries, loteSearch.value, loteSelect.value);
+    const normalizedSearch = normalizeName(loteSearch.value || '');
+    const exactMatch = normalizedSearch
+      ? filteredEntries.find(([lote]) => normalizeName(lote) === normalizedSearch)
+      : null;
+
+    if (exactMatch) {
+      loteSelect.value = exactMatch[0];
+      this.onLoteChange(index);
+      return;
+    }
+
+    if (filteredEntries.length === 1) {
+      loteSelect.value = filteredEntries[0][0];
+      this.onLoteChange(index);
+      return;
+    }
+
+    if (loteSelect.value && !filteredEntries.some(([lote]) => lote === loteSelect.value)) {
+      loteSelect.value = '';
+    }
+
+    if (lblSaldo) {
+      lblSaldo.innerText = filteredEntries.length === 0 && normalizedSearch
+        ? 'Nenhum lote encontrado para esta busca.'
+        : '';
+    }
+    this.recalcularLinhas();
   },
 
   handleImageUpload(event, previewId, hiddenInputId) {
@@ -360,7 +442,17 @@ const uiBuilder = {
     for (let i = 1; i <= 10; i++) {
       const sel = document.getElementById(`selProd_${i}`); if (sel) { sel.innerHTML = '<option value="">Selecione o produto liberado...</option>'; sel.dataset.sugQtd = ''; }
       const q = document.getElementById(`inpQtd_${i}`); if (q) q.value = '';
-      const sl = document.getElementById(`selLote_${i}`); if (sl) sl.innerHTML = '<option value="">Selecione o lote fisico...</option>';
+      const loteBusca = document.getElementById(`inpBuscaLote_${i}`);
+      if (loteBusca) {
+        loteBusca.value = '';
+        loteBusca.disabled = true;
+        loteBusca.placeholder = 'Selecione primeiro o produto...';
+      }
+      const sl = document.getElementById(`selLote_${i}`);
+      if (sl) {
+        sl.dataset.allOptions = '[]';
+        sl.innerHTML = '<option value="">Selecione o lote fisico...</option>';
+      }
       const ls = document.getElementById(`lblSaldo_${i}`); if (ls) ls.innerText = '';
       const ip = document.getElementById(`inpPerda_${i}`); if (ip) ip.value = '';
       const sm = document.getElementById(`selMotivo_${i}`); if (sm) sm.value = '';
@@ -452,15 +544,36 @@ const uiBuilder = {
     const prodKey = normalizeName(sel.value);
     const qtdField = document.getElementById(`inpQtd_${index}`);
     const loteSelect = document.getElementById(`selLote_${index}`);
-    if (loteSelect) loteSelect.innerHTML = '<option value="">Selecione o lote fisico...</option>';
+    const loteSearch = document.getElementById(`inpBuscaLote_${index}`);
+    if (loteSearch) {
+      loteSearch.value = '';
+      loteSearch.disabled = !prodKey;
+      loteSearch.placeholder = prodKey ? 'Digite para localizar o lote...' : 'Selecione primeiro o produto...';
+    }
+    if (loteSelect) {
+      loteSelect.dataset.allOptions = '[]';
+      loteSelect.innerHTML = '<option value="">Selecione o lote fisico...</option>';
+    }
     if (qtdField) qtdField.value = '';
     if (prodKey) {
       const lotesObj = this.lotesMap[prodKey];
       if (lotesObj && Object.keys(lotesObj).length > 0 && loteSelect) {
-        loteSelect.innerHTML = '<option value="">Selecione o lote fisico...</option>' + Object.keys(lotesObj).map(l => `<option value="${escapeHTML(l)}" data-saldo="${lotesObj[l]}">${escapeHTML(l)}</option>`).join('');
-        if (Object.keys(lotesObj).length === 1) { loteSelect.selectedIndex = 1; this.onLoteChange(index); }
+        const loteEntries = this.getSortedLoteEntries(lotesObj);
+        this.renderLoteOptions(index, loteEntries);
+        if (loteEntries.length === 1) {
+          loteSelect.value = loteEntries[0][0];
+          this.onLoteChange(index);
+        }
       } else if (loteSelect) {
+        loteSelect.dataset.allOptions = '[]';
         loteSelect.innerHTML = '<option value="S/ Lote">Sem Lote no Estoque</option>';
+        loteSelect.value = 'S/ Lote';
+        if (loteSearch) {
+          loteSearch.value = '';
+          loteSearch.disabled = true;
+          loteSearch.placeholder = 'Sem lote disponivel para este produto';
+        }
+        this.onLoteChange(index);
       }
       const valQtd = typeof sugQtd === 'number' ? sugQtd : Number(sel.dataset.sugQtd || 0);
       if (valQtd > 0 && qtdField) qtdField.value = formatTons(valQtd);
@@ -474,9 +587,13 @@ const uiBuilder = {
 
   onLoteChange(index) {
     const loteSelect = document.getElementById(`selLote_${index}`);
+    const loteSearch = document.getElementById(`inpBuscaLote_${index}`);
     const lbl = document.getElementById(`lblSaldo_${index}`);
     if (!loteSelect || !lbl) return;
     const opt = loteSelect.options[loteSelect.selectedIndex];
+    if (loteSearch) {
+      loteSearch.value = loteSelect.value && loteSelect.value !== 'S/ Lote' ? loteSelect.value : '';
+    }
     lbl.innerText = opt && opt.dataset.saldo ? `Saldo: ${formatTons(opt.dataset.saldo)}t` : '';
     this.recalcularLinhas(index);
   },
