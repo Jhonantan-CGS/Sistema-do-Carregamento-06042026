@@ -88,6 +88,30 @@ const dbManager = {
   },
   buildFingerprint(type, payload = {}) {
     const normalizedType = String(type || payload.tipo || '').toUpperCase();
+
+    // Baixa de perdas precisa considerar os itens informados; antes
+    // gerávamos sempre o mesmo hash, fazendo qualquer nova baixa ser
+    // tratada como duplicada. Incluímos acompanhandte e cada linha de perda
+    // na assinatura para permitir envios distintos.
+    if (normalizedType === 'BAIXA_PERDA') {
+      const perdasSig = Array.isArray(payload.perdas)
+        ? payload.perdas.map((p) => ({
+            p: normalizeName(p.produto || ''),
+            l: String(p.lote || '').toUpperCase(),
+            q: Number(p.qtd || 0),
+            t: normalizeName(p.tipo || ''),
+            o: String(p.obs || '').trim()
+          }))
+        : [];
+      return stableHash(
+        JSON.stringify({
+          tipo: normalizedType,
+          acomp: normalizeName(payload.acomp || ''),
+          perdas: perdasSig
+        })
+      );
+    }
+
     const base = {
       tipo: normalizedType,
       placa: normalizeName(payload.placa || ''),
