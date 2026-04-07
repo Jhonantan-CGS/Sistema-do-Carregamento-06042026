@@ -476,38 +476,38 @@ const envManager = {
             title: '⚠️ ALERTA DE VENTO FORTE',
             body: 'Reforce lonas e proteções. Há risco operacional com vento forte na área da Cysy.',
             severity: 'danger',
-            actionKey: 'tab_mapa',
-            actionLabel: '🗺️ Abrir mapa',
+            actionKey: 'tab_op',
+            actionLabel: '📋 Abrir liberação',
             source: 'clima'
           });
         }
       } else if (cur.precipitation > 0 || daily.precipitation_probability_max[0] > 60 || daily.precipitation_probability_max[1] > 60) {
         alertBanner.style.background = 'rgba(220, 38, 38, 0.2)';
         alertBanner.style.color = '#FCA5A5';
-        alertBanner.innerHTML = '🌧️ ALERTA DE CHUVA: Cubra os lotes vulneráveis!';
+        alertBanner.innerHTML = '🌧️ ALERTA DE CHUVA: Proteja os materiais expostos.';
         if (canRegisterPriority) {
           window.priorityAlertManager.registerAlert({
             id: `weather_rain_${todayKey}`,
             title: '🌧️ ALERTA DE CHUVA',
-            body: 'Cubra os lotes vulneráveis e confirme a visualização do alerta após revisar a área.',
+            body: 'Proteja os materiais expostos e confirme a revisão operacional da área.',
             severity: 'danger',
-            actionKey: 'tab_mapa',
-            actionLabel: '🗺️ Abrir mapa',
+            actionKey: 'tab_op',
+            actionLabel: '📋 Abrir liberação',
             source: 'clima'
           });
         }
       } else if (tempNow > 32 || daily.temperature_2m_max[0] > 33 || daily.temperature_2m_max[1] > 33 || Number(uvTom) >= 8) {
         alertBanner.style.background = 'rgba(220, 38, 38, 0.2)';
         alertBanner.style.color = '#FCA5A5';
-        alertBanner.innerHTML = '☀️ SOL EXTREMO: Risco de ressecamento de Big Bags.';
+        alertBanner.innerHTML = '☀️ SOL EXTREMO: Atenção aos materiais sensíveis.';
         if (canRegisterPriority) {
           window.priorityAlertManager.registerAlert({
             id: `weather_sun_${todayKey}`,
             title: '☀️ ALERTA DE SOL EXTREMO',
-            body: 'Monitore os big bags e materiais sensíveis. O risco de ressecamento está elevado.',
+            body: 'Monitore os materiais sensíveis. O risco de ressecamento e aquecimento está elevado.',
             severity: 'warning',
-            actionKey: 'tab_mapa',
-            actionLabel: '🗺️ Abrir mapa',
+            actionKey: 'tab_op',
+            actionLabel: '📋 Abrir liberação',
             source: 'clima'
           });
         }

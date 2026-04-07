@@ -7,7 +7,6 @@ const uiBuilder = {
   rncCargas: [],
   visibleEmptyRows: 1,
   selectedCargaItems: [],
-  startupFullscreenHandled: false,
   checklistState: {},
 
   init() {
@@ -43,28 +42,7 @@ const uiBuilder = {
       else setTimeout(() => priorityAlertManager.remindActiveAlerts(), 120);
     }
 
-    if (tabId === 'mapa') {
-      requestAnimationFrame(() => {
-        const params = new URLSearchParams(window.location.search);
-        const shouldStartFullscreen = !this.startupFullscreenHandled && params.get('fullscreen') === 'mapa';
-        mapController.syncUiState();
-        mapController.renderPins(true);
-        mapController.ensureSharedSyncLoop();
-        mapController.refreshSharedLocations(true);
-        if (mapController.mapStageExpanded && !shouldStartFullscreen) {
-          mapController.initLeaflet();
-        }
-        [0, 180].forEach((delay) => {
-          setTimeout(() => {
-            mapController.refreshMapLayout();
-          }, delay);
-        });
-        if (shouldStartFullscreen) {
-          this.startupFullscreenHandled = true;
-          setTimeout(() => mapController.toggleFullScreen(true), 260);
-        }
-      });
-    } else if (tabId === 'sync') {
+    if (tabId === 'sync') {
       syncManager.refreshSyncView();
     }
   },
@@ -641,9 +619,7 @@ const uiBuilder = {
     root.innerHTML = items.map((row) => {
       const payload = row.payload || {};
       const principal = normalizeName(payload.placa || payload.lote || payload.pedido || payload.tipo || row.type || 'SEM ID');
-      const typeLabel = row.type === 'LOCALIZACAO'
-        ? 'MAPA DOS LOTES'
-        : String(row.type || payload.tipo || 'REGISTRO');
+      const typeLabel = String(row.type || payload.tipo || 'REGISTRO');
       const qtdImgs = Number(row.imageCount || 0);
       const tentativas = Number(row.attemptCount || 0);
       const erro = String(row.lastError || '').trim();
@@ -679,7 +655,6 @@ const uiBuilder = {
     const sent = snapshot.sent || [];
     const totalPend = Number(snapshot.totalPendentes || 0);
     const pendOps = Number(snapshot.pendentesOperacao || 0);
-    const pendLoc = Number(snapshot.pendentesLocalizacao || 0);
 
     const elOnline = document.getElementById('syncOnlineState');
     if (elOnline) {
@@ -696,9 +671,6 @@ const uiBuilder = {
     if (elSent) elSent.innerText = String(sent.length);
     const elOps = document.getElementById('syncCountOps');
     if (elOps) elOps.innerText = `${pendOps}/${dbManager.maxOfflineOperacoes}`;
-    const elMapOps = document.getElementById('syncCountMapOps');
-    if (elMapOps) elMapOps.innerText = `${pendLoc}/${dbManager.maxOfflineLocalizacoes}`;
-
     const mergedWaiting = [...waiting, ...sending].sort((a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime());
     this.renderSyncCards(mergedWaiting, 'syncWaitingList', false);
     this.renderSyncCards(errors, 'syncErrorList', true);
@@ -713,28 +685,28 @@ const uiBuilder = {
     overlay.style.display = show ? 'flex' : 'none';
   },
 
-  toggleDataDropdown(event) {
+  toggleHeaderMenu(event) {
     if (event) event.stopPropagation();
-    const menu = document.getElementById('dataDropdownMenu');
+    const menu = document.getElementById('headerMenuPanel');
     if (!menu) return;
     const isShowing = menu.classList.contains('show');
-    menu.classList.toggle('show');
-    if (!isShowing && !uiBuilder.closeDataDropdownHandler) {
-      uiBuilder.closeDataDropdownHandler = (e) => {
-        if (!e.target.closest('.header-dropdown')) {
-          uiBuilder.closeDataDropdown();
+    menu.classList.toggle('show', !isShowing);
+    if (!isShowing && !uiBuilder.closeHeaderMenuHandler) {
+      uiBuilder.closeHeaderMenuHandler = (e) => {
+        if (!e.target.closest('.header-actions')) {
+          uiBuilder.closeHeaderMenu();
         }
       };
-      setTimeout(() => document.addEventListener('click', uiBuilder.closeDataDropdownHandler), 10);
+      setTimeout(() => document.addEventListener('click', uiBuilder.closeHeaderMenuHandler), 10);
     }
   },
 
-  closeDataDropdown() {
-    const menu = document.getElementById('dataDropdownMenu');
+  closeHeaderMenu() {
+    const menu = document.getElementById('headerMenuPanel');
     if (menu) menu.classList.remove('show');
-    if (this.closeDataDropdownHandler) {
-      document.removeEventListener('click', this.closeDataDropdownHandler);
-      this.closeDataDropdownHandler = null;
+    if (this.closeHeaderMenuHandler) {
+      document.removeEventListener('click', this.closeHeaderMenuHandler);
+      this.closeHeaderMenuHandler = null;
     }
   },
 

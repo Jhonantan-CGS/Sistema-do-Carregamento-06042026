@@ -1,6 +1,6 @@
 const CACHE_NAME = 'cysy-log360-v20260406r02';
-const TILE_CACHE = 'cysy-map-tiles-v20260406r02';
-const TILE_CACHE_LIMIT = 5000;
+const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
+const PWA_START_URL = './app-shell.html?source=pwa';
 const APP_SHELL = [
   './',
   './index.html',
@@ -9,46 +9,40 @@ const APP_SHELL = [
   './launch.html?v=20260406r02',
   './app-shell.html',
   './app-shell.html?v=20260406r02',
+  PWA_START_URL,
   './offline.html',
   './manifest.webmanifest',
   './manifest.webmanifest?v=20260406r02',
   './assets/css/modern.css',
   './assets/css/modern.css?v=20260406r02',
   './assets/logo.svg',
+  './assets/icons/favicon.png',
+  './assets/icons/favicon.png?v=20260406r02',
+  './assets/icons/apple-touch-icon.png',
+  './assets/icons/apple-touch-icon.png?v=20260406r02',
   './assets/icons/icon-192.png',
   './assets/icons/icon-192.png?v=20260406r02',
   './assets/icons/icon-512.png',
   './assets/icons/icon-512.png?v=20260406r02',
+  './assets/icons/icon-512-maskable.png',
+  './assets/icons/icon-512-maskable.png?v=20260406r02',
   './assets/js/app-core-1.js',
   './assets/js/app-core-1.js?v=20260406r02',
   './assets/js/app-core-2.js',
   './assets/js/app-core-2.js?v=20260406r02',
   './assets/js/app-core-3.js',
   './assets/js/app-core-3.js?v=20260406r02',
-  './assets/js/app-core-4.js',
-  './assets/js/app-core-4.js?v=20260406r02',
   './assets/js/app-core-5.js',
   './assets/js/app-core-5.js?v=20260406r02',
   './assets/js/app-core-6.js',
-  './assets/js/app-core-6.js?v=20260406r02',
-  './assets/js/map-operacional-v2.js',
-  './assets/js/map-operacional-v2.js?v=20260406r02',
-  './assets/vendor/leaflet.css',
-  './assets/vendor/leaflet.css?v=20260406r02',
-  './assets/vendor/leaflet.js',
-  './assets/vendor/leaflet.js?v=20260406r02'
-];
-
-const TILE_DOMAINS = [
-  'server.arcgisonline.com',
-  'tile.openstreetmap.org',
-  'tiles.stadiamaps.com'
+  './assets/js/app-core-6.js?v=20260406r02'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await Promise.allSettled(APP_SHELL.map((url) => cache.add(url).catch(() => {})));
+    await cache.put('./__cache_meta__', new Response(JSON.stringify({ createdAt: Date.now() })));
     await self.skipWaiting();
   })());
 });
@@ -57,10 +51,9 @@ self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(
-      keys
-        .filter((key) => key.startsWith('cysy-') && ![CACHE_NAME, TILE_CACHE].includes(key))
-        .map((key) => caches.delete(key))
+      keys.filter((key) => key.startsWith('cysy-') && key !== CACHE_NAME).map((key) => caches.delete(key))
     );
+    await ensureFreshCache();
     await self.clients.claim();
   })());
 });
@@ -72,50 +65,12 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
 
   if (url.origin !== self.location.origin) {
-    if (TILE_DOMAINS.some(domain => url.hostname.includes(domain))) {
-      event.respondWith(handleTileRequest(req));
-      return;
-    }
     event.respondWith(handleExternalRequest(req));
     return;
   }
 
   event.respondWith(handleAppRequest(req));
 });
-
-async function handleTileRequest(req) {
-  const tileCache = await caches.open(TILE_CACHE);
-  const cached = await tileCache.match(req);
-
-  fetch(req).then(response => {
-    if (response && response.ok) {
-      tileCache.put(req, response).catch(() => {});
-    }
-  }).catch(() => {});
-
-  if (cached) return cached;
-
-  try {
-    const network = await fetch(req);
-    if (network && network.ok) {
-      tileCache.put(req, network.clone()).catch(() => {});
-      trimTileCache(tileCache);
-    }
-    return network;
-  } catch (_) {
-    return Response.error();
-  }
-}
-
-async function trimTileCache(cache) {
-  try {
-    const keys = await cache.keys();
-    if (keys.length > TILE_CACHE_LIMIT) {
-      const toDelete = keys.slice(0, keys.length - TILE_CACHE_LIMIT);
-      await Promise.allSettled(toDelete.map(k => cache.delete(k)));
-    }
-  } catch (_) {}
-}
 
 async function handleExternalRequest(req) {
   try {
@@ -126,6 +81,7 @@ async function handleExternalRequest(req) {
 }
 
 async function handleAppRequest(req) {
+  await ensureFreshCache();
   const cache = await caches.open(CACHE_NAME);
   const cached = await cache.match(req);
 
@@ -150,16 +106,32 @@ async function handleAppRequest(req) {
     return network;
   } catch (_) {
     if (isNavigation) {
-      return cached || await caches.match('./launch.html?v=20260406r02') ||
-        await caches.match('./launch.html') ||
+      return cached || await caches.match(PWA_START_URL) ||
         await caches.match('./app-shell.html?v=20260406r02') ||
         await caches.match('./app-shell.html') ||
+        await caches.match('./launch.html?v=20260406r02') ||
+        await caches.match('./launch.html') ||
         await caches.match('./index.html?v=20260406r02') ||
         await caches.match('./index.html') ||
         await caches.match('./offline.html');
     }
     return cached || Response.error();
   }
+}
+
+async function ensureFreshCache() {
+  const cache = await caches.open(CACHE_NAME);
+  const metaRes = await cache.match('./__cache_meta__');
+  let createdAt = 0;
+  try {
+    const meta = metaRes ? await metaRes.json() : null;
+    createdAt = Number(meta?.createdAt || 0);
+  } catch (_) {}
+  if (createdAt && (Date.now() - createdAt) < CACHE_TTL_MS) return;
+  const keys = await cache.keys();
+  await Promise.allSettled(keys.map((key) => cache.delete(key)));
+  await Promise.allSettled(APP_SHELL.map((url) => cache.add(url).catch(() => {})));
+  await cache.put('./__cache_meta__', new Response(JSON.stringify({ createdAt: Date.now() })));
 }
 
 self.addEventListener('notificationclick', (event) => {
@@ -172,7 +144,7 @@ self.addEventListener('notificationclick', (event) => {
       return;
     }
     if (self.clients.openWindow) {
-      await self.clients.openWindow('./app-shell.html?v=20260406r02');
+      await self.clients.openWindow(PWA_START_URL);
     }
   })());
 });

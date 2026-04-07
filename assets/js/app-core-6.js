@@ -29,7 +29,6 @@ const appController = {
     }
     const updatedAt = cache.updatedAt ? new Date(cache.updatedAt) : new Date();
     uiBuilder.updateGlobalUpdateTimestamp(updatedAt);
-    mapController.renderPins();
     return parsedData.length > 0 || lotesFlat.length > 0;
   },
 
@@ -55,10 +54,6 @@ const appController = {
     envManager.init();
     wakeLockManager.init();
     installManager.init();
-    if (typeof mapPersistentStore !== 'undefined' && typeof mapController?.hydrateFromPersistent === 'function') {
-      await mapPersistentStore.init();
-      await mapController.hydrateFromPersistent();
-    }
     uiBuilder.init();
     perdasController.init();
     truckStatusManager.init();
@@ -74,7 +69,6 @@ const appController = {
     this.hydrateCachedState();
     alertManager.init();
     await this.handleRefresh();
-    setTimeout(() => { alertManager.checkMissingLocations(true); }, 3000);
     setTimeout(() => { priorityAlertManager.remindActiveAlerts({ force: true }); }, 2200);
     setInterval(() => { this.silentRefresh(); }, 60000);
   },
@@ -82,16 +76,14 @@ const appController = {
   async silentRefresh() {
     if (!navigator.onLine) return;
     try {
-      const [rawValues, historicoRaw, rncRaw, globLocRaw] = await Promise.all([
+      const [rawValues, historicoRaw, rncRaw] = await Promise.all([
         apiService.fetchSheetData().catch(() => null),
         apiService.fetchHistoricoData().catch(() => null),
-        apiService.fetchRncData().catch(() => null),
-        apiService.fetchGlobalLoc().catch(() => null)
+        apiService.fetchRncData().catch(() => null)
       ]);
 
       if (historicoRaw) uiBuilder.historicoCargas = historicoRaw;
       if (rncRaw) uiBuilder.rncCargas = dataParser.parseRnc(rncRaw);
-      if (globLocRaw) mapController.syncFromGlobal(globLocRaw);
       if (rawValues && rawValues.length > 0) {
         this.lastParsedData = dataParser.parse(rawValues);
         uiBuilder.localDataStore = this.lastParsedData;
@@ -106,11 +98,6 @@ const appController = {
           uiBuilder.allLotesFlat = parsedE.allFlat || parsedE.flat;
           perdasController.populateProdutos(parsedE.map);
           perdasController.populateGlobais();
-          mapController.renderPins();
-          const tabMapa = document.getElementById('tab-mapa');
-          if (tabMapa && tabMapa.classList.contains('active')) {
-            mapController.refreshMapLayout();
-          }
         }
       }
 
@@ -136,19 +123,16 @@ const appController = {
       const fe = document.getElementById('fatalError');
       if (fe) fe.style.display = 'none';
 
-      const [rawValues, historicoRaw, rncRaw, globLocRaw] = await Promise.all([
+      const [rawValues, historicoRaw, rncRaw] = await Promise.all([
         apiService.fetchSheetData(),
         apiService.fetchHistoricoData(),
-        apiService.fetchRncData(),
-        apiService.fetchGlobalLoc()
+        apiService.fetchRncData()
       ]);
 
       this.lastParsedData = dataParser.parse(rawValues || []);
       uiBuilder.historicoCargas = historicoRaw || [];
       uiBuilder.rncCargas = dataParser.parseRnc(rncRaw);
       uiBuilder.localDataStore = this.lastParsedData;
-      if (globLocRaw) mapController.syncFromGlobal(globLocRaw);
-
       let rawEstoque = null;
       try { rawEstoque = await apiService.fetchEstoqueData(); } catch(e) {}
 
@@ -160,11 +144,6 @@ const appController = {
           uiBuilder.allLotesFlat = parsedE.allFlat || parsedE.flat;
           perdasController.populateProdutos(parsedE.map);
           perdasController.populateGlobais();
-          mapController.renderPins();
-          const tabMapa = document.getElementById('tab-mapa');
-          if (tabMapa && tabMapa.classList.contains('active')) {
-            mapController.refreshMapLayout();
-          }
         }
       }
 
@@ -189,14 +168,14 @@ const appController = {
   },
 
   async limpezaCompleta() {
-    const confirma = confirm("Esta ação removerá cache, dados locais, fila offline, logs e versões antigas do sistema neste navegador. Deseja continuar?");
+    const confirma = confirm("Esta ação fará uma limpeza forçada: cache, dados locais, fila offline, logs, históricos internos e versões antigas serão removidos deste navegador. Deseja continuar?");
     if (!confirma) return;
-    uiBuilder.toggleLoader(true, "Executando limpeza completa...");
+    uiBuilder.toggleLoader(true, "Executando limpeza forçada...");
     try {
       try {
         if ('serviceWorker' in navigator) {
-          const regs = typeof cacheJanitor?.getScopedRegistrations === 'function'
-            ? await cacheJanitor.getScopedRegistrations()
+          const regs = typeof navigator.serviceWorker.getRegistrations === 'function'
+            ? await navigator.serviceWorker.getRegistrations()
             : [];
           await Promise.all(regs.map((registration) => registration.unregister()));
         }
@@ -204,6 +183,12 @@ const appController = {
 
       try {
         if (typeof cacheJanitor?.clearManagedCaches === 'function') await cacheJanitor.clearManagedCaches(true);
+      } catch (_) {}
+      try {
+        if ('caches' in window) {
+          const cacheKeys = await caches.keys();
+          await Promise.allSettled(cacheKeys.map((key) => caches.delete(key)));
+        }
       } catch (_) {}
 
       try { await dbManager.clearAll(); } catch (_) {}
@@ -221,24 +206,47 @@ const appController = {
         } catch (_) { resolve(); }
       });
 
-      await Promise.all([
-        deleteDb(dbManager.dbName),
-        deleteDb(backupManager.dbName),
-        deleteDb(typeof mapPersistentStore?.dbName === 'string' ? mapPersistentStore.dbName : '')
-      ]);
+      const candidateDbNames = new Set([
+        dbManager.dbName,
+        backupManager.dbName,
+        'CysyDBv5',
+        'CysyDBv6',
+        'CysyDBv7',
+        'CysyDBv8',
+        'CysyDBv9',
+        'CysyBackupDBv0',
+        'CysyBackupDBv1',
+        'CysyBackupDBv2'
+      ].filter(Boolean));
       try {
-        if (navigator.storage && typeof navigator.storage.getDirectory === 'function' && mapPersistentStore?.dirName) {
-          const root = await navigator.storage.getDirectory();
-          await root.removeEntry(mapPersistentStore.dirName, { recursive: true }).catch(() => {});
+        if (typeof indexedDB?.databases === 'function') {
+          const knownDatabases = await indexedDB.databases();
+          (knownDatabases || []).forEach((dbInfo) => {
+            if (dbInfo?.name && /cysy/i.test(dbInfo.name)) candidateDbNames.add(dbInfo.name);
+          });
         }
       } catch (_) {}
+
+      await Promise.all([...candidateDbNames].map((name) => deleteDb(name)));
       try {
         if (typeof cacheJanitor?.clearManagedLocalStorage === 'function') cacheJanitor.clearManagedLocalStorage(true);
       } catch (_) {}
+      try { localStorage.clear(); } catch (_) {}
       try { sessionStorage.clear(); } catch (_) {}
+      try {
+        debugEngine.clearLogs();
+      } catch (_) {}
+      try {
+        document.cookie.split(';').forEach((cookie) => {
+          const eqPos = cookie.indexOf('=');
+          const name = (eqPos > -1 ? cookie.slice(0, eqPos) : cookie).trim();
+          if (!name) return;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+        });
+      } catch (_) {}
 
-      alert("Limpeza completa concluída. O sistema será recarregado.");
-      location.href = `${location.pathname}?clean=${Date.now()}`;
+      alert("Limpeza forçada concluída. O sistema será recarregado limpo.");
+      location.replace(`${location.pathname}?clean=${Date.now()}`);
     } finally {
       uiBuilder.toggleLoader(false);
     }

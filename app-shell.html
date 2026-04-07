@@ -3,31 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://server.arcgisonline.com https://tile.openstreetmap.org; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://sheets.googleapis.com https://*.googleapis.com https://*.googleusercontent.com https://api.open-meteo.com; worker-src 'self' blob:; font-src 'self' data:; manifest-src 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://sheets.googleapis.com https://*.googleapis.com https://*.googleusercontent.com https://api.open-meteo.com; worker-src 'self' blob:; font-src 'self' data:; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0F172A">
-<meta name="description" content="Sistema de gestão logística CYSY LOG 360">
+<meta name="description" content="Sistema operacional CYSY Expedição e Carregamento">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="CYSY LOG 360">
-  <link rel="icon" href="./assets/icons/icon-192.png?v=20260406r02" sizes="192x192" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png?v=20260406r02">
+<meta name="apple-mobile-web-app-title" content="CYSY Expedição">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260406r02" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260406r02">
   <link rel="manifest" href="./manifest.webmanifest?v=20260406r02">
-  <link rel="stylesheet" href="./assets/vendor/leaflet.css?v=20260406r02">
-  <script src="./assets/vendor/leaflet.js?v=20260406r02"></script>
   <link rel="stylesheet" href="./assets/css/modern.css?v=20260406r02">
-<title>CYSY LOG 360</title>
+<title>CYSY Expedição e Carregamento</title>
 <style>
 :root{
     --bg-gradient: linear-gradient(180deg, #f7fafc 0%, #eef4fb 40%, #e8f0fb 72%, #ffffff 100%);
     --glass-bg: rgba(255, 255, 255, 0.985);
     --glass-bg-hover: rgba(248, 250, 252, 0.995);
     --glass-border: rgba(15, 23, 42, 0.1);
-    --glass-blur: blur(3px);
-
     --neon-cyan: #0EA5E9;
-    --neon-purple: #4338CA;
+    --neon-purple: #1E40AF;
     --neon-green: #047857;
     --neon-pink: #BE123C;
     --neon-yellow: #D97706;
@@ -53,8 +49,8 @@
     --radius-lg: 20px;
     --radius: 12px;
     --shadow-soft: 0 4px 12px rgba(15, 23, 42, 0.06);
-    --shadow-glow: 0 10px 24px rgba(37, 99, 235, 0.1);
-    --shadow-md: 0 8px 18px rgba(15, 23, 42, 0.1);
+    --shadow-glow: 0 4px 12px rgba(37, 99, 235, 0.06);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
     --touch-size: 56px;
     --transition: all 0.18s ease;
     --shell-mobile-bg: #EFF6FF;
@@ -79,29 +75,10 @@
   }
   img, svg, canvas, video { max-width: 100%; height: auto; }
   
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: 
-      radial-gradient(ellipse at 10% 0%, rgba(250, 204, 21, 0.22) 0%, transparent 40%),
-      radial-gradient(ellipse at 100% 20%, rgba(59, 130, 246, 0.12) 0%, transparent 45%);
-    pointer-events: none;
-    z-index: -1;
-  }
-  
-  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  
-  @keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  .anim-slide-up { animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-  @keyframes pop { 0% { transform: scale(0.95); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+  .anim-slide-up { animation: none; }
 
-  .overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.46); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 20px; }
-  .modal-box { background: #FFFFFF; backdrop-filter: var(--glass-blur); width: 100%; max-width: 420px; padding: 32px; border-radius: 24px; border: 1px solid var(--glass-border); box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18); text-align: center; display: flex; flex-direction: column; gap: 16px; animation: pop 0.3s ease forwards; }
+  .overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.46); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-box { background: #FFFFFF; width: 100%; max-width: 420px; padding: 32px; border-radius: 20px; border: 1px solid var(--glass-border); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14); text-align: center; display: flex; flex-direction: column; gap: 16px; }
   .modal-box h2 { font-family: 'Montserrat', sans-serif; color: #1D4ED8; font-size: 24px; font-weight: 900; text-transform: uppercase; text-shadow: none; }
   .modal-box p { font-size: 14px; color: #0F172A; line-height: 1.5; font-weight: 600; opacity: 1; }
   .modal-box input { text-align: center; font-size: 18px; font-weight: 700; padding: 16px; border-radius: 12px; border: 2px solid #BFDBFE; background: #FFFFFF; color: #0F172A; }
@@ -109,8 +86,8 @@
   .modal-box input::placeholder { color: var(--text-muted); }
 
   header { position: sticky; top: 0; left: 0; width: 100%; z-index: 100; display: flex; flex-direction: column; box-shadow: 0 18px 40px rgba(2, 6, 23, 0.28); }
-  .header-main { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px); color: #0F172A; padding: 18px 20px 16px; display: flex; justify-content: space-between; align-items: stretch; border-bottom: 1px solid #CBD5E1; gap: 20px; }
-  .logo-3d { width: 73px; height: 73px; border-radius: 14px; object-fit: contain; box-shadow: 0 0 25px rgba(0,212,255,0.4); border: 1px solid var(--glass-border); }
+  .header-main { background: rgba(255, 255, 255, 0.98); color: #0F172A; padding: 18px 20px 16px; display: flex; justify-content: space-between; align-items: stretch; border-bottom: 1px solid #CBD5E1; gap: 20px; }
+  .logo-3d { width: 73px; height: 73px; border-radius: 14px; object-fit: contain; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1); border: 1px solid var(--glass-border); }
   .header-brand { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 1 1 320px; }
   .header-brand-copy { display: flex; flex-direction: column; justify-content: center; gap: 10px; min-width: 0; }
   .header-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -121,13 +98,17 @@
   .header-side { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex: 1 1 680px; min-width: 340px; }
   .header-meta { display: flex; align-items: center; justify-content: flex-end; gap: 14px; width: 100%; flex-wrap: wrap; }
   .header-clock { font-family:'JetBrains Mono', monospace; font-size: clamp(18px, 1.8vw, 22px); font-weight:900; color:#0F172A; text-shadow:none; }
-  .header-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-    max-width: 800px;
+  .header-actions { width: 100%; max-width: 360px; }
+  .header-menu-panel {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #CBD5E1;
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.1);
   }
+  .header-menu-panel.show { display: grid; gap: 8px; }
   .header-action-btn {
     width: 100%;
     min-height: 52px;
@@ -135,69 +116,25 @@
     font-size: 13px;
     font-weight: 900;
     line-height: 1.2;
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #CBD5E1;
     background: #FFFFFF;
     color: #0F172A;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
     justify-content: flex-start;
     text-align: left;
     white-space: normal;
   }
-  .header-action-btn:hover { border-color: #60A5FA; box-shadow: 0 10px 18px rgba(37, 99, 235, 0.12); }
+  .header-action-btn:hover { border-color: #60A5FA; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.08); }
   .header-action-btn.sound { background: #0B3B6E; color: #E0F2FE; border-color: #38BDF8; }
-  .header-action-btn.refresh { background: var(--neon-purple); color: #FFFFFF; border-color: transparent; box-shadow: 0 0 18px rgba(123, 47, 255, 0.4); }
+  .header-action-btn.refresh { background: var(--neon-purple); color: #FFFFFF; border-color: transparent; }
   .header-action-btn.danger { color: #FCA5A5; border-color: rgba(220, 38, 38, 0.5); }
   .header-action-btn.exit { background: #7F1D1D; color: #FEE2E2; border-color: #FCA5A5; }
   .header-action-btn.install-ready {
     border-color: #22C55E;
     background: #DCFCE7;
     color: #166534;
-    box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
-    animation: bounce-soft 2s infinite;
-  }
-  @keyframes bounce-soft {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-  }
-
-  .header-dropdown { position: relative; }
-  .header-dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 6px;
-    background: #FFFFFF;
-    border: 1px solid #CBD5E1;
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
-    min-width: 200px;
-    z-index: 1000;
-    display: none;
-    overflow: hidden;
-  }
-  .header-dropdown-menu.show { display: block; }
-  .header-dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #0F172A;
-    cursor: pointer;
-    transition: background 0.15s;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-  }
-  .header-dropdown-item:hover { background: #EFF6FF; }
-  .header-dropdown-item.danger { color: #DC2626; }
-  .header-dropdown-divider {
-    height: 1px;
-    background: #E2E8F0;
-    margin: 4px 0;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.12);
   }
 
   .status-badge { font-size: 10px; font-weight: 900; padding: 6px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; background:#0F172A; color:#F8FAFC; border:1px solid rgba(15,23,42,0.16); }
@@ -226,7 +163,7 @@
     border: 1px solid #60A5FA;
   }
 
-  .weather-bar { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px); border-bottom: 1px solid #CBD5E1; display: flex; flex-direction: column; }
+  .weather-bar { background: rgba(255, 255, 255, 0.98); border-bottom: 1px solid #CBD5E1; display: flex; flex-direction: column; }
   .weather-stats { display: flex; justify-content: space-between; padding: 8px 20px; font-size: 11px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.5px; overflow-x: auto; white-space: nowrap; gap: 16px; }
   .weather-stats::-webkit-scrollbar { display: none; }
   .weather-stats span { display: flex; align-items: center; gap: 4px; }
@@ -3907,10 +3844,9 @@
   }
 
   #syncCountPending { color: #FBBF24; }
-  #syncCountError { color: #F87171; animation: pulse 2.4s infinite; }
+  #syncCountError { color: #F87171; }
   #syncCountSent { color: #34D399; }
-  #syncCountOps,
-  #syncCountMapOps { color: #C4B5FD; }
+  #syncCountOps { color: #C4B5FD; }
 
   .check-card {
     border-left-color: rgba(148, 163, 184, 0.18);
@@ -4113,15 +4049,515 @@
       flex-direction: column;
     }
   }
+
+  /* =========================================================
+     AJUSTE FINAL DE LAYOUT
+  ========================================================= */
+  body {
+    background: linear-gradient(180deg, #F6F8FB 0%, #EEF3F8 52%, #FFFFFF 100%) !important;
+    background-attachment: scroll !important;
+    color: #0F172A !important;
+  }
+  body::before,
+  body::after {
+    display: none !important;
+    content: none !important;
+  }
+  header {
+    background: transparent !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+  }
+  .overlay,
+  .modal-box,
+  .header-main,
+  .weather-bar,
+  .tabs,
+  .section,
+  .table-wrapper,
+  .carga-card,
+  .check-card,
+  .sync-metric-card,
+  .card,
+  .priority-alert-card,
+  .priority-alert-card-empty {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .header-main,
+  .weather-bar,
+  .tabs {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-color: #D8E0EA !important;
+    color: #0F172A !important;
+  }
+  .header-main {
+    padding: 18px 20px 16px !important;
+    gap: 18px !important;
+    box-shadow: none !important;
+  }
+  .header-title {
+    color: #0F172A !important;
+    letter-spacing: 0.04em !important;
+    text-shadow: none !important;
+  }
+  .header-user,
+  .header-last-update,
+  .weather-stats,
+  .weather-stats span,
+  .section-header-note,
+  footer,
+  label {
+    color: #334155 !important;
+  }
+  .header-clock,
+  .weather-alert-bar,
+  .priority-alert-chip,
+  #priorityAlertChip,
+  .grid-header > div,
+  .section-header h2,
+  .section h2 {
+    color: #0F172A !important;
+  }
+  .logo-3d {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 14px !important;
+    background: #FFFFFF !important;
+    border-color: #D8E0EA !important;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.10) !important;
+  }
+  .header-side {
+    flex: 0 1 420px !important;
+    min-width: 280px !important;
+    gap: 8px !important;
+  }
+  .header-meta {
+    justify-content: flex-end !important;
+    align-items: center !important;
+  }
+  .header-actions {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    margin-left: auto !important;
+    display: block !important;
+  }
+  #headerMenuToggleBtn {
+    min-height: 48px !important;
+    border-radius: 8px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border-color: #0F172A !important;
+    box-shadow: none !important;
+  }
+  .header-menu-panel {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    left: auto !important;
+    width: min(320px, 92vw) !important;
+    margin-top: 0 !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    border: 1px solid #D8E0EA !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14) !important;
+    z-index: 120 !important;
+  }
+  .header-menu-panel.show {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+  }
+  .header-action-btn {
+    min-height: 42px !important;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid #D8E0EA !important;
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+  .header-action-btn:hover {
+    background: #F8FAFC !important;
+    border-color: #94A3B8 !important;
+    color: #0F172A !important;
+  }
+  .header-action-btn.sound {
+    background: #DBEAFE !important;
+    color: #1E3A8A !important;
+    border-color: #93C5FD !important;
+  }
+  .header-action-btn.danger {
+    background: #FFF7ED !important;
+    color: #9A3412 !important;
+    border-color: #FDBA74 !important;
+  }
+  .header-action-btn.refresh {
+    background: #1D4ED8 !important;
+    color: #FFFFFF !important;
+    border-color: #1D4ED8 !important;
+  }
+  .header-action-btn.exit {
+    background: #FEE2E2 !important;
+    color: #991B1B !important;
+    border-color: #FECACA !important;
+  }
+  .status-badge {
+    font-weight: 900 !important;
+    box-shadow: none !important;
+  }
+  .status-badge.online {
+    background: #DCFCE7 !important;
+    color: #14532D !important;
+    border-color: #22C55E !important;
+  }
+  .status-badge.syncing,
+  .status-badge.ok {
+    background: #DBEAFE !important;
+    color: #1E3A8A !important;
+    border-color: #60A5FA !important;
+  }
+  .status-badge.offline,
+  .status-badge.blocked {
+    background: #FEE2E2 !important;
+    color: #991B1B !important;
+    border-color: #F87171 !important;
+  }
+  .status-badge.waiting {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border-color: #F59E0B !important;
+  }
+  .status-badge.online::before,
+  .status-badge.syncing::before,
+  .status-badge.offline::before {
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  .priority-alert-bar {
+    background: #FFF7ED !important;
+    border-top: 1px solid #FED7AA !important;
+    border-bottom: 1px solid #FDBA74 !important;
+    box-shadow: none !important;
+  }
+  .priority-alert-chip,
+  #priorityAlertChip {
+    background: #C2410C !important;
+    color: #FFFFFF !important;
+  }
+  .priority-alert-title,
+  .priority-alert-body,
+  .priority-modal-meta,
+  .priority-alert-card-title h3,
+  .priority-alert-card-body {
+    color: #0F172A !important;
+  }
+  .priority-alert-card,
+  .priority-alert-card-empty {
+    background: #FFFFFF !important;
+    border-color: #D8E0EA !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12) !important;
+  }
+  .priority-alert-btn,
+  .priority-alert-btn.primary,
+  .priority-alert-btn.secondary,
+  .priority-alert-btn.ghost {
+    box-shadow: none !important;
+    border-radius: 8px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+  }
+  .tabs {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding: 14px 20px !important;
+    box-shadow: none !important;
+  }
+  .tab-btn {
+    min-height: 72px !important;
+    min-width: 0 !important;
+    padding: 12px 14px !important;
+    border-radius: 8px !important;
+    border: 1px solid #D8E0EA !important;
+    border-bottom-width: 1px !important;
+    background: #FFFFFF !important;
+    color: #334155 !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+    gap: 12px !important;
+    transform: none !important;
+  }
+  .tab-btn:hover {
+    border-color: #94A3B8 !important;
+    color: #0F172A !important;
+  }
+  .tab-btn::after {
+    display: none !important;
+  }
+  .tab-btn.active {
+    background: #DBEAFE !important;
+    border-color: #60A5FA !important;
+    color: #0F172A !important;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.12) !important;
+  }
+  .tab-icon-3d {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 8px !important;
+    font-size: 18px !important;
+    background: #E2E8F0 !important;
+    color: #0F172A !important;
+    box-shadow: none !important;
+  }
+  .tab-btn.active .tab-icon-3d {
+    background: #1D4ED8 !important;
+    color: #FFFFFF !important;
+  }
+  .tab-copy strong {
+    font-size: 13px !important;
+    color: #0F172A !important;
+    font-weight: 800 !important;
+  }
+  .tab-copy small {
+    font-size: 11px !important;
+    color: #475569 !important;
+  }
+  .tab-btn.active .tab-copy small {
+    color: #334155 !important;
+  }
+  .section,
+  .table-wrapper,
+  .carga-card,
+  .check-card,
+  .sync-metric-card,
+  .card {
+    background: #FFFFFF !important;
+    border: 1px solid #D8E0EA !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08) !important;
+  }
+  .smart-banner,
+  .banner-success,
+  .banner-danger {
+    box-shadow: none !important;
+  }
+  .banner-success {
+    background: #ECFDF5 !important;
+    border: 1px solid #86EFAC !important;
+    color: #065F46 !important;
+  }
+  .banner-danger {
+    background: #FEF2F2 !important;
+    border: 1px solid #FCA5A5 !important;
+    color: #991B1B !important;
+  }
+  .banner-content h4 {
+    color: inherit !important;
+    font-weight: 800 !important;
+  }
+  .banner-content p {
+    color: inherit !important;
+    opacity: 1 !important;
+  }
+  .carga-card-header,
+  .carga-card-footer,
+  .produto-row {
+    background: #F8FAFC !important;
+    border-color: #D8E0EA !important;
+  }
+  .carga-card-header {
+    border-bottom: 1px solid #D8E0EA !important;
+  }
+  .carga-card-footer {
+    color: #475569 !important;
+  }
+  .carga-card-body {
+    background: #FFFFFF !important;
+  }
+  .carga-cliente,
+  .carga-cliente div,
+  .produto-nome {
+    color: #0F172A !important;
+  }
+  .produto-label {
+    color: #475569 !important;
+    font-weight: 800 !important;
+  }
+  .produto-qtd {
+    color: #047857 !important;
+    font-weight: 800 !important;
+  }
+  .carga-placa {
+    background: #1E3A8A !important;
+    color: #FFFFFF !important;
+    border-color: #1D4ED8 !important;
+    box-shadow: none !important;
+  }
+  .time-badge {
+    background: #E2E8F0 !important;
+    color: #0F172A !important;
+    border-color: #CBD5E1 !important;
+  }
+  .time-badge.alert {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border-color: #F59E0B !important;
+  }
+  .time-badge.late {
+    background: #FEE2E2 !important;
+    color: #991B1B !important;
+    border-color: #F87171 !important;
+  }
+  .badge-especial {
+    font-weight: 800 !important;
+  }
+  .badge-palete {
+    background: #FFF7ED !important;
+    color: #9A3412 !important;
+    border-color: #FDBA74 !important;
+  }
+  .badge-filme {
+    background: #ECFDF5 !important;
+    color: #166534 !important;
+    border-color: #86EFAC !important;
+  }
+  .badge-py {
+    background: #EEF2FF !important;
+    color: #3730A3 !important;
+    border-color: #A5B4FC !important;
+  }
+  .badge-verde {
+    background: #DCFCE7 !important;
+    color: #166534 !important;
+    border-color: #86EFAC !important;
+    box-shadow: none !important;
+  }
+  .badge-vermelho {
+    background: #FEE2E2 !important;
+    color: #991B1B !important;
+    border-color: #FCA5A5 !important;
+    box-shadow: none !important;
+  }
+  .btn-status-manual {
+    background: #1E293B !important;
+    color: #FFFFFF !important;
+    border: 1px solid #334155 !important;
+    box-shadow: none !important;
+  }
+  .btn-status-manual:hover {
+    background: #0F172A !important;
+    border-color: #0F172A !important;
+    color: #FFFFFF !important;
+  }
+  .section-header h2,
+  .section h2,
+  .grid-header > div,
+  .grid-cell,
+  .sync-metric-card .label,
+  .sync-metric-card .value {
+    color: #0F172A !important;
+  }
+  .section-header h2::after {
+    background: #2563EB !important;
+    box-shadow: none !important;
+  }
+  .form-group {
+    background: #F8FAFC !important;
+    border: 1px solid #D8E0EA !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+  }
+  input,
+  select,
+  textarea {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #64748B !important;
+  }
+  .grid-header {
+    background: #DBEAFE !important;
+  }
+  .grid-row {
+    background: #FFFFFF !important;
+    border-bottom-color: #E2E8F0 !important;
+  }
+  button,
+  .btn-primary,
+  .btn-success,
+  .btn-danger {
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+  }
+  .btn-primary {
+    background: #1D4ED8 !important;
+    color: #FFFFFF !important;
+  }
+  .btn-success {
+    background: #059669 !important;
+    color: #FFFFFF !important;
+  }
+  .btn-danger {
+    background: #DC2626 !important;
+    color: #FFFFFF !important;
+  }
+  @media (max-width: 900px) {
+    .header-main {
+      flex-direction: column !important;
+      align-items: stretch !important;
+    }
+    .header-side,
+    .header-actions {
+      max-width: none !important;
+      width: 100% !important;
+    }
+    .header-meta {
+      justify-content: flex-start !important;
+    }
+    .header-menu-panel {
+      width: 100% !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .tabs {
+      display: flex !important;
+      overflow-x: auto !important;
+      padding: 12px !important;
+    }
+    .tab-btn {
+      min-width: 152px !important;
+      flex: 0 0 auto !important;
+    }
+    .header-menu-panel {
+      position: static !important;
+      margin-top: 8px !important;
+    }
+  }
 </style>
 </head>
 <body>
 
   <div id="loginOverlay" class="overlay">
     <div class="modal-box">
-      <img src="./assets/logo.svg" width="104" style="margin: 0 auto; border-radius:14px; box-shadow:0 0 40px rgba(0,212,255,0.4);" alt="Cysy Log 360">
-      <h2>Acesso Cysy Log</h2>
-      <p>Informe <strong>Nome e Sobrenome</strong> para habilitar rastreabilidade, mapa e alertas do sistema.</p>
+      <img src="./assets/logo.svg" width="104" style="margin: 0 auto; border-radius:14px; box-shadow:0 0 40px rgba(0,212,255,0.4);" alt="CYSY Expedição e Carregamento">
+      <h2>Acesso CYSY Expedição</h2>
+      <p>Informe <strong>Nome e Sobrenome</strong> para habilitar rastreabilidade e alertas operacionais do sistema.</p>
       <input type="text" id="loginNameInput" placeholder="Nome e sobrenome" autocomplete="off">
       <button class="btn-success" onclick="loginManager.entrar()" style="height: 56px;">ENTRAR</button>
     </div>
@@ -4139,10 +4575,10 @@
   <header>
     <div class="header-main">
       <div class="header-brand">
-        <img src="./assets/logo.svg" class="logo-3d" style="width:73px; height:73px; border-radius:14px; object-fit:contain;" alt="Cysy Log 360">
+          <img src="./assets/logo.svg" class="logo-3d" style="width:73px; height:73px; border-radius:14px; object-fit:contain;" alt="CYSY Expedição e Carregamento">
         <div class="header-brand-copy">
           <div class="header-title-row">
-            <h1 class="header-title">CYSY LOG 360</h1>
+              <h1 class="header-title">CYSY Expedição e Carregamento</h1>
             <div class="status-badge syncing" id="netStatusBadge" style="width: fit-content; font-size:11px;">● Conectando...</div>
             <div id="headerAlertCounter" class="status-badge header-alert-counter" onclick="priorityAlertManager.openTopAlert()" title="Abrir alerta prioritário">🚨 0 alertas</div>
           </div>
@@ -4157,23 +4593,18 @@
           <div id="clockWidget" class="header-clock">--:--:--</div>
         </div>
         <div class="header-actions">
-          <button id="installAppBtn" onclick="installManager.installApp()" title="Instalar aplicativo no dispositivo" class="header-action-btn" style="display:none;">📲 Instalar app</button>
-          <button onclick="const on=soundManager.toggle(); this.textContent = on ? '🔊 Som: ON' : '🔈 Som: OFF'" title="Ativar ou desativar som" id="soundToggleBtn" class="header-action-btn sound">🔊 Som: ON</button>
-          <button id="syncStatusBtn" class="header-action-btn" onclick="uiBuilder.toggleSyncDrawer()">● Sincronizar</button>
-          <div class="header-dropdown">
-            <button id="dataMenuBtn" class="header-action-btn" onclick="uiBuilder.toggleDataDropdown(event)">⚙ Dados</button>
-            <div id="dataDropdownMenu" class="header-dropdown-menu">
-              <button onclick="backupManager.exportAllLogs()" class="header-dropdown-item">💾 Backup</button>
-              <button onclick="backupManager.triggerImportBackup()" class="header-dropdown-item">♻ Restaurar</button>
-              <button onclick="mapController.clearMapDataWithConfirmation(); uiBuilder.closeDataDropdown();" class="header-dropdown-item danger">🗺 Limpar registros do mapa</button>
-              <button onclick="appController.limpezaCompleta(); uiBuilder.closeDataDropdown();" class="header-dropdown-item danger">🧨 Limpar cache do navegador</button>
-              <button onclick="appController.limpezaCompleta(); uiBuilder.closeDataDropdown();" class="header-dropdown-item danger">🧹 Limpeza total do app</button>
-              <div class="header-dropdown-divider"></div>
-              <button onclick="permissionManager.requestAll(true); uiBuilder.closeDataDropdown(); toastManager.show('Solicitação de permissões executada.', 'info');" class="header-dropdown-item">🛡 Permissões</button>
-            </div>
+          <button id="headerMenuToggleBtn" class="header-action-btn" onclick="uiBuilder.toggleHeaderMenu(event)">☰ Ações rápidas</button>
+          <div id="headerMenuPanel" class="header-menu-panel">
+            <button id="installAppBtn" onclick="installManager.installApp(); uiBuilder.closeHeaderMenu();" title="Instalar aplicativo no dispositivo" class="header-action-btn" style="display:none;">📲 Instalar app</button>
+            <button onclick="const on=soundManager.toggle(); this.textContent = on ? '🔊 Som: ON' : '🔈 Som: OFF'; uiBuilder.closeHeaderMenu();" title="Ativar ou desativar som" id="soundToggleBtn" class="header-action-btn sound">🔊 Som: ON</button>
+            <button id="syncStatusBtn" class="header-action-btn" onclick="uiBuilder.toggleSyncDrawer(); uiBuilder.closeHeaderMenu();">● Sincronizar</button>
+            <button class="header-action-btn" onclick="backupManager.exportAllLogs(); uiBuilder.closeHeaderMenu();">⚙ Dados · Backup</button>
+            <button class="header-action-btn" onclick="backupManager.triggerImportBackup(); uiBuilder.closeHeaderMenu();">⚙ Dados · Restaurar</button>
+            <button class="header-action-btn" onclick="permissionManager.requestAll(true); uiBuilder.closeHeaderMenu(); toastManager.show('Solicitação de permissões executada.', 'info');">⚙ Dados · Permissões</button>
+            <button class="header-action-btn danger" onclick="appController.limpezaCompleta(); uiBuilder.closeHeaderMenu();">🧨 Limpar cache e histórico</button>
+            <button onclick="appController.handleRefresh(true); uiBuilder.closeHeaderMenu();" class="header-action-btn refresh">🔄 Atualizar</button>
+            <button onclick="loginManager.logout(); uiBuilder.closeHeaderMenu();" class="header-action-btn exit">🚪 Sair</button>
           </div>
-          <button onclick="appController.handleRefresh(true)" class="header-action-btn refresh">🔄 Atualizar</button>
-          <button onclick="loginManager.logout()" class="header-action-btn exit">🚪 Sair</button>
         </div>
       </div>
     </div>
@@ -4216,10 +4647,6 @@
       <div class="tab-btn tab-btn-sync" data-tab="sync" onclick="uiBuilder.switchTab(event, 'sync')">
         <span class="tab-icon-3d" aria-hidden="true">🔄</span>
         <span class="tab-copy"><strong>Sincronização</strong><small>Fila e integridade</small></span>
-      </div>
-      <div class="tab-btn tab-btn-map" data-tab="mapa" onclick="uiBuilder.switchTab(event, 'mapa')">
-        <span class="tab-icon-3d" aria-hidden="true">🗺️</span>
-        <span class="tab-copy"><strong>Mapa dos Lotes</strong><small>GPS e navegação</small></span>
       </div>
     </div>
   </header>
@@ -4389,10 +4816,6 @@
             <div class="label">Operações offline</div>
             <div class="value" id="syncCountOps">0/10</div>
           </div>
-          <div class="sync-metric-card">
-            <div class="label">Mapa dos lotes offline</div>
-            <div class="value" id="syncCountMapOps">0/10</div>
-          </div>
         </div>
         <div style="font-size:12px; color:#94A3B8; font-weight:700; margin-bottom:8px;">Última sincronização: <span id="syncLastSyncAt">--</span></div>
 
@@ -4412,111 +4835,6 @@
         </div>
       </section>
     </div>
-
-    <div id="tab-mapa" class="tab-content">
-      <section class="section anim-slide-up map-section">
-        <div class="section-header">
-          <h2>🗺️ Mapa dos Lotes</h2>
-          <div class="map-header-actions">
-            <div class="sync-pill enviando" id="mapLiveStatus" style="font-size:10px;">Lotes: 0</div>
-            <button class="btn btn-ghost" style="height:36px; min-height:36px; padding:0 14px; font-size:11px;" onclick="mapController.toggleAdvancedActions()">⚙️ Opções</button>
-          </div>
-        </div>
-
-        <div id="mapOpsStage" class="map-layout-clean">
-          <div class="map-side-panel">
-            <div class="map-instruction-card" id="mapInstructionCard">
-              <strong>Como usar</strong>
-              <p>Toque em um marcador ou no ícone “i” para abrir o lote em foco. O painel mostra material, quantidade, situação do GPS e a ação “Ir até este lote”.</p>
-            </div>
-
-            <div class="mobile-flow-panel card">
-              <div class="search-container">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="inpBuscaMapa" class="search-input" placeholder="Buscar lote (ex: 3574)" oninput="mapController.handleSearchInput()" autocomplete="off">
-              </div>
-
-              <div id="mapRegistrationCard" class="card map-registration">
-                <div class="map-registration-head">
-                  <div>
-                    <strong id="mapRegistrationTargetLabel">Selecione um lote</strong>
-                    <span id="mapRegistrationTargetMeta">Busque acima para selecionar</span>
-                  </div>
-                  <div id="mapRegistrationSyncBadge" class="sync-pill waiting">Aguardando</div>
-                </div>
-                <div class="map-registration-actions">
-                  <button id="mapRegisterSelectedBtn" class="btn btn-primary" onclick="mapController.handleRegisterSelectedLote()" disabled>📍 Registrar GPS</button>
-                  <button id="mapRegistrationClearBtn" class="btn btn-ghost" onclick="mapController.clearRegistrationTarget()" hidden>✕</button>
-                </div>
-              </div>
-            </div>
-
-            <div id="mapaResultWrapper" class="map-result-wrapper" style="display:none;">
-              <div id="mapaResultContainer" class="map-result-container"></div>
-            </div>
-
-            <div id="mapAdvancedActions" class="card map-advanced" hidden>
-              <div class="map-advanced-grid">
-                <button class="btn btn-ghost" onclick="mapController.centralizarEmpresa(true)">🏢 Base Cysy</button>
-                <button class="btn btn-ghost" onclick="mapController.irParaMinhaLocalizacaoAtual()">📍 Meu GPS</button>
-                <button class="btn btn-ghost" onclick="mapController.imprimirMapaImagem()">📄 Exportar PDF</button>
-                <button class="btn btn-ghost" onclick="mapController.switchSheetTab('tech')">🧪 Técnico</button>
-              </div>
-            </div>
-
-            <div class="map-sheet-panels">
-              <div id="mapSelectedContent"></div>
-              <div id="mapLotesList" class="map-sheet-list"></div>
-              <div id="mapMissingList" hidden></div>
-            </div>
-
-            <div id="mapSheetPanel-tech" class="map-sheet-panel" role="tabpanel" hidden>
-              <div class="map-tech-grid">
-                <details class="map-tech-card" open>
-                  <summary>Terreno e base operacional</summary>
-                  <div id="mapTechnicalBase"></div>
-                </details>
-                <details class="map-tech-card">
-                  <summary>Sincronização e offline</summary>
-                  <div id="mapTechnicalSync"></div>
-                </details>
-                <details class="map-tech-card">
-                  <summary>Log compartilhado de localizações</summary>
-                  <div class="form-group" style="margin-bottom: 10px;">
-                    <label for="inpBuscaMapaLog">Pesquisar lote já registrado</label>
-                    <input type="text" id="inpBuscaMapaLog" placeholder="Ex.: 3574" oninput="mapController.renderLocationLog(this.value)" autocomplete="off">
-                  </div>
-                  <div class="map-tech-counter"><span id="mapLocationLogCount">0</span> lote(s) sincronizados entre o dispositivo e o mapa compartilhado.</div>
-                  <div id="mapLocationLogList" class="map-list"></div>
-                  <button type="button" class="btn-danger" style="margin-top: 12px; width: 100%;" onclick="mapController.clearMapDataWithConfirmation()">🗺 Limpeza profunda do mapa</button>
-                  <button id="btnLimparLotesMapa" type="button" class="btn-danger" style="margin-top: 12px; width: 100%;" onclick="mapController.clearLotesCadastrados()" hidden>🗑️ Limpar Lotes Cadastrados</button>
-                </details>
-              </div>
-            </div>
-          </div>
-
-          <div class="map-canvas">
-            <div id="mapDock">
-              <div id="patioMap"></div>
-              <div class="map-fab-stack">
-                <button class="btn btn-primary fab-round" onclick="mapController.irParaMinhaLocalizacaoAtual()">🎯</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-  <div id="mapFullscreenOverlay" class="map-fullscreen-overlay" hidden>
-    <div class="map-fullscreen-bar">
-      <div class="map-fullscreen-info">
-        <strong>Mapa dos Lotes em Tela Cheia</strong>
-        <span>Feche por aqui para retornar ao painel operacional sem travar a interface.</span>
-      </div>
-      <button id="btnMapCloseFullscreen" class="map-close-btn" onclick="mapController.toggleFullScreen(false)" aria-label="Fechar mapa em tela cheia">✕ Fechar mapa</button>
-    </div>
-    <div id="mapFullscreenMount"></div>
-  </div>
 
   <div id="faturamentoOverlay" class="overlay">
     <div class="modal-box" style="max-width: 520px; text-align: left;">
@@ -4550,10 +4868,8 @@
   <script src="./assets/js/app-core-1.js?v=20260406r02"></script>
   <script src="./assets/js/app-core-2.js?v=20260406r02"></script>
   <script src="./assets/js/app-core-3.js?v=20260406r02"></script>
-  <script src="./assets/js/app-core-4.js?v=20260406r02"></script>
   <script src="./assets/js/app-core-5.js?v=20260406r02"></script>
   <script src="./assets/js/app-core-6.js?v=20260406r02"></script>
-  <script src="./assets/js/map-operacional-v2.js?v=20260406r02"></script>
 </body>
 </html>
 

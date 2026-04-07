@@ -1,10 +1,10 @@
 {
-  "name": "Cysy Log 360",
-  "short_name": "Cysy360",
-  "description": "Sistema executivo de carregamento, geolocalização de lotes e faturamento.",
+  "name": "CYSY Expedição e Carregamento",
+  "short_name": "CYSY Expedição",
+  "description": "Sistema operacional de expedição, carregamento, perdas e faturamento.",
   "lang": "pt-BR",
   "id": "cysy-log-360-pwa",
-  "start_url": "./app-shell.html?v=20260406r02",
+  "start_url": "./app-shell.html?source=pwa",
   "scope": "./",
   "display_override": ["standalone", "minimal-ui", "browser"],
   "display": "standalone",
@@ -18,15 +18,9 @@
   "categories": ["business", "productivity"],
   "shortcuts": [
     {
-      "name": "Mapa dos lotes",
-      "short_name": "Mapa",
-      "url": "./app-shell.html?tab=mapa",
-      "description": "Abrir direto o mapa operacional dos lotes"
-    },
-    {
       "name": "Sincronização",
       "short_name": "Sync",
-      "url": "./app-shell.html?tab=sync",
+      "url": "./app-shell.html?source=pwa&tab=sync",
       "description": "Abrir a central de sincronização offline"
     }
   ],
@@ -39,8 +33,7 @@
     {
       "src": "./assets/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable any"
+      "type": "image/png"
     },
     {
       "src": "./assets/icons/icon-512.png",
@@ -48,10 +41,10 @@
       "type": "image/png"
     },
     {
-      "src": "./assets/icons/icon-512.png",
+      "src": "./assets/icons/icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "maskable"
     }
   ]
 }

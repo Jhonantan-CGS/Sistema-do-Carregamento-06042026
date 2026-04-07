@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1976D2">
-<meta name="description" content="Entrada segura do aplicativo CYSY LOG 360 com suporte a instalação PWA.">
+<meta name="description" content="Entrada segura do aplicativo CYSY Expedição e Carregamento com suporte a instalação PWA.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="CYSY LOG 360">
+<meta name="apple-mobile-web-app-title" content="CYSY Expedição">
   <link rel="manifest" href="./manifest.webmanifest?v=20260406r02">
-  <link rel="icon" href="./assets/icons/icon-192.png?v=20260406r02" sizes="192x192" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png?v=20260406r02">
-<title>CYSY LOG 360 | Inicializando</title>
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260406r02" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260406r02">
+<title>CYSY Expedição e Carregamento | Inicializando</title>
 <style>
   :root {
     color-scheme: dark;
@@ -139,10 +139,10 @@
 <body>
   <main class="card">
     <div class="brand">
-      <img src="./assets/logo.svg" alt="Cysy Log 360">
+      <img src="./assets/logo.svg" alt="CYSY Expedição e Carregamento">
       <div>
         <p class="eyebrow">Plataforma operacional</p>
-        <h1>Cysy Log 360</h1>
+      <h1>CYSY Expedição e Carregamento</h1>
       </div>
     </div>
     <p><span class="spinner"></span>A entrada principal foi preparada para instalação PWA e abertura segura do sistema.</p>
@@ -163,48 +163,103 @@
       let manualHold = false;
 
       const setStatus = (message) => { if (statusEl) statusEl.textContent = message; };
+      const detectContext = () => {
+        const ua = navigator.userAgent || '';
+        const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isSafari = isIOS && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+        const isIOSNonSafari = isIOS && !isSafari;
+        const isSamsungBrowser = /SamsungBrowser/.test(ua);
+        const isEdge = /Edg\//.test(ua);
+        const isAndroid = /Android/.test(ua);
+        const isChromeLike = /Chrome|CriOS/.test(ua) && !isEdge && !/OPR|SamsungBrowser/.test(ua);
+        return {
+          isSecure: Boolean(window.isSecureContext),
+          isIOSNonSafari,
+          isSafari,
+          isAndroid,
+          isChromeLike,
+          isSamsungBrowser,
+          isEdge
+        };
+      };
       const redirectToApp = () => {
         if (redirected || manualHold) return;
         redirected = true;
           location.replace('./launch.html?v=20260406r02');
       };
-      const getManualMessage = () => {
-        const ua = navigator.userAgent || '';
-        const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        if (isIOS) return 'No Safari, toque em Compartilhar e depois em "Adicionar à Tela de Início".';
-        if (/Android/.test(ua) && /Chrome|CriOS/.test(ua) && !/Edg|OPR|SamsungBrowser/.test(ua)) return 'No Chrome Android, abra o menu ⋮ e escolha "Instalar aplicativo".';
-        if (/SamsungBrowser/.test(ua)) return 'No Samsung Internet, abra o menu e escolha a opção de adicionar/instalar o aplicativo.';
-        if (/Edg\//.test(ua)) return 'No Microsoft Edge, abra o menu e use "Aplicativos" > "Instalar este site como aplicativo".';
-        if (/Chrome/.test(ua)) return 'No Chrome desktop, use o menu do navegador e procure a opção de instalar este aplicativo.';
+      const getManualMessage = (context = detectContext()) => {
+        if (!context.isSecure) return 'Para instalar como aplicativo real no smartphone, abra este sistema pela URL HTTPS publicada. Abertura por arquivo local ou HTTP não habilita instalação PWA.';
+        if (context.isIOSNonSafari) return 'No iPhone/iPad, abra esta URL no Safari e use Compartilhar > "Adicionar à Tela de Início". Chrome e Edge no iOS não instalam PWA diretamente.';
+        if (context.isSafari) return 'No Safari, toque em Compartilhar e depois em "Adicionar à Tela de Início".';
+        if (context.isAndroid && context.isChromeLike) return 'No Chrome Android, interaja com a página e use o botão de instalar. Se o prompt não aparecer, abra o menu ⋮ e escolha "Instalar aplicativo".';
+        if (context.isSamsungBrowser) return 'No Samsung Internet, abra o menu e escolha a opção de adicionar ou instalar o aplicativo.';
+        if (context.isEdge) return 'No Microsoft Edge, abra o menu e use "Aplicativos" > "Instalar este site como aplicativo".';
+        if (context.isChromeLike) return 'No Chrome, use o menu do navegador e procure a opção de instalar este aplicativo.';
         return 'Use o menu do navegador para instalar ou adicionar este sistema à tela inicial.';
+      };
+      const updateInstallButton = () => {
+        const context = detectContext();
+        if (!installBtn) return;
+        if (!context.isSecure) {
+          installBtn.textContent = '🔒 Instalar via HTTPS';
+          return;
+        }
+        if (deferredPrompt) {
+          installBtn.textContent = '📲 Instalar aplicativo';
+          return;
+        }
+        if (context.isIOSNonSafari) {
+          installBtn.textContent = '🧭 Abrir no Safari';
+          return;
+        }
+        if (context.isSafari) {
+          installBtn.textContent = '📲 Instalar no Safari';
+          return;
+        }
+        installBtn.textContent = '📲 Como instalar';
       };
 
       installBtn?.addEventListener('click', async () => {
         manualHold = true;
+        const context = detectContext();
+        if (!context.isSecure) {
+          alert(getManualMessage(context));
+          updateInstallButton();
+          return;
+        }
         if (deferredPrompt) {
           deferredPrompt.prompt();
           await deferredPrompt.userChoice.catch(() => null);
           deferredPrompt = null;
+          updateInstallButton();
           return;
         }
-        alert(getManualMessage());
+        alert(getManualMessage(context));
+        updateInstallButton();
       });
 
       window.addEventListener('beforeinstallprompt', (event) => {
         event.preventDefault();
         deferredPrompt = event;
         setStatus('Aplicativo pronto para instalação. Você pode instalar agora ou seguir para o sistema.');
+        updateInstallButton();
       });
 
       window.addEventListener('appinstalled', () => {
         deferredPrompt = null;
         setStatus('Aplicativo instalado com sucesso. Abrindo a operação...');
+        updateInstallButton();
       });
 
+      updateInstallButton();
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./service-worker.js?v=20260406r02', { scope: './' })
-          .then(() => setStatus('Ambiente validado. Abrindo o sistema operacional...'))
-          .catch(() => setStatus('Ambiente inicializado. Se a instalação não aparecer, abra o sistema e use o botão de instalar.'))
+          .then(() => {
+            const context = detectContext();
+            if (!context.isSecure) setStatus('A instalação como app exige HTTPS público. Abrindo a tela de orientações...');
+            else setStatus('Ambiente validado. Abrindo a tela pública de instalação e acesso...');
+          })
+          .catch(() => setStatus('Ambiente inicializado. Se a instalação não aparecer, siga as orientações na próxima tela.'))
           .finally(() => setTimeout(redirectToApp, 900));
       } else {
         setStatus('Navegador sem suporte completo a service worker. A abertura continua disponível.');

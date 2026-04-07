@@ -21,11 +21,6 @@ const loginManager = {
     toastManager.show(`Bem-vindo(a), ${name.split(' ')[0]}!`, 'success');
     document.getElementById('loginOverlay').style.display = 'none';
     this.setFields(name);
-    setTimeout(() => {
-      try { alertManager.checkMissingLocations(false); } catch (_) {}
-      const btnLimpar = document.getElementById('btnLimparLotesMapa');
-      if (btnLimpar) btnLimpar.hidden = !loginManager.isSuperAdmin();
-    }, 900);
 
     await permissionManager.requestAll(true).catch(() => {});
     try { priorityAlertManager.init(); } catch (_) {}
@@ -66,7 +61,6 @@ const dbManager = {
   storeName: 'uploads',
   sentIndexKey: 'cysySyncSentIndexV2',
   maxOfflineOperacoes: 10,
-  maxOfflineLocalizacoes: 10,
   db: null,
   memoryFallback: [],
   sentIndex: {},
@@ -94,18 +88,6 @@ const dbManager = {
   },
   buildFingerprint(type, payload = {}) {
     const normalizedType = String(type || payload.tipo || '').toUpperCase();
-    if (normalizedType === 'LOCALIZACAO') {
-      const lat = Number(payload.latitude ?? payload.lat ?? '');
-      const lon = Number(payload.longitude ?? payload.lon ?? '');
-      const base = {
-        tipo: normalizedType,
-        lote: normalizeName(payload.lote || ''),
-        lat: Number.isFinite(lat) ? Number(lat.toFixed(6)) : '',
-        lon: Number.isFinite(lon) ? Number(lon.toFixed(6)) : '',
-        descricao: normalizeName(payload.descricao || payload.desc || '')
-      };
-      return stableHash(JSON.stringify(base));
-    }
     const base = {
       tipo: normalizedType,
       placa: normalizeName(payload.placa || ''),
@@ -371,10 +353,6 @@ const dbManager = {
     const all = await this.getAllRecords({ includeSent: false });
     return all.filter((item) => item.type === 'OPERACAO').length;
   },
-  async countPendingLocalizacoes() {
-    const all = await this.getAllRecords({ includeSent: false });
-    return all.filter((item) => item.type === 'LOCALIZACAO').length;
-  },
   async savePending(type, payload, options = {}) {
     const normalizedType = String(type || payload?.tipo || '').toUpperCase();
     const rec = this.normalizeRecord(normalizedType, payload, options);
@@ -396,18 +374,6 @@ const dbManager = {
           reason: 'OFFLINE_LIMIT',
           limit: this.maxOfflineOperacoes,
           queueType: 'OPERACAO'
-        };
-      }
-    }
-
-    if (normalizedType === 'LOCALIZACAO') {
-      const pendingLocs = await this.countPendingLocalizacoes();
-      if (pendingLocs >= this.maxOfflineLocalizacoes) {
-        return {
-          ok: false,
-          reason: 'OFFLINE_LIMIT',
-          limit: this.maxOfflineLocalizacoes,
-          queueType: 'LOCALIZACAO'
         };
       }
     }
@@ -510,14 +476,12 @@ const dbManager = {
     const errors = all.filter((item) => item.status === 'ERRO');
     const sent = all.filter((item) => item.status === 'ENVIADO').slice(-40).reverse();
     const pendentesOperacao = all.filter((item) => item.type === 'OPERACAO' && item.status !== 'ENVIADO').length;
-    const pendentesLocalizacao = all.filter((item) => item.type === 'LOCALIZACAO' && item.status !== 'ENVIADO').length;
     return {
       waiting,
       sending,
       errors,
       sent,
       pendentesOperacao,
-      pendentesLocalizacao,
       totalPendentes: waiting.length + sending.length + errors.length
     };
   },
@@ -661,15 +625,6 @@ const backupManager = {
           if (typeof v === 'string') safeStorage.setItem(k, v);
         });
       }
-      if (datasets.localizacoesLotes && typeof datasets.localizacoesLotes === 'object') {
-        const mergedLoc = { ...(datasets.localizacoesLotes || {}), ...(mapController.locDB || {}) };
-        mapController.locDB = mergedLoc;
-        safeStorage.setItem('cysyLocations', JSON.stringify(mergedLoc));
-      }
-      if (datasets.locationLog && typeof datasets.locationLog === 'object') {
-        mapController.locationLog = { ...(datasets.locationLog || {}) };
-        safeStorage.setItem(mapController.locationLogKey, JSON.stringify(mapController.locationLog));
-      }
       if (Array.isArray(datasets.faturamentoConfirmacoes)) {
         safeStorage.setItem('cysyFaturamentoConfirmacoes', JSON.stringify(datasets.faturamentoConfirmacoes));
       }
@@ -698,7 +653,6 @@ const backupManager = {
         appController.hydrateCachedState();
       }
       toastManager.show(`Backup restaurado com sucesso (${restoredCount} logs).`, 'success', 4500);
-      mapController.renderPins();
       syncManager.refreshSyncView();
       appController.handleRefresh(true);
     } catch (err) {
@@ -713,9 +667,6 @@ const backupManager = {
       pending = await dbManager.getAllPending();
       queueFull = await dbManager.getAllRecords({ includeSent: true });
     } catch (_) {}
-    const lotesMapeados = (() => {
-      try { return Object.keys(mapController?.locDB || {}).length; } catch (_) { return 0; }
-    })();
     const storageSnapshot = {};
     try {
       for (let i = 0; i < localStorage.length; i++) {
@@ -724,20 +675,15 @@ const backupManager = {
         storageSnapshot[k] = localStorage.getItem(k);
       }
     } catch (_) {}
-    const imagensMapa = logs.filter(l => l?.type === 'MAPA_IMAGEM_EXPORTADA').length;
     const payload = {
       exportedAt: new Date().toISOString(),
       total: logs.length,
       snapshot: {
         usuarioAtual: safeStorage.getItem('cysyUser', ''),
         pendenciasOffline: (pending || []).length,
-        lotesMapeados,
-        imagensMapaExportadas: imagensMapa,
         versaoApp: config.app.version
       },
       datasets: {
-        localizacoesLotes: mapController?.locDB || {},
-        locationLog: mapController?.locationLog || {},
         faturamentoConfirmacoes: safeJsonParse(safeStorage.getItem('cysyFaturamentoConfirmacoes', '[]'), []),
         faturamentoEvidencias: safeJsonParse(safeStorage.getItem('cysyFaturamentoEvidencias', '{}'), {}),
         permissoes: safeJsonParse(safeStorage.getItem('cysyPermissionLastSummary', '{}'), {}),
@@ -843,8 +789,6 @@ const syncManager = {
     this.isSyncing = true;
     await this.updateStatus(true, { autoProcess: false });
     let successCount = 0;
-    let locationSuccessCount = 0;
-    let locationPendingCount = 0;
     try {
       for (const item of queue) {
         if (!navigator.onLine) break;
@@ -859,97 +803,23 @@ const syncManager = {
           }
           const locked = await dbManager.markAsSending(current.id);
           if (!locked) continue;
-          if (current.type === 'LOCALIZACAO') {
-            mapController.applyLocationDraftFromPayload(current.payload, {
-              source: 'fila_offline',
-              syncStatus: 'enviando',
-              syncMessage: 'Reenviando este lote pendente para o mapa compartilhado...',
-              render: 'panel'
-            });
-            const preConfirmed = await mapController.confirmLocationPayloadShared(current.payload, {
-              source: 'fila_offline',
-              timeoutMs: 2600,
-              intervalMs: 900,
-              toleranceMeters: 6,
-              auditOrigin: 'fila_precheck',
-              successMessage: 'GPS confirmado no mapa compartilhado durante a rechecagem da fila.',
-              failureMessage: 'O lote ainda não apareceu no mapa compartilhado; o reenvio será tentado agora.',
-              confirmationSource: 'mapa_compartilhado'
-            });
-            if (preConfirmed.confirmed) {
-              await dbManager.markAsSent(current.id, { sucesso: true, confirmadoGlobal: true, origem: 'fila_precheck' });
-              successCount++;
-              locationSuccessCount++;
-              await this.refreshSyncView();
-              continue;
-            }
-            mapController.setLocationSyncState(current.payload.lote, {
-              syncStatus: 'enviando',
-              syncMessage: 'O lote está sendo reenviado ao endpoint e só será concluído após confirmação global.',
-              source: 'fila_offline',
-              lastAttemptAt: new Date().toISOString(),
-              syncId: current.payload.syncId,
-              localId: current.payload.localId,
-              fingerprint: current.payload.fingerprint
-            }, { persist: true, render: 'panel' });
-          }
           await this.refreshSyncView();
 
           const resp = await apiService.sendDataToAppScript(current.payload);
           if (resp && resp.success) {
-            if (current.type === 'LOCALIZACAO') {
-              mapController.recordLocationAudit('post_aceito_fila', current.payload, {
-                resposta: 'success'
-              });
-              const sharedSync = await mapController.confirmLocationPayloadShared(current.payload, {
-                source: 'fila_offline',
-                timeoutMs: mapController.sharedConfirmationTimeoutMs,
-                intervalMs: mapController.sharedConfirmationIntervalMs,
-                toleranceMeters: 6,
-                auditOrigin: 'fila_offline',
-                successMessage: 'GPS confirmado no mapa compartilhado após reenvio da fila.',
-                failureMessage: 'O lote foi reenviado, mas ainda não apareceu no mapa compartilhado para todos.',
-                confirmationSource: 'mapa_compartilhado'
-              });
-              if (sharedSync.confirmed) {
-                await dbManager.markAsSent(current.id, { sucesso: true, confirmadoGlobal: true });
-                backupManager.addEntry('SYNC_ENVIADO', {
-                  syncId: current.syncId,
-                  tipo: current.type,
-                  dataHora: new Date().toLocaleString('pt-BR')
-                });
-                successCount++;
-                locationSuccessCount++;
-              } else {
-                await dbManager.markAsError(current.id, sharedSync.syncMessage || 'Aguardando confirmação no mapa compartilhado.');
-                locationPendingCount++;
-              }
-            } else {
-              await dbManager.markAsSent(current.id, { sucesso: true });
-              backupManager.addEntry('SYNC_ENVIADO', {
-                syncId: current.syncId,
-                tipo: current.type,
-                dataHora: new Date().toLocaleString('pt-BR')
-              });
-              successCount++;
-            }
+            await dbManager.markAsSent(current.id, { sucesso: true });
+            backupManager.addEntry('SYNC_ENVIADO', {
+              syncId: current.syncId,
+              tipo: current.type,
+              dataHora: new Date().toLocaleString('pt-BR')
+            });
+            successCount++;
           } else {
             throw new Error(resp?.message || 'Resposta inválida do endpoint.');
           }
         } catch(e) {
           const msg = e?.message || 'Falha ao sincronizar';
           await dbManager.markAsError(item.id, msg);
-          if (String(item?.type || '').toUpperCase() === 'LOCALIZACAO') {
-            mapController.setLocationSyncState(item.payload?.lote, {
-              syncStatus: 'pendente_com_falha',
-              syncMessage: msg,
-              source: 'fila_offline',
-              lastAttemptAt: new Date().toISOString(),
-              syncId: item.payload?.syncId,
-              localId: item.payload?.localId,
-              fingerprint: item.payload?.fingerprint
-            }, { persist: true, render: 'panel' });
-          }
           backupManager.addEntry('SYNC_ERRO', {
             syncId: item.syncId,
             tipo: item.type,
@@ -968,16 +838,8 @@ const syncManager = {
       this.lastSyncAt = new Date().toISOString();
       safeStorage.setItem('cysyLastSyncAt', this.lastSyncAt);
       uiBuilder.updateGlobalUpdateTimestamp();
-      if (successCount > locationSuccessCount) {
-        appController.handleRefresh();
-      }
-      if (locationSuccessCount > 0) {
-        try { await mapController.refreshSharedLocations(true); } catch (_) {}
-      }
+      appController.handleRefresh();
       toastManager.show(`${successCount} item(ns) sincronizado(s) com sucesso.`, 'success');
-    }
-    if (locationPendingCount > 0) {
-      toastManager.show(`${locationPendingCount} lote(s) continuam pendentes até aparecerem no mapa compartilhado para todos.`, 'warning', 5600);
     }
     this.isOnline = navigator.onLine;
     await this.updateStatus(this.isOnline, { autoProcess: false });
@@ -1064,27 +926,75 @@ const installManager = {
   isStandalone() {
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
   },
-  getManualInstallMessage() {
+  getContext() {
     const ua = navigator.userAgent || '';
     const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    if (isIOS) return 'No Safari iOS: abra Compartilhar e escolha "Adicionar à Tela de Início".';
-    if (/Android/.test(ua) && /Chrome|CriOS/.test(ua) && !/Edg|OPR|SamsungBrowser/.test(ua)) return 'No Chrome Android: abra o menu ⋮ e toque em "Instalar aplicativo".';
-    if (/SamsungBrowser/.test(ua)) return 'No Samsung Internet: abra o menu e use a opção de instalar ou adicionar à tela inicial.';
-    if (/Edg\//.test(ua)) return 'No Microsoft Edge: abra o menu e vá em Aplicativos > Instalar este site como aplicativo.';
-    if (/Chrome/.test(ua)) return 'No Chrome: use o menu do navegador e procure a opção de instalar este aplicativo.';
+    const isSafari = isIOS && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+    const isIOSNonSafari = isIOS && !isSafari;
+    const isSamsungBrowser = /SamsungBrowser/.test(ua);
+    const isEdge = /Edg\//.test(ua);
+    const isAndroid = /Android/.test(ua);
+    const isChromeLike = /Chrome|CriOS/.test(ua) && !isEdge && !/OPR|SamsungBrowser/.test(ua);
+    return {
+      isSecure: Boolean(window.isSecureContext),
+      isIOS,
+      isSafari,
+      isIOSNonSafari,
+      isSamsungBrowser,
+      isEdge,
+      isAndroid,
+      isChromeLike
+    };
+  },
+  getManualInstallMessage() {
+    const context = this.getContext();
+    if (!context.isSecure) return 'Para instalar como aplicativo real no smartphone, abra este sistema pela URL HTTPS publicada. Arquivo local ou HTTP não habilitam instalação PWA.';
+    if (context.isIOSNonSafari) return 'No iPhone/iPad, abra este sistema no Safari e use Compartilhar > "Adicionar à Tela de Início". Chrome e Edge no iOS não instalam PWA diretamente.';
+    if (context.isSafari) return 'No Safari do iPhone/iPad: toque em Compartilhar e escolha "Adicionar à Tela de Início".';
+    if (context.isAndroid && context.isChromeLike) return 'No Chrome Android: use o botão de instalar. Se o prompt não aparecer, abra o menu ⋮ e toque em "Instalar aplicativo".';
+    if (context.isSamsungBrowser) return 'No Samsung Internet: abra o menu e use a opção de instalar ou adicionar à tela inicial.';
+    if (context.isEdge) return 'No Microsoft Edge: abra o menu e vá em Aplicativos > Instalar este site como aplicativo.';
+    if (context.isChromeLike) return 'No Chrome: use o menu do navegador e procure a opção de instalar este aplicativo.';
     return 'A instalação automática não ficou disponível neste navegador. Use o menu do navegador para instalar ou adicionar à tela inicial.';
   },
   updateButtonState() {
     const btn = document.getElementById('installAppBtn');
     if (!btn) return;
+    const context = this.getContext();
     if (this.isStandalone()) {
       btn.style.display = 'none';
       btn.classList.remove('install-ready');
       return;
     }
     btn.style.display = 'inline-flex';
-    btn.classList.toggle('install-ready', !!this.deferredPrompt);
-    btn.title = this.deferredPrompt ? 'Instalar aplicativo no dispositivo' : 'Ver instruções de instalação';
+    btn.classList.toggle('install-ready', Boolean(this.deferredPrompt) && context.isSecure);
+    if (!context.isSecure) {
+      btn.textContent = '🔒 Instalar via HTTPS';
+      btn.title = 'Abra o sistema pela URL HTTPS publicada para instalar como app.';
+      return;
+    }
+    if (this.deferredPrompt) {
+      btn.textContent = '📲 Instalar app';
+      btn.title = 'Instalar aplicativo no dispositivo';
+      return;
+    }
+    if (context.isIOSNonSafari) {
+      btn.textContent = '🧭 Abrir no Safari';
+      btn.title = 'No iPhone/iPad, a instalação deve ser feita pelo Safari.';
+      return;
+    }
+    if (context.isSafari) {
+      btn.textContent = '📲 Instalar no Safari';
+      btn.title = 'Mostrar os passos para adicionar o app à Tela de Início.';
+      return;
+    }
+    if (context.isAndroid && context.isChromeLike) {
+      btn.textContent = '📲 Instalar app';
+      btn.title = 'Se o prompt não abrir, use o menu do navegador para instalar.';
+      return;
+    }
+    btn.textContent = '📲 Como instalar';
+    btn.title = 'Ver instruções de instalação para este navegador.';
   },
   init() {
     const btn = document.getElementById('installAppBtn');
@@ -1115,9 +1025,14 @@ const installManager = {
   },
   async installApp() {
     const btn = document.getElementById('installAppBtn');
+    const context = this.getContext();
     if (this.isStandalone()) {
       toastManager.show('O aplicativo já está instalado neste dispositivo.', 'info');
       this.updateButtonState();
+      return;
+    }
+    if (!context.isSecure) {
+      toastManager.show(this.getManualInstallMessage(), 'warning', 7000);
       return;
     }
     if (!this.deferredPrompt) {
@@ -1145,8 +1060,7 @@ const versionManager = {
         const keys = await caches.keys();
         const buildTag = String(config.app.buildTag || '').trim();
         const expectedPrefixes = [
-          buildTag ? `cysy-log360-v${buildTag}` : '',
-          buildTag ? `cysy-map-tiles-v${buildTag}` : ''
+          buildTag ? `cysy-log360-v${buildTag}` : ''
         ].filter(Boolean);
         await Promise.all(
           keys
@@ -1179,6 +1093,11 @@ const versionManager = {
       // Remove aliases antigos sem tocar nos dados atuais.
       safeStorage.removeItem('cysySyncSentIndex');
       safeStorage.removeItem('cysySyncSentIndexV1');
+      safeStorage.removeItem('cysyLocations');
+      safeStorage.removeItem('cysyLocationLogV1');
+      safeStorage.removeItem('cysyMapSyncState');
+      safeStorage.removeItem('cysyMapViewState');
+      safeStorage.removeItem('cysyStockAlertLastAt');
 
       safeStorage.setItem(this.cleanupWaveKey, new Date().toISOString());
       backupManager.addEntry('LIMPEZA_LEGADO', {
@@ -1206,37 +1125,18 @@ const versionManager = {
 
 const cacheJanitor = {
   lastRunKey: 'cysyCacheJanitorLastRun',
-  intervalMs: 8 * 60 * 60 * 1000, // 8 horas
-  tileLimit: 1200,
+  intervalMs: 12 * 60 * 60 * 1000,
   firstBootKey: 'cysyFirstBootCacheClearV3',
   preserveStorageKeys: new Set([
-    'cysyGoogleApiKey',
-    'cysyMapPersistentBackendV2',
-    'cysyMapPersistentSchemaV2',
-    'cysyLocations',
-    'cysyLocationLogV1',
-    'cysyMapPendingSharedConfirmationsV1',
-    'cysyMapDeletedLotesV1',
-    'cysyMapRegistrationTargetV1',
-    'cysyStockAlertLastAt'
+    'cysyGoogleApiKey'
   ]),
   transientStorageKeys: new Set([
     'cysyAppCacheV1',
     'cysyCacheJanitorLastRun',
-    'cysyLastDeviceGeo',
     'cysyLastSyncAt',
     'cysyPermissionBootstrapV1',
     'cysyPermissionLastSummary',
-    'cysyPriorityAlertsV2',
-    'cysyMapAdvancedActionsExpanded',
-    'cysyMapOverlaysExpanded',
-    'cysyMapSheetExpanded',
-    'cysyMapSheetTab',
-    'cysyMapStageExpanded',
-    'cysyMapStatusFilter',
-    'cysyMapVisualMode',
-    'cysySelectedMapLote',
-    'cysyOfflineMapStateV2'
+    'cysyPriorityAlertsV2'
   ]),
 
   getAppScopePath() {
@@ -1267,8 +1167,7 @@ const cacheJanitor = {
   async clearManagedCaches(forceAllManaged = false) {
     if (!('caches' in window)) return;
     const keepCaches = new Set([
-      `cysy-log360-v${config.app.buildTag}`,
-      `cysy-map-tiles-v${config.app.buildTag}`
+      `cysy-log360-v${config.app.buildTag}`
     ].filter(Boolean));
     try {
       const keys = await caches.keys();
@@ -1309,7 +1208,6 @@ const cacheJanitor = {
 
     try {
       await this.clearManagedCaches(false);
-      await this.trimTileCache();
       safeStorage.setItem(this.lastRunKey, String(now));
       backupManager.addEntry('LIMPEZA_CACHE_AUTOMATICA', {
         motivo: reason,
@@ -1327,18 +1225,6 @@ const cacheJanitor = {
       this.clearTransientStorageArtifacts();
     } catch (_) {}
     safeStorage.setItem(this.firstBootKey, 'done');
-  },
-
-  async trimTileCache() {
-    try {
-      const tileName = `cysy-map-tiles-v${config.app.buildTag}`;
-      const cache = await caches.open(tileName);
-      const keys = await cache.keys();
-      if (keys.length > this.tileLimit) {
-        const toDelete = keys.slice(0, keys.length - this.tileLimit);
-        await Promise.allSettled(toDelete.map((k) => cache.delete(k)));
-      }
-    } catch (_) {}
   },
 
   schedule() {
@@ -1374,6 +1260,7 @@ const priorityAlertManager = {
   load() {
     const parsed = safeJsonParse(safeStorage.getItem(this.storageKey, '{}'), {});
     this.alerts = parsed && typeof parsed === 'object' ? parsed : {};
+    this.removeLegacyMappingAlerts();
   },
 
   persist() {
@@ -1384,6 +1271,11 @@ const priorityAlertManager = {
     const now = Date.now();
     let changed = false;
     Object.entries(this.alerts || {}).forEach(([id, alert]) => {
+      if (this.isLegacyMappingAlert(alert, id)) {
+        delete this.alerts[id];
+        changed = true;
+        return;
+      }
       const ackAt = new Date(alert?.acknowledgedAt || 0).getTime();
       if (ackAt && (now - ackAt) > this.cleanupAfterMs) {
         delete this.alerts[id];
@@ -1424,8 +1316,6 @@ const priorityAlertManager = {
 
   getActionLabel(actionKey = '') {
     const action = String(actionKey || '');
-    if (action === 'mapa_missing_locations') return '🗺️ Ver mapa de lotes';
-    if (action === 'tab_mapa') return '🗺️ Abrir mapa';
     if (action === 'tab_op') return '📋 Abrir liberação';
     return '';
   },
@@ -1447,10 +1337,46 @@ const priorityAlertManager = {
     return this.getActiveAlerts()[0] || null;
   },
 
+  isLegacyMappingAlert(alert = {}, fallbackId = '') {
+    const blob = [
+      String(alert?.id || fallbackId || '').toLowerCase(),
+      String(alert?.title || '').toLowerCase(),
+      String(alert?.body || '').toLowerCase(),
+      String(alert?.actionKey || '').toLowerCase(),
+      String(alert?.actionLabel || '').toLowerCase(),
+      String(alert?.source || '').toLowerCase()
+    ].join(' | ');
+    const legacyTokens = [
+      'localização mapeada',
+      'localizacao mapeada',
+      'sem localização',
+      'sem localizacao',
+      'mapeamento',
+      'mapa dos lotes',
+      'revisar o mapa',
+      'abrir mapa',
+      'tab_mapa',
+      'mapa_missing_locations',
+      'estoque_pendente_'
+    ];
+    return legacyTokens.some((token) => blob.includes(token));
+  },
+
+  removeLegacyMappingAlerts() {
+    let changed = false;
+    Object.entries(this.alerts || {}).forEach(([id, alert]) => {
+      if (!this.isLegacyMappingAlert(alert, id)) return;
+      delete this.alerts[id];
+      changed = true;
+    });
+    if (changed) this.persist();
+  },
+
   registerAlert(payload = {}) {
     if (!loginManager.isLoggedIn()) return null;
     const id = String(payload.id || '').trim();
     if (!id) return null;
+    if (this.isLegacyMappingAlert(payload, id)) return null;
     const now = new Date().toISOString();
     const signature = stableHash(JSON.stringify({
       title: payload.title || '',
@@ -1512,7 +1438,7 @@ const priorityAlertManager = {
   },
 
   async showBrowserNotification(alert, force = false) {
-    if (!alert || alert.acknowledgedAt) return;
+    if (!alert || alert.acknowledgedAt || this.isLegacyMappingAlert(alert)) return;
     if (!("Notification" in window) || Notification.permission !== 'granted') return;
     const lastAt = new Date(alert.lastNotifiedAt || 0).getTime();
     if (!force && lastAt && (Date.now() - lastAt) < this.reminderMs) return;
@@ -1719,19 +1645,6 @@ const priorityAlertManager = {
       ? this.alerts[alert]
       : (alert || (this.currentOverlayAlertId ? this.alerts[this.currentOverlayAlertId] : this.getTopAlert()));
     if (!target) return;
-    if (target.actionKey === 'mapa_missing_locations') {
-      delete this.overlayDismissedIds[target.id];
-      this.hideOverlay();
-      uiBuilder.switchTab(null, 'mapa');
-      setTimeout(() => mapController.listarSemLocalizacao(), 160);
-      return;
-    }
-    if (target.actionKey === 'tab_mapa') {
-      delete this.overlayDismissedIds[target.id];
-      this.hideOverlay();
-      uiBuilder.switchTab(null, 'mapa');
-      return;
-    }
     if (target.actionKey === 'tab_op') {
       delete this.overlayDismissedIds[target.id];
       this.hideOverlay();
@@ -1788,11 +1701,8 @@ window.priorityAlertManager = priorityAlertManager;
 
 const alertManager = {
   notifiedPlates: new Set(),
-  stockAlertKey: 'cysyStockAlertLastAt',
-  stockAlertWindowMs: 48 * 60 * 60 * 1000,
   init() {
     setInterval(() => this.checkTimes(), 30000);
-    setInterval(() => this.checkMissingLocations(), 30 * 60 * 1000);
   },
   checkTimes() {
     if (!loginManager.isLoggedIn()) return;
@@ -1819,35 +1729,8 @@ const alertManager = {
       });
     }
   },
-  checkMissingLocations(isFirstTime = false) {
-    if (!loginManager.isLoggedIn()) {
-      priorityAlertManager.hideOverlay();
-      return;
-    }
-    if (!uiBuilder.lotesFlat) return;
-    const now = Date.now();
-    const lastAt = Number(safeStorage.getItem(this.stockAlertKey, '0')) || 0;
-    const neverTriggered = lastAt <= 0;
-    const windowElapsed = neverTriggered || (now - lastAt >= this.stockAlertWindowMs);
-    if (!windowElapsed) return;
-
-    const missing = uiBuilder.lotesFlat.filter((l) => !mapController.locDB[l.lote]);
-    if (missing.length === 0) return;
-    const missingSignature = stableHash(missing.map((item) => String(item.lote || '')).sort().join('|'));
-    priorityAlertManager.registerAlert({
-      id: `estoque_pendente_${missingSignature}`,
-      title: '🚨 ALERTA DE ESTOQUE',
-      body: `Foram identificados ${missing.length} lotes sem localização mapeada. Confirme a visualização após revisar o mapa.`,
-      severity: 'danger',
-      actionKey: 'mapa_missing_locations',
-      actionLabel: '🗺️ Ver mapa de lotes',
-      source: isFirstTime ? 'estoque_inicial' : 'estoque_monitorado'
-    });
-    safeStorage.setItem(this.stockAlertKey, String(now));
-  },
   resetStockAlertWindow() {
-    safeStorage.removeItem(this.stockAlertKey);
-    toastManager.show('Janela do alerta de estoque reiniciada. O próximo ciclo poderá alertar novamente.', 'info', 4200);
+    toastManager.show('Os alertas legados foram removidos deste app.', 'info', 3200);
   },
   showNotification(title, body) {
     priorityAlertManager.registerAlert({
@@ -1974,36 +1857,6 @@ const apiService = {
       return json.values || [];
     } catch (e) {
       debugEngine.log(`Erro ao buscar RNC: ${e.message}`, "warn");
-      return [];
-    }
-  },
-
-  async fetchGlobalLoc() {
-    this.ensureSheetsConfig();
-    if (!navigator.onLine) return [];
-    debugEngine.log("Buscando Mapeamento Geográfico...", "info");
-    try {
-      const now = Date.now();
-      if (this.globalLocSheetExists === false && (now - this.globalLocSheetCheckedAt) < 300000) {
-        return [];
-      }
-      const cacheBust = `ts=${Date.now()}`;
-      const resData = await fetch(
-        `https://sheets.googleapis.com/v4/spreadsheets/${config.api.historicoSheetId}/values/Localizacoes_Lotes!A:G?key=${config.api.key}&valueRenderOption=UNFORMATTED_VALUE&${cacheBust}`,
-        { cache: 'no-store' }
-      );
-      this.globalLocSheetCheckedAt = now;
-      if (resData.status === 400 || resData.status === 404) {
-        this.globalLocSheetExists = false;
-        debugEngine.log("Aba Localizacoes_Lotes não existe. Ignorando.", "warn");
-        return [];
-      }
-      if (!resData.ok) throw new Error(`HTTP ${resData.status}`);
-      this.globalLocSheetExists = true;
-      const json = await resData.json();
-      return json.values || [];
-    } catch(e) {
-      debugEngine.log(`Erro ao buscar Mapa Geográfico: ${e.message}`, "warn");
       return [];
     }
   },
