@@ -523,12 +523,12 @@ const dashboardEngine = {
       if (statusInteligente.code === 'ATRASADO' || statusInteligente.code === 'BLOQUEADO') timeBadgeClass += ' late';
 
       const rncHTML = rncMatches.length ? `
-        <div style="background: #FEF2F2; border-left: 6px solid #DC2626; padding: 16px; border-radius: 12px; color: #111827;">
+        <div style="background: rgba(255, 64, 129, 0.10); border: 1px solid rgba(255, 64, 129, 0.24); border-left: 6px solid #FF4081; padding: 16px; border-radius: 12px; color: #FCE7F3;">
           <details>
             <summary style="cursor:pointer; font-weight:900; color:#991B1B; font-size:14px;">⚠️ ${rncMatches.length} alerta(s) de qualidade</summary>
             <div style="margin-top:16px; display:flex; flex-direction:column; gap:12px;">
               ${rncMatches.map((r) => `
-                <div style="background:#FFFFFF; border:1px solid #FECACA; border-radius:10px; padding:12px; font-size:12px; color:#111827; line-height:1.5;">
+                <div style="background: rgba(12, 14, 20, 0.82); border:1px solid rgba(255, 64, 129, 0.18); border-radius:10px; padding:12px; font-size:12px; color:#F8FAFC; line-height:1.5;">
                   <strong>📅 ${escapeHTML(r.data)}</strong><br>
                   <strong>Alvo:</strong> ${escapeHTML(r.trigger)}<br>
                   <strong>Produto:</strong> ${escapeHTML(r.prod)}<br>
@@ -583,7 +583,7 @@ const dashboardEngine = {
               </div>
               ${statusInteligente.code !== 'FATURAMENTO' && statusInteligente.code !== 'BLOQUEADO' ? `<button class="btn-status-manual" onclick="truckStatusManager.iniciarFaturamento('${escapeHTML(placa)}')">📤 ENVIAR P/ FATURAMENTO</button>` : ''}
             </div>
-            <div style="font-size:13px; font-weight:700; color:#475569;">${escapeHTML(statusInteligente.msg)}</div>
+            <div style="font-size:13px; font-weight:700; color:#B8C1D1;">${escapeHTML(statusInteligente.msg)}</div>
             ${evidenciaHTML}
             ${rncHTML}
             ${produtosHTML}
@@ -632,7 +632,7 @@ const dashboardEngine = {
             <div class="carga-card-status"><span class="time-badge">📅 ${dateStr}</span></div>
           </div>
           <div class="carga-card-body">
-            <div style="font-size:13px; color:#475569;">
+            <div style="font-size:13px; color:#B8C1D1;">
               Total: ${itens.reduce((s, i) => s + Number(i.qtd || 0), 0).toFixed(3)}t | ${itens.length} pedido(s)
             </div>
           </div>
