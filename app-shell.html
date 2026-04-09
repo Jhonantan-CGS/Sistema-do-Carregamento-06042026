@@ -11,11 +11,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r03" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r03">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r03">
-  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r03">
-  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r03">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r04" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r04">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r04">
+  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r04">
+  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r04">
 <title>CYSY Expedição e Carregamento</title>
 <style>
 :root{
@@ -27,7 +27,7 @@
     --neon-cyan: #00D4FF;
     --neon-purple: #8B5CF6;
     --neon-green: #00E896;
-    --neon-pink: #FF3B8A;
+    --neon-blue: #4DA3FF;
     --neon-yellow: #FFBE00;
     --neon-orange: #FF6B2B;
 
@@ -3660,85 +3660,6 @@
     border-color: rgba(255, 255, 255, 0.08);
   }
 
-  .fill-guide-card {
-    margin-bottom: 14px;
-    padding: 15px 16px;
-    border-radius: 18px;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.74), rgba(30, 41, 59, 0.68));
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  }
-
-  .fill-guide-head {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 12px;
-  }
-
-  .fill-guide-head strong {
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #93C5FD;
-  }
-
-  .fill-guide-head span {
-    font-size: 12px;
-    line-height: 1.5;
-    color: #CBD5E1;
-    font-weight: 600;
-  }
-
-  .fill-guide-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 10px;
-  }
-
-  .fill-guide-item {
-    padding: 12px 13px;
-    border-radius: 16px;
-    background: rgba(15, 23, 42, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
-  }
-
-  .fill-guide-item h3 {
-    margin: 0 0 6px;
-    font-size: 12px;
-    font-weight: 800;
-    color: #F8FAFC;
-  }
-
-  .fill-guide-item p {
-    margin: 0 0 6px;
-    font-size: 11.5px;
-    line-height: 1.5;
-    color: #CBD5E1;
-    font-weight: 600;
-  }
-
-  .fill-guide-item small {
-    display: block;
-    font-size: 10.5px;
-    line-height: 1.5;
-    color: #94A3B8;
-    font-weight: 600;
-  }
-
-  .fill-guide-highlight {
-    border-color: rgba(96, 165, 250, 0.18);
-  }
-
-  .fill-guide-footnote {
-    margin: 0 0 14px;
-    font-size: 11px;
-    line-height: 1.5;
-    color: #94A3B8;
-    font-weight: 600;
-  }
 
   .lot-search-input {
     min-height: 44px;
@@ -4039,15 +3960,6 @@
       gap: 14px;
     }
 
-    .fill-guide-card {
-      padding: 14px;
-      border-radius: 18px;
-    }
-
-    .fill-guide-grid {
-      grid-template-columns: 1fr;
-    }
-
     .map-registration-actions {
       flex-direction: column;
     }
@@ -4333,8 +4245,6 @@
   .priority-modal-meta,
   .priority-alert-card-title h3,
   .priority-alert-card-body,
-  .fill-guide-item small,
-  .fill-guide-footnote,
   .carga-card-footer,
   .watermark-content,
   .watermark-content span {
@@ -4715,7 +4625,7 @@
     --glass-border: rgba(0, 255, 204, 0.14) !important;
     --primary: #4DA3FF !important;
     --primary-hover: #79BCFF !important;
-    --secondary: #FF4081 !important;
+    --secondary: #4DA3FF !important;
     --accent: #00FFCC !important;
     --bg-app: #0F0F0F !important;
     --bg-card: rgba(16, 18, 26, 0.84) !important;
@@ -4725,8 +4635,8 @@
     --text-muted: #B8C1D1 !important;
     --success: #00FFCC !important;
     --success-bg: rgba(0, 255, 204, 0.16) !important;
-    --danger: #FF4081 !important;
-    --danger-bg: rgba(255, 64, 129, 0.16) !important;
+    --danger: #EF4444 !important;
+    --danger-bg: rgba(239, 68, 68, 0.16) !important;
     --warning: #FFBE00 !important;
     --warning-bg: rgba(255, 190, 0, 0.16) !important;
     --info: #4DA3FF !important;
@@ -4738,7 +4648,7 @@
     font-size: 16px !important;
     color: #EAEAEA !important;
     background:
-      radial-gradient(circle at 12% 12%, rgba(255, 64, 129, 0.18), transparent 30%),
+      radial-gradient(circle at 12% 12%, rgba(77, 163, 255, 0.16), transparent 30%),
       radial-gradient(circle at 88% 8%, rgba(0, 255, 204, 0.16), transparent 28%),
       radial-gradient(circle at 50% 100%, rgba(77, 163, 255, 0.14), transparent 34%),
       linear-gradient(135deg, #0F0F0F 0%, #17171C 55%, #10131B 100%) !important;
@@ -4772,8 +4682,6 @@
   .sync-utilities,
   .sync-group,
   .form-group,
-  .fill-guide-card,
-  .fill-guide-item,
   .mapa-hero-card,
   .map-side-card,
   .map-stage-card,
@@ -4799,8 +4707,6 @@
   #tab-sync .section,
   #tab-mapa .section,
   #tab-op .table-wrapper,
-  #tab-op .fill-guide-card,
-  #tab-op .fill-guide-item,
   #tab-op .form-group,
   #tab-op .check-card,
   #tab-op .sync-metric-card,
@@ -4826,7 +4732,7 @@
   .header-title {
     color: #F5F7FB !important;
     text-shadow:
-      0 0 18px rgba(255, 64, 129, 0.28),
+      0 0 18px rgba(77, 163, 255, 0.28),
       0 0 24px rgba(77, 163, 255, 0.18) !important;
   }
   .header-user,
@@ -4834,10 +4740,6 @@
   .weather-stats,
   .weather-stats span,
   .priority-alert-body,
-  .fill-guide-head span,
-  .fill-guide-item p,
-  .fill-guide-item small,
-  .fill-guide-footnote,
   .tab-copy small,
   .sync-utilities-head p,
   .banner-content p,
@@ -4855,8 +4757,6 @@
   .sync-metric-card .value,
   .sync-group h3,
   .check-title,
-  .fill-guide-head strong,
-  .fill-guide-item b,
   .priority-alert-card-body,
   .priority-alert-card-empty,
   .sync-list,
@@ -4870,14 +4770,13 @@
   .modal-box h2,
   .priority-alert-title,
   .priority-alert-card-title h3,
-  .sync-utilities-head h3,
-  .fill-guide-item h3 {
-    color: #FF4081 !important;
-    text-shadow: 0 0 12px rgba(255, 64, 129, 0.42) !important;
+  .sync-utilities-head h3 {
+    color: #4DA3FF !important;
+    text-shadow: 0 0 12px rgba(77, 163, 255, 0.42) !important;
   }
   .section-header h2::after {
-    background: linear-gradient(90deg, #FF4081 0%, #00FFCC 100%) !important;
-    box-shadow: 0 0 14px rgba(255, 64, 129, 0.30) !important;
+    background: linear-gradient(90deg, #4DA3FF 0%, #00FFCC 100%) !important;
+    box-shadow: 0 0 14px rgba(77, 163, 255, 0.30) !important;
   }
   .status-badge {
     background: rgba(255, 255, 255, 0.08) !important;
@@ -4903,9 +4802,9 @@
   }
   .status-badge.offline,
   .status-badge.blocked {
-    background: rgba(255, 64, 129, 0.16) !important;
-    color: #FFC0D8 !important;
-    border-color: rgba(255, 64, 129, 0.32) !important;
+    background: rgba(239, 68, 68, 0.16) !important;
+    color: #FECACA !important;
+    border-color: rgba(239, 68, 68, 0.32) !important;
   }
   .header-action-btn,
   .btn-secondary,
@@ -4945,12 +4844,12 @@
   .header-action-btn.refresh,
   .header-action-btn.install-ready,
   .btn-primary {
-    background: linear-gradient(135deg, rgba(77, 163, 255, 0.94), rgba(255, 64, 129, 0.88)) !important;
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.94), rgba(0, 255, 204, 0.88)) !important;
     color: #FFFFFF !important;
     border-color: rgba(255, 255, 255, 0.18) !important;
     box-shadow:
       0 14px 30px rgba(28, 59, 122, 0.32),
-      0 0 18px rgba(255, 64, 129, 0.20) !important;
+      0 0 18px rgba(0, 255, 204, 0.20) !important;
   }
   .btn-success {
     background: linear-gradient(135deg, #00FFCC 0%, #00D0A8 100%) !important;
@@ -4963,12 +4862,12 @@
   .btn-danger,
   .header-action-btn.exit,
   .header-action-btn.danger {
-    background: linear-gradient(135deg, #FF4081 0%, #FF6278 100%) !important;
+    background: linear-gradient(135deg, #EF4444 0%, #F97316 100%) !important;
     color: #FFFFFF !important;
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
     box-shadow:
-      0 14px 30px rgba(255, 64, 129, 0.22),
-      0 0 18px rgba(255, 64, 129, 0.18) !important;
+      0 14px 30px rgba(239, 68, 68, 0.22),
+      0 0 18px rgba(239, 68, 68, 0.18) !important;
   }
   button:hover,
   .header-action-btn:hover,
@@ -5001,9 +4900,9 @@
       0 0 14px rgba(0, 255, 204, 0.12) !important;
   }
   .tab-btn.active {
-    background: linear-gradient(135deg, rgba(255, 64, 129, 0.18) 0%, rgba(77, 163, 255, 0.16) 100%) !important;
+    background: linear-gradient(135deg, rgba(77, 163, 255, 0.18) 0%, rgba(0, 255, 204, 0.16) 100%) !important;
     color: #FFFFFF !important;
-    border-color: rgba(255, 64, 129, 0.32) !important;
+    border-color: rgba(239, 68, 68, 0.32) !important;
   }
   .tab-icon-3d {
     background: rgba(255, 255, 255, 0.10) !important;
@@ -5012,10 +4911,10 @@
     box-shadow: none !important;
   }
   .tab-btn.active .tab-icon-3d {
-    background: linear-gradient(135deg, #FF4081 0%, #4DA3FF 100%) !important;
+    background: linear-gradient(135deg, #4DA3FF 0%, #00FFCC 100%) !important;
     color: #FFFFFF !important;
     border-color: transparent !important;
-    box-shadow: 0 0 18px rgba(255, 64, 129, 0.24) !important;
+    box-shadow: 0 0 18px rgba(0, 255, 204, 0.24) !important;
   }
   .tab-copy strong {
     color: #F8FAFC !important;
@@ -5056,9 +4955,9 @@
     background: linear-gradient(180deg, rgba(8, 24, 22, 0.62), rgba(12, 14, 20, 0.72)) !important;
   }
   .carga-card.bloqueado .badge-vermelho {
-    background: rgba(255, 64, 129, 0.16) !important;
-    color: #FFC1D8 !important;
-    border-color: rgba(255, 64, 129, 0.28) !important;
+    background: rgba(239, 68, 68, 0.16) !important;
+    color: #FECACA !important;
+    border-color: rgba(239, 68, 68, 0.28) !important;
   }
   .carga-card .btn-status-manual {
     background: rgba(255, 255, 255, 0.08) !important;
@@ -5082,9 +4981,9 @@
     border-color: rgba(255, 190, 0, 0.32) !important;
   }
   .time-badge.late {
-    background: rgba(255, 64, 129, 0.16) !important;
-    color: #FFC0D8 !important;
-    border-color: rgba(255, 64, 129, 0.32) !important;
+    background: rgba(239, 68, 68, 0.16) !important;
+    color: #FECACA !important;
+    border-color: rgba(239, 68, 68, 0.32) !important;
   }
   .badge-palete {
     background: rgba(255, 190, 0, 0.14) !important;
@@ -5104,9 +5003,9 @@
     border-color: rgba(77, 163, 255, 0.30) !important;
   }
   .badge-vermelho {
-    background: rgba(255, 64, 129, 0.14) !important;
-    color: #FFC0D8 !important;
-    border-color: rgba(255, 64, 129, 0.30) !important;
+    background: rgba(77, 163, 255, 0.14) !important;
+    color: #FECACA !important;
+    border-color: rgba(77, 163, 255, 0.30) !important;
     box-shadow: none !important;
   }
   .banner-success {
@@ -5115,9 +5014,9 @@
     color: #9CFFEC !important;
   }
   .banner-danger {
-    background: rgba(255, 64, 129, 0.12) !important;
-    border: 1px solid rgba(255, 64, 129, 0.28) !important;
-    color: #FFC0D8 !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    border: 1px solid rgba(239, 68, 68, 0.28) !important;
+    color: #FECACA !important;
   }
   input,
   select,
@@ -5173,16 +5072,16 @@
     box-shadow: 0 0 12px rgba(0, 255, 204, 0.14) !important;
   }
   .img-preview.has-image span {
-    background: rgba(255, 64, 129, 0.18) !important;
-    color: #FFE3ED !important;
-    border-color: rgba(255, 64, 129, 0.30) !important;
+    background: rgba(239, 68, 68, 0.18) !important;
+    color: #FEE2E2 !important;
+    border-color: rgba(77, 163, 255, 0.30) !important;
   }
   .grid-header {
     background: rgba(255, 255, 255, 0.06) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
   .grid-header > div {
-    color: #FFD4E4 !important;
+    color: #D8E6FF !important;
   }
   .grid-row {
     background: rgba(255, 255, 255, 0.02) !important;
@@ -5208,8 +5107,8 @@
     border-left-color: #00FFCC !important;
   }
   .check-card.nao {
-    background: linear-gradient(135deg, rgba(255, 64, 129, 0.20), rgba(255, 255, 255, 0.05)) !important;
-    border-left-color: #FF4081 !important;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.20), rgba(255, 255, 255, 0.05)) !important;
+    border-left-color: #4DA3FF !important;
   }
   .check-text-card {
     background: rgba(16, 18, 26, 0.90) !important;
@@ -5252,10 +5151,10 @@
   }
   .check-opt.check-opt-danger.is-selected,
   .check-opt.check-opt-danger.is-selected:hover {
-    background: #FF4081 !important;
+    background: #EF4444 !important;
     color: #FFFFFF !important;
-    border-color: #FF4081 !important;
-    box-shadow: 0 0 16px rgba(255, 64, 129, 0.34) !important;
+    border-color: #4DA3FF !important;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.34) !important;
   }
   #materialsContainer .grid-row {
     background: rgba(255, 255, 255, 0.03) !important;
@@ -5266,11 +5165,11 @@
   #faturamentoOverlay .form-group,
   #faturamentoOverlay .modal-box {
     background: rgba(22, 10, 22, 0.88) !important;
-    border-color: rgba(255, 64, 129, 0.28) !important;
+    border-color: rgba(239, 68, 68, 0.28) !important;
   }
   #faturamentoOverlay .form-group label,
   #faturamentoOverlay .modal-box h2 {
-    color: #FF9AC2 !important;
+    color: #9CCBFF !important;
   }
   @media (max-width: 900px) {
     .header-main {
@@ -5447,45 +5346,6 @@
 
       <section class="section anim-slide-up">
         <div class="section-header"><h2>📦 Produtos e Lotes</h2></div>
-        <div class="fill-guide-card">
-          <div class="fill-guide-head">
-            <strong>Orientações rápidas</strong>
-            <span>Preencha cada campo apenas com a informação operacional correspondente.</span>
-          </div>
-          <div class="fill-guide-grid">
-            <article class="fill-guide-item">
-              <h3>Produto Liberado</h3>
-              <p>Use o nome do material que está sendo carregado nesta linha.</p>
-              <small>Ex.: <b>UREIA 25KG</b> ou <b>SULFATO DE AMÔNIO</b>.</small>
-            </article>
-            <article class="fill-guide-item">
-              <h3>Qtd (t)</h3>
-              <p>Informe somente a quantidade efetivamente carregada, em toneladas.</p>
-              <small>Ex.: <b>12.500</b> para 12 toneladas e 500 kg.</small>
-            </article>
-            <article class="fill-guide-item">
-              <h3>Lote Utilizado</h3>
-              <p>Escolha o lote físico do estoque usado nesse item. Você pode digitar parte do código para localizar mais rápido.</p>
-              <small>Ex.: <b>L3574</b> ou <b>MAP240601</b>.</small>
-            </article>
-            <article class="fill-guide-item">
-              <h3>Avaria (t)</h3>
-              <p>Preencha apenas se houve perda real nesse item durante a operação.</p>
-              <small>Ex.: <b>0.150</b> para 150 kg. Se não houve avaria, deixe vazio ou <b>0</b>.</small>
-            </article>
-            <article class="fill-guide-item">
-              <h3>Motivo da Avaria</h3>
-              <p>Preencha somente quando houver valor em avaria, informando a causa principal da perda.</p>
-              <small>Ex.: <b>Rasgo</b>, <b>Qualidade</b> ou <b>Transporte</b>.</small>
-            </article>
-            <article class="fill-guide-item fill-guide-highlight">
-              <h3>Organização das linhas</h3>
-              <p>Cada linha representa uma combinação de produto e lote usada no carregamento.</p>
-              <small>Se a operação usar mais de um produto ou mais de um lote, lance cada combinação separadamente.</small>
-            </article>
-          </div>
-        </div>
-        <p class="fill-guide-footnote">A busca do lote respeita a ordem do menor para o maior e aceita digitação parcial para facilitar a seleção.</p>
         <div class="table-wrapper">
           <div class="unified-grid" id="materialsContainer">
             <div class="grid-header" style="grid-template-columns: minmax(200px, 3fr) 1.2fr 2fr 1.2fr 2fr;">
@@ -5627,14 +5487,10 @@
     </div>
   </footer>
 
-  <script src="./assets/js/app-core-1.js?v=20260409r03"></script>
-  <script src="./assets/js/app-core-2.js?v=20260409r03"></script>
-  <script src="./assets/js/app-core-3.js?v=20260409r03"></script>
-  <script src="./assets/js/app-core-5.js?v=20260409r03"></script>
-  <script src="./assets/js/app-core-6.js?v=20260409r03"></script>
+  <script src="./assets/js/app-core-1.js?v=20260409r04"></script>
+  <script src="./assets/js/app-core-2.js?v=20260409r04"></script>
+  <script src="./assets/js/app-core-3.js?v=20260409r04"></script>
+  <script src="./assets/js/app-core-5.js?v=20260409r04"></script>
+  <script src="./assets/js/app-core-6.js?v=20260409r04"></script>
 </body>
 </html>
-
-
-
-

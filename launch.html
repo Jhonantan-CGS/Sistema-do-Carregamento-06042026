@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r03">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r03" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r03">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r04">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r04" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r04">
 <title>CYSY Expedição e Carregamento | Acesso Seguro</title>
 <style>
   :root {
@@ -21,7 +21,7 @@
     --panel-border: rgba(255, 255, 255, 0.20);
     --accent: #00FFCC;
     --accent-strong: #4DA3FF;
-    --accent-pink: #FF4081;
+    --accent-heading: #4DA3FF;
     --text: #EAEAEA;
     --muted: #B8C1D1;
   }
@@ -34,7 +34,7 @@
     padding: 24px;
     font-family: "Segoe UI", Arial, sans-serif;
     background:
-      radial-gradient(circle at 8% 10%, rgba(255, 64, 129, 0.20), transparent 28%),
+      radial-gradient(circle at 8% 10%, rgba(77, 163, 255, 0.20), transparent 28%),
       radial-gradient(circle at 92% 12%, rgba(0, 255, 204, 0.16), transparent 26%),
       radial-gradient(circle at 50% 100%, rgba(77, 163, 255, 0.14), transparent 34%),
       linear-gradient(135deg, #0F0F0F 0%, #191A1F 56%, #10131B 100%);
@@ -69,8 +69,8 @@
     margin: 0 0 6px;
     font-size: 28px;
     font-weight: 800;
-    color: var(--accent-pink);
-    text-shadow: 0 0 14px rgba(255, 64, 129, 0.42);
+    color: var(--accent-heading);
+    text-shadow: 0 0 14px rgba(77, 163, 255, 0.42);
   }
   .eyebrow {
     margin: 0;
@@ -224,7 +224,7 @@
     </div>
     <div class="status" id="entryStatus">Preparando versão pública atual do aplicativo...</div>
     <div class="install-guide" id="installGuideCard" data-tone="info"></div>
-    <p class="sub">URL recomendada de acesso imediato: <code>.../Sistema%20do%20Carregamento/launch.html?v=20260409r03</code></p>
+    <p class="sub">URL recomendada de acesso imediato: <code>.../Sistema%20do%20Carregamento/launch.html?v=20260409r04</code></p>
   </main>
   <script>
     (() => {
@@ -420,7 +420,7 @@
 
       renderGuide();
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js?v=20260409r03', { scope: './' })
+        navigator.serviceWorker.register('./service-worker.js?v=20260409r04', { scope: './' })
           .then(() => renderGuide())
           .catch(() => {
             const context = detectContext();
@@ -436,7 +436,3 @@
   </script>
 </body>
 </html>
-
-
-
-

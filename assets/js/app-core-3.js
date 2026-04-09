@@ -523,12 +523,12 @@ const dashboardEngine = {
       if (statusInteligente.code === 'ATRASADO' || statusInteligente.code === 'BLOQUEADO') timeBadgeClass += ' late';
 
       const rncHTML = rncMatches.length ? `
-        <div style="background: rgba(255, 64, 129, 0.10); border: 1px solid rgba(255, 64, 129, 0.24); border-left: 6px solid #FF4081; padding: 16px; border-radius: 12px; color: #FCE7F3;">
+        <div style="background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.24); border-left: 6px solid #EF4444; padding: 16px; border-radius: 12px; color: #FEE2E2;">
           <details>
             <summary style="cursor:pointer; font-weight:900; color:#991B1B; font-size:14px;">⚠️ ${rncMatches.length} alerta(s) de qualidade</summary>
             <div style="margin-top:16px; display:flex; flex-direction:column; gap:12px;">
               ${rncMatches.map((r) => `
-                <div style="background: rgba(12, 14, 20, 0.82); border:1px solid rgba(255, 64, 129, 0.18); border-radius:10px; padding:12px; font-size:12px; color:#F8FAFC; line-height:1.5;">
+                <div style="background: rgba(12, 14, 20, 0.82); border:1px solid rgba(239, 68, 68, 0.18); border-radius:10px; padding:12px; font-size:12px; color:#F8FAFC; line-height:1.5;">
                   <strong>📅 ${escapeHTML(r.data)}</strong><br>
                   <strong>Alvo:</strong> ${escapeHTML(r.trigger)}<br>
                   <strong>Produto:</strong> ${escapeHTML(r.prod)}<br>
@@ -645,4 +645,3 @@ const dashboardEngine = {
     container.innerHTML = html;
   }
 };
-

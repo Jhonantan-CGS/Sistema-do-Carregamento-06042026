@@ -39,7 +39,7 @@ window.onunhandledrejection = function(event) {
 const config = {
   app: {
     version: '20260406.02',
-  buildTag: '20260409r03',
+  buildTag: '20260409r04',
     versionStorageKey: 'cysyAppVersion'
   },
   base: {
@@ -697,8 +697,3 @@ const permissionManager = {
     return `${msgBase} Verifique permissões do navegador/PWA e se o acesso está em HTTPS.`;
   }
 };
-
-
-
-
-
