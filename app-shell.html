@@ -4916,7 +4916,7 @@
             <button type="button" onclick="const on=soundManager.toggle(); this.textContent = on ? 'Som: ON' : 'Som: OFF';" title="Ativar ou desativar som" id="soundToggleBtn" class="header-action-btn sound">Som: ON</button>
             <button type="button" class="header-action-btn" onclick="backupManager.exportAllLogs()">Dados - Backup</button>
             <button type="button" class="header-action-btn" onclick="backupManager.triggerImportBackup()">Dados - Restaurar</button>
-            <button type="button" class="header-action-btn danger" onclick="appController.limpezaCompleta()">Limpar cache e histórico</button>
+            <button type="button" class="header-action-btn danger" onclick="appController.limpezaCompleta()" title="Remove cache, cookies e dados locais do site">Limpar cache e cookies</button>
           </div>
         </div>
       </section>

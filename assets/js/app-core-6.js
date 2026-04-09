@@ -168,10 +168,48 @@ const appController = {
   },
 
   async limpezaCompleta() {
-    const confirma = confirm("Esta ação fará uma limpeza forçada: cache, dados locais, fila offline, logs, históricos internos e versões antigas serão removidos deste navegador. Deseja continuar?");
+    const confirma = confirm("Esta ação fará uma limpeza forçada do site: cache, cookies, dados locais, fila offline, logs, históricos internos e resíduos de versões antigas serão removidos deste navegador. Deseja continuar?");
     if (!confirma) return;
-    uiBuilder.toggleLoader(true, "Executando limpeza forçada...");
+    uiBuilder.toggleLoader(true, "Limpando cache, cookies e dados antigos...");
     try {
+      const expireCookieEverywhere = (name) => {
+        if (!name) return;
+        const hostname = String(location.hostname || '').trim();
+        const hostParts = hostname.split('.').filter(Boolean);
+        const domains = new Set(['', hostname, hostname ? `.${hostname}` : '']);
+        if (hostParts.length >= 2) {
+          for (let i = 0; i <= hostParts.length - 2; i++) {
+            const domain = hostParts.slice(i).join('.');
+            if (!domain) continue;
+            domains.add(domain);
+            domains.add(`.${domain}`);
+          }
+        }
+
+        const pathSegments = String(location.pathname || '/').split('/').filter(Boolean);
+        const paths = new Set(['/']);
+        let currentPath = '';
+        pathSegments.forEach((segment) => {
+          currentPath += `/${segment}`;
+          paths.add(currentPath);
+          paths.add(`${currentPath}/`);
+        });
+
+        const sameSiteVariants = ['', ';SameSite=Lax', ';SameSite=None'];
+        const secureVariants = location.protocol === 'https:' ? ['', ';Secure'] : [''];
+
+        domains.forEach((domain) => {
+          paths.forEach((path) => {
+            sameSiteVariants.forEach((sameSiteAttr) => {
+              secureVariants.forEach((secureAttr) => {
+                const domainAttr = domain ? `;domain=${domain}` : '';
+                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;max-age=0;path=${path}${domainAttr}${sameSiteAttr}${secureAttr}`;
+              });
+            });
+          });
+        });
+      };
+
       try {
         if ('serviceWorker' in navigator) {
           const regs = typeof navigator.serviceWorker.getRegistrations === 'function'
@@ -241,11 +279,11 @@ const appController = {
           const eqPos = cookie.indexOf('=');
           const name = (eqPos > -1 ? cookie.slice(0, eqPos) : cookie).trim();
           if (!name) return;
-          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+          expireCookieEverywhere(name);
         });
       } catch (_) {}
 
-      alert("Limpeza forçada concluída. O sistema será recarregado limpo.");
+      alert("Limpeza concluída. Cache, cookies e dados locais do site foram removidos. O sistema será recarregado limpo.");
       location.replace(`${location.pathname}?clean=${Date.now()}`);
     } finally {
       uiBuilder.toggleLoader(false);
