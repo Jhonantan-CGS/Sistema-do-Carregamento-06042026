@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r07">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r07" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r07">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r08">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r08" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r08">
 <title>CYSY Expedição e Carregamento | Inicializando</title>
 <style>
   :root {
@@ -206,7 +206,7 @@
     <p><span class="spinner"></span>A entrada principal foi preparada para instalação PWA e abertura segura do sistema.</p>
     <p>Se o redirecionamento automático não acontecer em alguns instantes, use uma das ações abaixo.</p>
     <div class="actions">
-<a class="btn" href="./launch.html?v=20260409r07">Abrir sistema</a>
+<a class="btn" href="./launch.html?v=20260409r08">Abrir sistema</a>
       <button class="btn secondary" id="installEntryBtn" type="button">Instalar aplicativo</button>
     </div>
     <div class="status" id="entryStatus">Inicializando ambiente, service worker e manifesto de instalação...</div>
@@ -243,7 +243,7 @@
       const redirectToApp = () => {
         if (redirected || manualHold) return;
         redirected = true;
-      location.replace('./launch.html?v=20260409r07');
+      location.replace('./launch.html?v=20260409r08');
       };
       const getManualMessage = (context = detectContext()) => {
         if (!context.isSecure) return 'Para instalar como aplicativo real no smartphone, abra este sistema pela URL HTTPS publicada. Abertura por arquivo local ou HTTP não habilita instalação PWA.';
@@ -311,7 +311,7 @@
 
       updateInstallButton();
       if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js?v=20260409r07', { scope: './' })
+      navigator.serviceWorker.register('./service-worker.js?v=20260409r08', { scope: './' })
           .then(() => {
             const context = detectContext();
             if (!context.isSecure) setStatus('A instalação como app exige HTTPS público. Abrindo a tela de orientações...');
