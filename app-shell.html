@@ -11,11 +11,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r02" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r02">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r02">
-  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r02">
-  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r02">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r03" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r03">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r03">
+  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r03">
+  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r03">
 <title>CYSY Expedição e Carregamento</title>
 <style>
 :root{
@@ -4710,17 +4710,17 @@
     color: #555555 !important;
   }
   :root {
-    --glass-bg: rgba(255, 255, 255, 0.08) !important;
-    --glass-bg-hover: rgba(255, 255, 255, 0.12) !important;
-    --glass-border: rgba(255, 255, 255, 0.18) !important;
+    --glass-bg: rgba(16, 18, 26, 0.84) !important;
+    --glass-bg-hover: rgba(20, 24, 34, 0.92) !important;
+    --glass-border: rgba(0, 255, 204, 0.14) !important;
     --primary: #4DA3FF !important;
     --primary-hover: #79BCFF !important;
     --secondary: #FF4081 !important;
     --accent: #00FFCC !important;
     --bg-app: #0F0F0F !important;
-    --bg-card: rgba(255, 255, 255, 0.08) !important;
-    --bg-input: rgba(255, 255, 255, 0.10) !important;
-    --border: rgba(255, 255, 255, 0.16) !important;
+    --bg-card: rgba(16, 18, 26, 0.84) !important;
+    --bg-input: rgba(255, 255, 255, 0.08) !important;
+    --border: rgba(0, 255, 204, 0.14) !important;
     --text-main: #EAEAEA !important;
     --text-muted: #B8C1D1 !important;
     --success: #00FFCC !important;
@@ -4783,13 +4783,34 @@
   .map-empty-card,
   .map-instruction-card,
   .search-container {
-    background: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(16, 18, 26, 0.84) !important;
     backdrop-filter: blur(18px) !important;
     -webkit-backdrop-filter: blur(18px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border: 1px solid rgba(0, 255, 204, 0.14) !important;
     box-shadow:
       0 14px 40px rgba(0, 0, 0, 0.34),
       inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  }
+  .section,
+  .section.anim-slide-up,
+  #tab-dash .section,
+  #tab-op .section,
+  #tab-perdas .section,
+  #tab-sync .section,
+  #tab-mapa .section,
+  #tab-op .table-wrapper,
+  #tab-op .fill-guide-card,
+  #tab-op .fill-guide-item,
+  #tab-op .form-group,
+  #tab-op .check-card,
+  #tab-op .sync-metric-card,
+  #tab-perdas .table-wrapper,
+  #tab-sync .table-wrapper {
+    background: rgba(16, 18, 26, 0.90) !important;
+    border-color: rgba(0, 255, 204, 0.14) !important;
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
   }
   header {
     box-shadow: 0 24px 44px rgba(0, 0, 0, 0.46) !important;
@@ -4905,6 +4926,22 @@
     text-transform: none !important;
     letter-spacing: 0.01em !important;
   }
+  .header-action-btn.quick-action-btn.quick-action-sync {
+    background: rgba(16, 18, 26, 0.92) !important;
+    color: #8EEFFF !important;
+    border-color: rgba(77, 163, 255, 0.34) !important;
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.30),
+      0 0 14px rgba(77, 163, 255, 0.12) !important;
+  }
+  .header-action-btn.quick-action-btn.quick-action-permissions {
+    background: rgba(16, 18, 26, 0.92) !important;
+    color: #9CFFEC !important;
+    border-color: rgba(0, 255, 204, 0.34) !important;
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.30),
+      0 0 14px rgba(0, 255, 204, 0.12) !important;
+  }
   .header-action-btn.refresh,
   .header-action-btn.install-ready,
   .btn-primary {
@@ -4991,8 +5028,8 @@
   .carga-card-footer,
   .produto-row,
   .sync-utility-grid .header-action-btn {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
   }
   .carga-placa {
     background: rgba(0, 255, 204, 0.14) !important;
@@ -5107,26 +5144,26 @@
     border-color: rgba(255, 64, 129, 0.30) !important;
   }
   .grid-header {
-    background: rgba(255, 255, 255, 0.10) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   }
   .grid-header > div {
     color: #FFD4E4 !important;
   }
   .grid-row {
-    background: rgba(255, 255, 255, 0.03) !important;
-    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.06) !important;
   }
   .grid-row:nth-child(even) {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
   }
   .grid-row:hover {
     background: rgba(0, 255, 204, 0.08) !important;
   }
   .check-card {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    border-left: 4px solid rgba(255, 255, 255, 0.16) !important;
+    background: rgba(16, 18, 26, 0.88) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-left: 4px solid rgba(255, 255, 255, 0.12) !important;
     color: #EAEAEA !important;
     box-shadow:
       0 10px 28px rgba(0, 0, 0, 0.28),
@@ -5141,7 +5178,7 @@
     border-left-color: #FF4081 !important;
   }
   .check-text-card {
-    background: rgba(255, 255, 255, 0.09) !important;
+    background: rgba(16, 18, 26, 0.90) !important;
     border-left-color: #4DA3FF !important;
   }
   .check-title {
@@ -5149,8 +5186,8 @@
     line-height: 1.5 !important;
   }
   .check-options {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
     border-radius: 12px !important;
     padding: 4px !important;
   }
@@ -5187,10 +5224,10 @@
     box-shadow: 0 0 16px rgba(255, 64, 129, 0.34) !important;
   }
   #materialsContainer .grid-row {
-    background: rgba(255, 255, 255, 0.04) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
   }
   #materialsContainer .grid-row:nth-child(even) {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
   }
   #faturamentoOverlay .form-group,
   #faturamentoOverlay .modal-box {
@@ -5556,11 +5593,11 @@
     </div>
   </footer>
 
-  <script src="./assets/js/app-core-1.js?v=20260409r02"></script>
-  <script src="./assets/js/app-core-2.js?v=20260409r02"></script>
-  <script src="./assets/js/app-core-3.js?v=20260409r02"></script>
-  <script src="./assets/js/app-core-5.js?v=20260409r02"></script>
-  <script src="./assets/js/app-core-6.js?v=20260409r02"></script>
+  <script src="./assets/js/app-core-1.js?v=20260409r03"></script>
+  <script src="./assets/js/app-core-2.js?v=20260409r03"></script>
+  <script src="./assets/js/app-core-3.js?v=20260409r03"></script>
+  <script src="./assets/js/app-core-5.js?v=20260409r03"></script>
+  <script src="./assets/js/app-core-6.js?v=20260409r03"></script>
 </body>
 </html>
 
