@@ -11,11 +11,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r06" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r06">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r06">
-  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r06">
-  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r06">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r07" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r07">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r07">
+  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r07">
+  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r07">
 <title>CYSY Expedição e Carregamento</title>
 <style>
 :root{
@@ -5451,6 +5451,46 @@
     .grid-header,
     .grid-row {
       min-width: 0 !important;
+    }
+    #materialsContainer {
+      min-width: 860px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+    }
+    #materialsContainer .grid-header {
+      display: grid !important;
+      grid-template-columns: minmax(200px, 3fr) 1.2fr 2fr 1.2fr 2fr !important;
+      min-width: 860px !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 2 !important;
+    }
+    #materialsContainer .grid-row {
+      display: grid !important;
+      grid-template-columns: minmax(200px, 3fr) 1.2fr 2fr 1.2fr 2fr !important;
+      min-width: 860px !important;
+      padding: 0 !important;
+      margin-bottom: 0 !important;
+      border-radius: 0 !important;
+      border-inline: none !important;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: none !important;
+      background: rgba(255, 255, 255, 0.02) !important;
+    }
+    #materialsContainer .grid-cell {
+      width: auto !important;
+      padding: 10px !important;
+      border-bottom: none !important;
+    }
+    #materialsContainer .grid-cell::before {
+      display: none !important;
+      content: none !important;
+    }
+    #tab-op .table-wrapper:has(#materialsContainer) {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
     }
     .carga-card {
       border-radius: 22px !important;
