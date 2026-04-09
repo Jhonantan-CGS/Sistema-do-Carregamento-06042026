@@ -9,20 +9,20 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260406r02">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260406r02" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260406r02">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r02">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r02" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r02">
 <title>CYSY Expedição e Carregamento | Inicializando</title>
 <style>
   :root {
     color-scheme: dark;
-    --bg: #071120;
-    --panel: rgba(15, 23, 42, 0.88);
-    --panel-border: rgba(148, 163, 184, 0.24);
-    --accent: #38bdf8;
-    --accent-strong: #2563eb;
-    --text: #e2e8f0;
-    --muted: #cbd5e1;
+    --bg: #06091A;
+    --panel: rgba(10, 16, 44, 0.90);
+    --panel-border: rgba(80, 130, 255, 0.24);
+    --accent: #00D4FF;
+    --accent-strong: #2563EB;
+    --text: #E2E8F0;
+    --muted: #94A3B8;
   }
   * { box-sizing: border-box; }
   body {
@@ -33,87 +33,152 @@
     padding: 24px;
     font-family: "Segoe UI", Arial, sans-serif;
     background:
-      radial-gradient(circle at top, rgba(37, 99, 235, 0.22), transparent 34%),
-      radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.18), transparent 28%),
-      linear-gradient(160deg, #071120, #0b132b 58%, #0f172a);
+      radial-gradient(ellipse 120% 60% at 5% -5%,   rgba(37, 99, 235, 0.22), transparent 52%),
+      radial-gradient(ellipse  70% 70% at 95%  15%,  rgba(124, 58, 237, 0.18), transparent 50%),
+      radial-gradient(ellipse  60% 55% at 50% 110%,  rgba(0, 200, 150, 0.12), transparent 50%),
+      linear-gradient(180deg, #06091A 0%, #0A0F2A 55%, #060B1E 100%);
+    background-attachment: fixed;
     color: var(--text);
   }
   .card {
-    width: min(620px, 100%);
+    width: min(640px, 100%);
     border: 1px solid var(--panel-border);
-    border-radius: 24px;
+    border-radius: 28px;
     background: var(--panel);
-    box-shadow: 0 24px 60px rgba(2, 6, 23, 0.5);
-    padding: 30px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow:
+      0 28px 70px rgba(0, 5, 40, 0.70),
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    padding: 36px;
   }
   .brand {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 16px;
+    margin-bottom: 22px;
   }
   .brand img {
-    width: 62px;
-    height: 62px;
-    border-radius: 16px;
-    background: rgba(15, 23, 42, 0.9);
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    background: rgba(10, 16, 44, 0.90);
     padding: 10px;
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    box-shadow: 0 0 28px rgba(56, 189, 248, 0.18);
+    border: 1px solid rgba(0, 212, 255, 0.40);
+    box-shadow:
+      0 0 30px rgba(0, 200, 255, 0.30),
+      0 8px 20px rgba(0, 10, 60, 0.50);
   }
-  h1 { margin: 0 0 6px; font-size: 28px; color: #dbeafe; }
+  h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(125deg, #60A5FA, #818CF8, #34D399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
   .eyebrow {
     margin: 0;
-    font-size: 12px;
-    letter-spacing: .12em;
+    font-size: 11px;
+    letter-spacing: .14em;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--accent);
+    text-shadow: 0 0 18px rgba(0, 212, 255, 0.45);
   }
-  p { margin: 0 0 16px; line-height: 1.55; color: #e2e8f0; }
+  p { margin: 0 0 16px; line-height: 1.6; color: #94A3B8; }
   .actions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-top: 20px;
+    gap: 14px;
+    margin-top: 22px;
   }
+  /* Botão principal 3D */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 50px;
-    padding: 12px 18px;
-    border-radius: 14px;
+    min-height: 52px;
+    padding: 14px 20px;
+    border-radius: 16px;
     text-decoration: none;
-    font-weight: 700;
-    background: var(--accent-strong);
-    color: #fff;
-    border: 1px solid #60a5fa;
+    font-weight: 800;
+    font-family: inherit;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
     text-align: center;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    background: linear-gradient(155deg, #3B82F6 0%, #1D4ED8 100%);
+    color: #fff;
+    border: none;
+    box-shadow:
+      0 6px 0 0 #0C2D7E,
+      0 10px 28px rgba(37, 99, 235, 0.50),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
   }
+  .btn:hover {
+    background: linear-gradient(155deg, #60A5FA 0%, #2563EB 100%);
+    box-shadow:
+      0 6px 0 0 #0C2D7E,
+      0 16px 36px rgba(37, 99, 235, 0.60),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    transform: translateY(-2px);
+  }
+  .btn:active {
+    transform: translateY(5px);
+    box-shadow:
+      0 1px 0 0 #0C2D7E,
+      0 4px 12px rgba(37, 99, 235, 0.30),
+      inset 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+  /* Botão secundário 3D */
   .btn.secondary {
-    background: rgba(15, 23, 42, 0.92);
-    color: #f8fafc;
-    border-color: rgba(148, 163, 184, 0.36);
+    background: linear-gradient(155deg, rgba(20, 30, 72, 0.95), rgba(12, 18, 50, 0.95));
+    color: #CBD5E1;
+    border: 1px solid rgba(80, 130, 255, 0.30);
+    box-shadow:
+      0 4px 0 rgba(0, 5, 30, 0.60),
+      0 8px 20px rgba(0, 10, 60, 0.40),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    text-shadow: none;
+  }
+  .btn.secondary:hover {
+    border-color: rgba(96, 165, 250, 0.50);
+    box-shadow:
+      0 4px 0 rgba(0, 5, 30, 0.55),
+      0 12px 28px rgba(37, 99, 235, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    color: #E2E8F0;
+    transform: translateY(-1px);
+    background: linear-gradient(155deg, rgba(28, 40, 90, 0.95), rgba(18, 26, 66, 0.95));
   }
   .sub { font-size: 13px; color: var(--muted); margin-top: 18px; }
   .status {
     margin-top: 18px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    background: rgba(15, 23, 42, 0.68);
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(80, 130, 255, 0.24);
+    background: rgba(6, 10, 28, 0.85);
     font-size: 13px;
-    color: var(--text);
+    color: var(--muted);
+    box-shadow: inset 0 2px 8px rgba(0, 5, 30, 0.30);
   }
-  code { color: #bfdbfe; }
+  code {
+    color: #60A5FA;
+    background: rgba(37, 99, 235, 0.12);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
   .spinner {
     display: inline-block;
     width: 16px;
     height: 16px;
     border-radius: 999px;
-    border: 2px solid rgba(191, 219, 254, .28);
+    border: 2px solid rgba(0, 212, 255, 0.22);
     border-top-color: var(--accent);
     animation: spin 1s linear infinite;
     vertical-align: middle;
@@ -123,15 +188,10 @@
   @media (max-width: 640px) {
     body {
       padding: 16px;
-      background:
-        linear-gradient(180deg, #071120 0%, #0b132b 58%, #0f172a 100%);
+      background: linear-gradient(180deg, #06091A 0%, #0A0F2A 55%, #060B1E 100%);
     }
-    .card {
-      padding: 22px;
-      background: rgba(8, 17, 31, 0.98);
-      box-shadow: 0 16px 36px rgba(2, 6, 23, 0.28);
-    }
-    h1 { font-size: 24px; }
+    .card { padding: 24px; }
+    h1 { font-size: 23px; }
     .actions { grid-template-columns: 1fr; }
   }
 </style>
@@ -148,7 +208,7 @@
     <p><span class="spinner"></span>A entrada principal foi preparada para instalação PWA e abertura segura do sistema.</p>
     <p>Se o redirecionamento automático não acontecer em alguns instantes, use uma das ações abaixo.</p>
     <div class="actions">
-      <a class="btn" href="./launch.html?v=20260406r02">Abrir sistema</a>
+      <a class="btn" href="./launch.html?v=20260409r02">Abrir sistema</a>
       <button class="btn secondary" id="installEntryBtn" type="button">Instalar aplicativo</button>
     </div>
     <div class="status" id="entryStatus">Inicializando ambiente, service worker e manifesto de instalação...</div>
@@ -185,7 +245,7 @@
       const redirectToApp = () => {
         if (redirected || manualHold) return;
         redirected = true;
-          location.replace('./launch.html?v=20260406r02');
+          location.replace('./launch.html?v=20260409r02');
       };
       const getManualMessage = (context = detectContext()) => {
         if (!context.isSecure) return 'Para instalar como aplicativo real no smartphone, abra este sistema pela URL HTTPS publicada. Abertura por arquivo local ou HTTP não habilita instalação PWA.';
@@ -253,7 +313,7 @@
 
       updateInstallButton();
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service-worker.js?v=20260406r02', { scope: './' })
+        navigator.serviceWorker.register('./service-worker.js?v=20260409r02', { scope: './' })
           .then(() => {
             const context = detectContext();
             if (!context.isSecure) setStatus('A instalação como app exige HTTPS público. Abrindo a tela de orientações...');

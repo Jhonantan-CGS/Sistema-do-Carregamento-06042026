@@ -11,52 +11,55 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260406r02" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260406r02">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260406r02">
-  <link rel="stylesheet" href="./assets/css/modern.css?v=20260406r02">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r02" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r02">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r02">
+  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r02">
+  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r02">
 <title>CYSY Expedição e Carregamento</title>
 <style>
 :root{
-    --bg-gradient: linear-gradient(180deg, #f7fafc 0%, #eef4fb 40%, #e8f0fb 72%, #ffffff 100%);
-    --glass-bg: rgba(255, 255, 255, 0.985);
-    --glass-bg-hover: rgba(248, 250, 252, 0.995);
-    --glass-border: rgba(15, 23, 42, 0.1);
-    --neon-cyan: #0EA5E9;
-    --neon-purple: #1E40AF;
-    --neon-green: #047857;
-    --neon-pink: #BE123C;
-    --neon-yellow: #D97706;
+    color-scheme: dark;
+    --bg-gradient: linear-gradient(180deg, #06091A 0%, #0A0F2A 55%, #060B1E 100%);
+    --glass-bg: rgba(12, 18, 44, 0.85);
+    --glass-bg-hover: rgba(18, 26, 60, 0.92);
+    --glass-border: rgba(80, 130, 255, 0.22);
+    --neon-cyan: #00D4FF;
+    --neon-purple: #8B5CF6;
+    --neon-green: #00E896;
+    --neon-pink: #FF3B8A;
+    --neon-yellow: #FFBE00;
+    --neon-orange: #FF6B2B;
 
-    --primary: #0F172A;
-    --primary-hover: #1E293B;
-    --secondary: #1D4ED8;
-    --accent: #0F766E;
-    --bg-app: #F4F7FB;
-    --bg-card: rgba(255, 255, 255, 0.98);
-    --bg-input: #FFFFFF;
-    --border: #CBD5E1;
-    --text-main: #0F172A;
-    --text-muted: #334155;
-    --success: #047857;
-    --success-bg: rgba(16, 185, 129, 0.18);
-    --danger: #B91C1C;
-    --danger-bg: rgba(239, 68, 68, 0.16);
-    --warning: #B45309;
-    --warning-bg: rgba(245, 158, 11, 0.16);
-    --info: #1D4ED8;
-    --info-bg: rgba(59, 130, 246, 0.16);
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    --secondary: #7C3AED;
+    --accent: #00D4A8;
+    --bg-app: #06091A;
+    --bg-card: rgba(12, 18, 44, 0.85);
+    --bg-input: rgba(8, 14, 36, 0.90);
+    --border: rgba(80, 130, 255, 0.25);
+    --text-main: #E2E8F0;
+    --text-muted: #94A3B8;
+    --success: #00C977;
+    --success-bg: rgba(0, 200, 119, 0.16);
+    --danger: #FF3B5C;
+    --danger-bg: rgba(255, 59, 92, 0.16);
+    --warning: #FF9500;
+    --warning-bg: rgba(255, 149, 0, 0.16);
+    --info: #0EA5E9;
+    --info-bg: rgba(14, 165, 233, 0.16);
     --radius-lg: 20px;
     --radius: 12px;
-    --shadow-soft: 0 4px 12px rgba(15, 23, 42, 0.06);
-    --shadow-glow: 0 4px 12px rgba(37, 99, 235, 0.06);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-soft: 0 4px 20px rgba(0, 20, 80, 0.40);
+    --shadow-glow: 0 8px 32px rgba(37, 99, 235, 0.28);
+    --shadow-md: 0 8px 24px rgba(0, 10, 40, 0.50);
     --touch-size: 56px;
     --transition: all 0.18s ease;
-    --shell-mobile-bg: #EFF6FF;
-    --shell-mobile-surface: rgba(255, 255, 255, 0.98);
-    --shell-mobile-surface-soft: rgba(248, 250, 252, 0.98);
-    --shell-mobile-border: rgba(15, 23, 42, 0.1);
+    --shell-mobile-bg: #06091A;
+    --shell-mobile-surface: rgba(12, 18, 44, 0.96);
+    --shell-mobile-surface-soft: rgba(16, 24, 52, 0.96);
+    --shell-mobile-border: rgba(80, 130, 255, 0.22);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
@@ -4948,11 +4951,11 @@
     </div>
   </footer>
 
-  <script src="./assets/js/app-core-1.js?v=20260406r02"></script>
-  <script src="./assets/js/app-core-2.js?v=20260406r02"></script>
-  <script src="./assets/js/app-core-3.js?v=20260406r02"></script>
-  <script src="./assets/js/app-core-5.js?v=20260406r02"></script>
-  <script src="./assets/js/app-core-6.js?v=20260406r02"></script>
+  <script src="./assets/js/app-core-1.js?v=20260409r02"></script>
+  <script src="./assets/js/app-core-2.js?v=20260409r02"></script>
+  <script src="./assets/js/app-core-3.js?v=20260409r02"></script>
+  <script src="./assets/js/app-core-5.js?v=20260409r02"></script>
+  <script src="./assets/js/app-core-6.js?v=20260409r02"></script>
 </body>
 </html>
 

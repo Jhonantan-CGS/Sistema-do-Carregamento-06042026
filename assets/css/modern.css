@@ -1,52 +1,59 @@
+/* ============================================================
+   modern.css — Base fundação do tema escuro e moderno
+   CYSY Expedição e Carregamento
+   ============================================================ */
+
 :root {
-  /* Vibrant & Professional Palette */
-  --primary: #1976D2;
-  --primary-dark: #1565C0;
-  --primary-light: #42A5F5;
-  --secondary: #43A047;
-  --secondary-dark: #2E7D32;
-  --secondary-light: #66BB6A;
-  
-  --accent: #00BCD4;
-  
-  --success: #388E3C;
-  --success-bg: rgba(76, 175, 80, 0.12);
-  --warning: #FB8C00;
-  --warning-bg: rgba(251, 140, 0, 0.12);
-  --danger: #E53935;
-  --danger-bg: rgba(229, 57, 53, 0.12);
-  --info: #0288D1;
-  --info-bg: rgba(2, 136, 209, 0.12);
+  color-scheme: dark;
 
-  /* Neutrals */
-  --bg-app: #F5F7FA;
-  --bg-card: #FFFFFF;
-  --bg-surface: #F8FAFC;
-  --text-main: #2D3748;
-  --text-muted: #718096;
-  --text-light: #A0AEC0;
-  --border: #E2E8F0;
-  --border-focus: #1976D2;
+  /* Cores principais */
+  --primary:        #2563EB;
+  --primary-dark:   #1D4ED8;
+  --primary-light:  #60A5FA;
+  --secondary:      #7C3AED;
+  --secondary-dark: #6D28D9;
+  --secondary-light:#A78BFA;
+  --accent:         #00D4A8;
 
-  /* Elevation & Glassmorphism */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  --glass-bg: rgba(255, 255, 255, 0.85);
-  --glass-blur: blur(12px);
+  /* Status */
+  --success:    #00C977;
+  --success-bg: rgba(0, 200, 119, 0.16);
+  --warning:    #FF9500;
+  --warning-bg: rgba(255, 149, 0, 0.16);
+  --danger:     #FF3B5C;
+  --danger-bg:  rgba(255, 59, 92, 0.16);
+  --info:       #0EA5E9;
+  --info-bg:    rgba(14, 165, 233, 0.16);
+
+  /* Neutrals escuros */
+  --bg-app:     #06091A;
+  --bg-card:    rgba(12, 18, 44, 0.85);
+  --bg-surface: rgba(10, 16, 42, 0.80);
+  --text-main:  #E2E8F0;
+  --text-muted: #94A3B8;
+  --text-light: #64748B;
+  --border:     rgba(80, 130, 255, 0.25);
+  --border-focus: #3B82F6;
+
+  /* Elevation */
+  --shadow-sm: 0 2px 8px rgba(0, 10, 50, 0.35), 0 1px 4px rgba(0, 5, 30, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 10, 50, 0.45), 0 4px 10px rgba(0, 5, 30, 0.30);
+  --shadow-lg: 0 16px 48px rgba(0, 10, 50, 0.55), 0 8px 20px rgba(0, 5, 30, 0.35);
+  --glass-bg:   rgba(12, 18, 44, 0.85);
+  --glass-blur: blur(20px);
 
   /* Layout */
-  --radius: 12px;
-  --radius-lg: 18px;
+  --radius:      12px;
+  --radius-lg:   18px;
   --radius-full: 9999px;
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* PWA Constants */
-  --safe-top: env(safe-area-inset-top);
+  --transition:  all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* PWA */
+  --safe-top:    env(safe-area-inset-top);
   --safe-bottom: env(safe-area-inset-bottom);
 }
 
-/* Base Styles */
+/* ── Base Styles ── */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -55,24 +62,25 @@
 }
 
 body {
-  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
+  font-family: 'Inter', 'Roboto', system-ui, sans-serif;
   background-color: var(--bg-app);
   color: var(--text-main);
-  line-height: 1.5;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   padding-bottom: calc(72px + var(--safe-bottom));
 }
 
-/* Material Typography */
 h1, h2, h3, h4 {
   font-weight: 700;
-  color: #1A202C;
+  color: var(--text-main);
 }
 
-/* Glass & Card Layouts */
+/* ── Card Escuro com Glass ── */
 .card {
   background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
@@ -82,9 +90,10 @@ h1, h2, h3, h4 {
 
 .card:hover {
   box-shadow: var(--shadow-md);
+  border-color: rgba(96, 165, 250, 0.35);
 }
 
-/* High-contrast Buttons */
+/* ── Botões base com estilo 3D ── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -92,46 +101,75 @@ h1, h2, h3, h4 {
   gap: 8px;
   padding: 12px 20px;
   border-radius: var(--radius);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
-  transition: var(--transition);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
   border: none;
   min-height: 48px;
   user-select: none;
 }
 
-.btn:active {
-  transform: scale(0.96);
-}
+.btn:active { transform: scale(0.96); }
 
 .btn-primary {
-  background-color: var(--primary);
+  background: linear-gradient(155deg, #3B82F6, #1D4ED8);
   color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+  box-shadow:
+    0 5px 0 #0C2D7E,
+    0 8px 20px rgba(37, 99, 235, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.20);
 }
-
+.btn-primary:hover {
+  box-shadow:
+    0 5px 0 #0C2D7E,
+    0 12px 28px rgba(37, 99, 235, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 1px 0 #0C2D7E,
+    0 4px 10px rgba(37, 99, 235, 0.28),
+    inset 0 2px 6px rgba(0, 0, 0, 0.22);
+}
 .btn-primary:disabled {
-  background-color: var(--text-light);
+  opacity: 0.45;
   box-shadow: none;
   cursor: not-allowed;
 }
 
 .btn-success {
-  background-color: var(--secondary);
+  background: linear-gradient(155deg, #10B981, #059669);
   color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+  box-shadow:
+    0 5px 0 #024F37,
+    0 8px 20px rgba(5, 150, 105, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.btn-success:hover {
+  box-shadow:
+    0 5px 0 #024F37,
+    0 12px 28px rgba(5, 150, 105, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
 }
 
 .btn-ghost {
-  background-color: transparent;
+  background: transparent;
   color: var(--text-muted);
   border: 1px solid var(--border);
+  box-shadow: none;
+}
+.btn-ghost:hover {
+  border-color: rgba(96, 165, 250, 0.45);
+  color: var(--text-main);
 }
 
-/* Map Specific Redesign Styles */
+/* ── Map Layout ── */
 .map-layout-v3 {
   display: flex;
   flex-direction: column;
@@ -141,8 +179,9 @@ h1, h2, h3, h4 {
 .mobile-flow-panel {
   padding: 16px;
   background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 -4px 24px rgba(0, 10, 60, 0.30);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -158,7 +197,8 @@ h1, h2, h3, h4 {
   padding: 14px 16px 14px 44px;
   border-radius: var(--radius);
   border: 2px solid var(--border);
-  background: var(--bg-surface);
+  background: rgba(6, 10, 28, 0.90);
+  color: var(--text-main);
   font-size: 16px;
   font-weight: 600;
   transition: var(--transition);
@@ -166,9 +206,9 @@ h1, h2, h3, h4 {
 
 .search-input:focus {
   border-color: var(--primary);
-  background: #FFFFFF;
+  background: rgba(10, 16, 44, 0.95);
   outline: none;
-  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.1);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18);
 }
 
 .search-icon {
@@ -176,10 +216,10 @@ h1, h2, h3, h4 {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
+  color: var(--text-light);
 }
 
-/* Sync Badges */
+/* ── Sync Pills ── */
 .sync-pill {
   display: inline-flex;
   align-items: center;
@@ -191,17 +231,16 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
 }
 
-.sync-pill.capturando { background: #E0F2FE; color: #0288D1; animation: pulse 2s infinite; }
-.sync-pill.enviando { background: #E0E7FF; color: #4338CA; }
-.sync-pill.waiting { background: #FFF7ED; color: #C2410C; }
-.sync-pill.sincronizado { background: #DCFCE7; color: #15803D; }
-.sync-pill.falha { background: #FEE2E2; color: #DC2626; }
+.sync-pill.capturando  { background: rgba(14, 165, 233, 0.20); color: #38BDF8; animation: pulse 2s infinite; }
+.sync-pill.enviando    { background: rgba(139, 92, 246, 0.20); color: #A78BFA; }
+.sync-pill.waiting     { background: rgba(255, 149, 0, 0.20);  color: #FFA832; }
+.sync-pill.sincronizado{ background: rgba(0, 200, 119, 0.20);  color: #34D399; }
+.sync-pill.falha       { background: rgba(255, 59, 92, 0.20);  color: #FB7185; }
 
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
 }
 
-/* Utility classes */
+/* ── Utility ── */
 .hidden { display: none !important; }

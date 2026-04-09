@@ -927,7 +927,7 @@ const swManager = {
     }
     try {
       await cacheJanitor.firstBootClear();
-      const buildTag = String(config.app.buildTag || '20260406r02');
+    const buildTag = String(config.app.buildTag || '20260409r02');
       const reg = await navigator.serviceWorker.register(`./service-worker.js?v=${buildTag}`, { scope: './' });
       if (navigator.storage?.persist) {
         try {
