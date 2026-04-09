@@ -4136,40 +4136,18 @@
     align-items: center !important;
   }
   .header-actions {
-    position: relative !important;
     width: 100% !important;
-    max-width: 320px !important;
+    max-width: 100% !important;
     margin-left: auto !important;
-    display: block !important;
-  }
-  #headerMenuToggleBtn {
-    min-height: 48px !important;
-    border-radius: 8px !important;
-    justify-content: center !important;
-    text-align: center !important;
-    background: #0F172A !important;
-    color: #FFFFFF !important;
-    border-color: #0F172A !important;
-    box-shadow: none !important;
-  }
-  .header-menu-panel {
-    position: absolute !important;
-    top: calc(100% + 8px) !important;
-    right: 0 !important;
-    left: auto !important;
-    width: min(320px, 92vw) !important;
-    margin-top: 0 !important;
-    padding: 8px !important;
-    border-radius: 8px !important;
-    border: 1px solid #D8E0EA !important;
-    background: #FFFFFF !important;
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14) !important;
-    z-index: 120 !important;
-  }
-  .header-menu-panel.show {
     display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 6px !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  #headerMenuToggleBtn,
+  .header-menu-panel,
+  .header-menu-panel.show {
+    display: none !important;
   }
   .header-action-btn {
     min-height: 42px !important;
@@ -4186,15 +4164,37 @@
     justify-content: flex-start !important;
     text-align: left !important;
   }
+  .quick-action-btn {
+    width: 100% !important;
+    min-height: 48px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding-inline: 10px !important;
+  }
   .header-action-btn:hover {
     background: #F8FAFC !important;
     border-color: #94A3B8 !important;
     color: #0F172A !important;
   }
+  .quick-action-btn.quick-action-sync {
+    background: #DBEAFE !important;
+    color: #1E3A8A !important;
+    border-color: #93C5FD !important;
+  }
+  .quick-action-btn.quick-action-permissions {
+    background: #ECFDF5 !important;
+    color: #065F46 !important;
+    border-color: #6EE7B7 !important;
+  }
   .header-action-btn.sound {
     background: #DBEAFE !important;
     color: #1E3A8A !important;
     border-color: #93C5FD !important;
+  }
+  .header-action-btn.install-ready {
+    background: #DCFCE7 !important;
+    color: #166534 !important;
+    border-color: #86EFAC !important;
   }
   .header-action-btn.danger {
     background: #FFF7ED !important;
@@ -4210,6 +4210,77 @@
     background: #FEE2E2 !important;
     color: #991B1B !important;
     border-color: #FECACA !important;
+  }
+  .sync-status-note {
+    font-size: 12px !important;
+    color: #475569 !important;
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+  }
+  .sync-utilities {
+    margin-top: 18px !important;
+    padding: 16px !important;
+    border: 1px solid #D8E0EA !important;
+    border-radius: 16px !important;
+    background: #F8FAFC !important;
+    box-shadow: none !important;
+  }
+  .sync-utilities-head {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 12px !important;
+  }
+  .sync-utilities-head h3 {
+    margin: 0 !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    color: #0F172A !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+  }
+  .sync-utilities-head p {
+    margin: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    color: #475569 !important;
+    font-weight: 700 !important;
+  }
+  .sync-utility-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+    gap: 10px !important;
+  }
+  .sync-utility-grid .header-action-btn {
+    width: 100% !important;
+  }
+  .modal-support-copy {
+    font-size: 12px !important;
+    color: #475569 !important;
+    font-weight: 700 !important;
+    line-height: 1.55 !important;
+  }
+  .modal-secondary-btn {
+    flex: 1 !important;
+    min-height: 48px !important;
+    border-radius: 12px !important;
+    border: 1px solid #CBD5E1 !important;
+    background: #FFFFFF !important;
+    color: #334155 !important;
+    font-weight: 800 !important;
+  }
+  .footer-contact-chip {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 4px 8px !important;
+    border-radius: 10px !important;
+    background: #FFFFFF !important;
+    color: #334155 !important;
+    border: 1px solid #CBD5E1 !important;
+    margin-top: 8px !important;
   }
   .status-badge {
     font-weight: 900 !important;
@@ -4258,7 +4329,12 @@
   .priority-alert-body,
   .priority-modal-meta,
   .priority-alert-card-title h3,
-  .priority-alert-card-body {
+  .priority-alert-card-body,
+  .fill-guide-item small,
+  .fill-guide-footnote,
+  .carga-card-footer,
+  .watermark-content,
+  .watermark-content span {
     color: #0F172A !important;
   }
   .priority-alert-card,
@@ -4530,8 +4606,11 @@
     .header-meta {
       justify-content: flex-start !important;
     }
-    .header-menu-panel {
-      width: 100% !important;
+    .header-actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    .sync-utility-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
   }
   @media (max-width: 768px) {
@@ -4544,9 +4623,8 @@
       min-width: 152px !important;
       flex: 0 0 auto !important;
     }
-    .header-menu-panel {
-      position: static !important;
-      margin-top: 8px !important;
+    .sync-utility-grid {
+      grid-template-columns: 1fr !important;
     }
   }
 </style>
@@ -4592,19 +4670,11 @@
         <div class="header-meta">
           <div id="clockWidget" class="header-clock">--:--:--</div>
         </div>
-        <div class="header-actions">
-          <button id="headerMenuToggleBtn" class="header-action-btn" onclick="uiBuilder.toggleHeaderMenu(event)">☰ Ações rápidas</button>
-          <div id="headerMenuPanel" class="header-menu-panel">
-            <button id="installAppBtn" onclick="installManager.installApp(); uiBuilder.closeHeaderMenu();" title="Instalar aplicativo no dispositivo" class="header-action-btn" style="display:none;">📲 Instalar app</button>
-            <button onclick="const on=soundManager.toggle(); this.textContent = on ? '🔊 Som: ON' : '🔈 Som: OFF'; uiBuilder.closeHeaderMenu();" title="Ativar ou desativar som" id="soundToggleBtn" class="header-action-btn sound">🔊 Som: ON</button>
-            <button id="syncStatusBtn" class="header-action-btn" onclick="uiBuilder.toggleSyncDrawer(); uiBuilder.closeHeaderMenu();">● Sincronizar</button>
-            <button class="header-action-btn" onclick="backupManager.exportAllLogs(); uiBuilder.closeHeaderMenu();">⚙ Dados · Backup</button>
-            <button class="header-action-btn" onclick="backupManager.triggerImportBackup(); uiBuilder.closeHeaderMenu();">⚙ Dados · Restaurar</button>
-            <button class="header-action-btn" onclick="permissionManager.requestAll(true); uiBuilder.closeHeaderMenu(); toastManager.show('Solicitação de permissões executada.', 'info');">⚙ Dados · Permissões</button>
-            <button class="header-action-btn danger" onclick="appController.limpezaCompleta(); uiBuilder.closeHeaderMenu();">🧨 Limpar cache e histórico</button>
-            <button onclick="appController.handleRefresh(true); uiBuilder.closeHeaderMenu();" class="header-action-btn refresh">🔄 Atualizar</button>
-            <button onclick="loginManager.logout(); uiBuilder.closeHeaderMenu();" class="header-action-btn exit">🚪 Sair</button>
-          </div>
+        <div class="header-actions" aria-label="Ações rápidas">
+          <button type="button" id="syncStatusBtn" class="header-action-btn quick-action-btn quick-action-sync" onclick="uiBuilder.toggleSyncDrawer()">Sincronizar</button>
+          <button type="button" class="header-action-btn quick-action-btn refresh" onclick="appController.handleRefresh(true)">Atualizar</button>
+          <button type="button" class="header-action-btn quick-action-btn quick-action-permissions" onclick="permissionManager.requestAll(true); toastManager.show('Solicitação de permissões executada.', 'info');">Permissões</button>
+          <button type="button" class="header-action-btn quick-action-btn exit" onclick="loginManager.logout()">Sair</button>
         </div>
       </div>
     </div>
@@ -4753,7 +4823,7 @@
 
       <section class="section anim-slide-up">
         <div class="section-header"><h2>📷 Fotos (Opcional)</h2></div>
-        <p style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:12px;">As fotos do checklist são opcionais e podem ser anexadas apenas quando necessário.</p>
+        <p style="font-size:12px; font-weight:700; color:#475569; margin-bottom:12px;">As fotos do checklist são opcionais e podem ser anexadas apenas quando necessário.</p>
         <div class="grid-form" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
           <div class="form-group"><label>Frente (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileFrente" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewFrente', 'base64Frente')"><div class="img-preview" id="previewFrente"><span>📷 Câmera</span></div><input type="hidden" id="base64Frente"></div></div>
           <div class="form-group"><label>Traseira (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileTraseira" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewTraseira', 'base64Traseira')"><div class="img-preview" id="previewTraseira"><span>📷 Câmera</span></div><input type="hidden" id="base64Traseira"></div></div>
@@ -4817,7 +4887,7 @@
             <div class="value" id="syncCountOps">0/10</div>
           </div>
         </div>
-        <div style="font-size:12px; color:#94A3B8; font-weight:700; margin-bottom:8px;">Última sincronização: <span id="syncLastSyncAt">--</span></div>
+        <div class="sync-status-note">Última sincronização: <span id="syncLastSyncAt">--</span></div>
 
         <div class="sync-group">
           <h3>Aguardando internet / enviando</h3>
@@ -4833,6 +4903,19 @@
           <h3>Enviados</h3>
           <div class="sync-list" id="syncSentList"></div>
         </div>
+        <div class="sync-utilities">
+          <div class="sync-utilities-head">
+            <h3>Utilitários do sistema</h3>
+            <p>As ações administrativas foram movidas para cá para manter o painel principal mais direto.</p>
+          </div>
+          <div class="sync-utility-grid">
+            <button type="button" id="installAppBtn" onclick="installManager.installApp()" title="Instalar aplicativo no dispositivo" class="header-action-btn" style="display:none;">Instalar app</button>
+            <button type="button" onclick="const on=soundManager.toggle(); this.textContent = on ? 'Som: ON' : 'Som: OFF';" title="Ativar ou desativar som" id="soundToggleBtn" class="header-action-btn sound">Som: ON</button>
+            <button type="button" class="header-action-btn" onclick="backupManager.exportAllLogs()">Dados - Backup</button>
+            <button type="button" class="header-action-btn" onclick="backupManager.triggerImportBackup()">Dados - Restaurar</button>
+            <button type="button" class="header-action-btn danger" onclick="appController.limpezaCompleta()">Limpar cache e histórico</button>
+          </div>
+        </div>
       </section>
     </div>
 
@@ -4840,7 +4923,7 @@
     <div class="modal-box" style="max-width: 520px; text-align: left;">
       <h2 style="font-size:20px;">📤 Enviar para Faturamento</h2>
       <p style="margin-bottom: 6px;">Placa/Lote em fluxo: <strong id="faturamentoPlaca">-</strong></p>
-      <p style="font-size:12px; opacity:0.9;">Anexe obrigatoriamente a <strong>imagem da carga pronta</strong> para concluir o envio ao faturamento.</p>
+      <p class="modal-support-copy">Anexe obrigatoriamente a <strong>imagem da carga pronta</strong> para concluir o envio ao faturamento.</p>
       <div class="form-group">
         <label>Imagem da carga pronta (Obrigatória neste fluxo)</label>
         <div class="file-upload-wrapper">
@@ -4852,7 +4935,7 @@
       <div id="faturamentoError" style="display:none; color:#FCA5A5; background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.45); border-radius:8px; padding:10px; font-size:12px; font-weight:700;"></div>
       <div style="display:flex; gap:10px; margin-top:8px;">
         <button class="btn-success" style="flex:1; min-height:48px;" onclick="truckStatusManager.confirmarFaturamentoComImagem()">✅ Confirmar envio com imagem</button>
-        <button style="background:transparent; color:#94A3B8; border:1px solid var(--glass-border); min-height:48px;" onclick="truckStatusManager.fecharModalFaturamento()">Cancelar</button>
+        <button type="button" class="modal-secondary-btn" onclick="truckStatusManager.fecharModalFaturamento()">Cancelar</button>
       </div>
     </div>
   </div>
@@ -4861,7 +4944,7 @@
   <footer>
     <div class="watermark-content">
 <span>Jhonantan Cardoso Gonçalves, Totalis Systems- Plataforma Logística de Operação</span>
-      <span style="display:inline-flex; align-items:center; gap:4px; padding:4px 8px; border-radius:10px; background:rgba(0,0,0,0.05); margin-top:8px;">📲 (48) 99215-9791</span>
+      <span class="footer-contact-chip">(48) 99215-9791</span>
     </div>
   </footer>
 

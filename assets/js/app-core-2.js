@@ -990,34 +990,34 @@ const installManager = {
       btn.classList.remove('install-ready');
       return;
     }
-    btn.style.display = 'inline-flex';
+    btn.style.display = 'flex';
     btn.classList.toggle('install-ready', Boolean(this.deferredPrompt) && context.isSecure);
     if (!context.isSecure) {
-      btn.textContent = '🔒 Instalar via HTTPS';
+      btn.textContent = 'Instalar via HTTPS';
       btn.title = 'Abra o sistema pela URL HTTPS publicada para instalar como app.';
       return;
     }
     if (this.deferredPrompt) {
-      btn.textContent = '📲 Instalar app';
+      btn.textContent = 'Instalar app';
       btn.title = 'Instalar aplicativo no dispositivo';
       return;
     }
     if (context.isIOSNonSafari) {
-      btn.textContent = '🧭 Abrir no Safari';
+      btn.textContent = 'Abrir no Safari';
       btn.title = 'No iPhone/iPad, a instalação deve ser feita pelo Safari.';
       return;
     }
     if (context.isSafari) {
-      btn.textContent = '📲 Instalar no Safari';
+      btn.textContent = 'Instalar no Safari';
       btn.title = 'Mostrar os passos para adicionar o app à Tela de Início.';
       return;
     }
     if (context.isAndroid && context.isChromeLike) {
-      btn.textContent = '📲 Instalar app';
+      btn.textContent = 'Instalar app';
       btn.title = 'Se o prompt não abrir, use o menu do navegador para instalar.';
       return;
     }
-    btn.textContent = '📲 Como instalar';
+    btn.textContent = 'Como instalar';
     btn.title = 'Ver instruções de instalação para este navegador.';
   },
   init() {

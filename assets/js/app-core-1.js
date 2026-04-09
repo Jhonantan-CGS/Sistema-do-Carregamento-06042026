@@ -335,7 +335,7 @@ const soundManager = {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
       this.enabled = safeStorage.getItem('cysySoundEnabled', 'true') !== 'false';
       const btn = document.getElementById('soundToggleBtn');
-      if (btn) btn.textContent = this.enabled ? '🔊 Som: ON' : '🔈 Som: OFF';
+      if (btn) btn.textContent = this.enabled ? 'Som: ON' : 'Som: OFF';
     } catch(e) { this.enabled = false; }
   },
   resume() {

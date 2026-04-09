@@ -613,7 +613,7 @@ const uiBuilder = {
     const root = document.getElementById(containerId);
     if (!root) return;
     if (!Array.isArray(items) || items.length === 0) {
-      root.innerHTML = `<div style="padding:14px; border:1px dashed rgba(148,163,184,0.45); border-radius:10px; color:#94A3B8; font-size:12px; font-weight:700;">Sem registros neste grupo.</div>`;
+      root.innerHTML = `<div style="padding:14px; border:1px dashed #CBD5E1; border-radius:10px; background:#F8FAFC; color:#475569; font-size:12px; font-weight:700;">Sem registros neste grupo.</div>`;
       return;
     }
     root.innerHTML = items.map((row) => {
@@ -624,15 +624,15 @@ const uiBuilder = {
       const tentativas = Number(row.attemptCount || 0);
       const erro = String(row.lastError || '').trim();
       const btnRetry = allowRetry
-        ? `<button class="btn-primary" style="min-height:40px; font-size:11px; padding:0 12px;" onclick="syncManager.retryItem('${escapeHTML(String(row.id))}', this)">⟳ Tentar novamente</button>`
+        ? `<button class="btn-primary" style="min-height:40px; font-size:11px; padding:0 12px;" onclick="syncManager.retryItem('${escapeHTML(String(row.id))}', this)">Tentar novamente</button>`
         : '';
-      const statusColor = row.status === 'ENVIADO' ? '#10B981' : row.status === 'ERRO' ? '#F97316' : row.status === 'ENVIANDO' ? '#0EA5E9' : '#A78BFA';
-      return `<div style="border:1px solid rgba(148,163,184,0.35); border-left:4px solid ${statusColor}; border-radius:12px; padding:12px; background:rgba(15,23,42,0.55); display:flex; flex-direction:column; gap:8px;">
+      const statusColor = row.status === 'ENVIADO' ? '#059669' : row.status === 'ERRO' ? '#EA580C' : row.status === 'ENVIANDO' ? '#0284C7' : '#7C3AED';
+      return `<div style="border:1px solid #D8E0EA; border-left:4px solid ${statusColor}; border-radius:12px; padding:12px; background:#FFFFFF; box-shadow:0 6px 16px rgba(15,23,42,0.06); display:flex; flex-direction:column; gap:8px;">
         <div style="display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-          <div style="font-size:13px; font-weight:900; color:#E2E8F0;">${escapeHTML(principal)}</div>
-          <div style="font-size:10px; font-weight:800; color:#93C5FD;">${escapeHTML(typeLabel)}</div>
+          <div style="font-size:13px; font-weight:900; color:#0F172A;">${escapeHTML(principal)}</div>
+          <div style="font-size:10px; font-weight:800; color:#1D4ED8;">${escapeHTML(typeLabel)}</div>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; font-size:11px; color:#CBD5E1;">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; font-size:11px; color:#334155;">
           <div><b>Status:</b> ${escapeHTML(String(row.status || '--'))}</div>
           <div><b>Imagens:</b> ${qtdImgs}</div>
           <div><b>Tentativas:</b> ${tentativas}</div>
@@ -640,7 +640,7 @@ const uiBuilder = {
           <div><b>Última tentativa:</b> ${escapeHTML(this.formatSyncTime(row.lastAttemptAt))}</div>
           <div><b>Enviado:</b> ${escapeHTML(this.formatSyncTime(row.sentAt))}</div>
         </div>
-        ${erro ? `<div style="font-size:11px; color:#FDBA74; background:rgba(124,45,18,0.25); border:1px solid rgba(251,146,60,0.35); border-radius:8px; padding:8px;"><b>Erro:</b> ${escapeHTML(erro)}</div>` : ''}
+        ${erro ? `<div style="font-size:11px; color:#9A3412; background:#FFF7ED; border:1px solid #FDBA74; border-radius:8px; padding:8px;"><b>Erro:</b> ${escapeHTML(erro)}</div>` : ''}
         ${btnRetry ? `<div style="display:flex; justify-content:flex-end;">${btnRetry}</div>` : ''}
       </div>`;
     }).join('');
@@ -687,18 +687,6 @@ const uiBuilder = {
 
   toggleHeaderMenu(event) {
     if (event) event.stopPropagation();
-    const menu = document.getElementById('headerMenuPanel');
-    if (!menu) return;
-    const isShowing = menu.classList.contains('show');
-    menu.classList.toggle('show', !isShowing);
-    if (!isShowing && !uiBuilder.closeHeaderMenuHandler) {
-      uiBuilder.closeHeaderMenuHandler = (e) => {
-        if (!e.target.closest('.header-actions')) {
-          uiBuilder.closeHeaderMenu();
-        }
-      };
-      setTimeout(() => document.addEventListener('click', uiBuilder.closeHeaderMenuHandler), 10);
-    }
   },
 
   closeHeaderMenu() {
@@ -715,6 +703,9 @@ const uiBuilder = {
     if (drawer) {
       drawer.classList.toggle('show');
     }
+    this.switchTab(null, 'sync');
+    const syncTab = document.getElementById('tab-sync');
+    if (syncTab) syncTab.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 };
 

@@ -428,7 +428,7 @@ const perdasController = {
     if (!document.getElementById('listaLotesGlobais')) c.insertAdjacentHTML('beforebegin', '<datalist id="listaLotesGlobais"></datalist>');
     c.querySelectorAll('.perda-row').forEach(row => row.remove());
     for (let i = 1; i <= this.maxRows; i++) {
-      c.insertAdjacentHTML('beforeend', `<div class="grid-row perda-row" id="perdaRow_${i}" style="grid-template-columns: minmax(200px,3fr) 2fr 1.4fr 1.2fr 2fr;"><div class="grid-cell" data-label="Produto"><input type="text" list="listaProdutosPerda" id="perdaProd_${i}" placeholder="Comece a digitar..." onchange="perdasController.onPerdaProdChange(${i})" autocomplete="off"></div><div class="grid-cell" data-label="Lote (Saldo)"><input type="text" list="listaLotesGlobais" id="perdaLote_${i}" placeholder="Lote (Ex: 3574)" autocomplete="off" onchange="perdasController.onPerdaLoteChange(${i})" oninput="perdasController.limparSaldo(${i})"><div id="perdaSaldo_${i}" style="font-size: 11px; font-weight: 800; color: var(--text-muted); margin-top: 4px;"></div></div><div class="grid-cell" data-label="Qtd (t)"><input type="number" id="perdaQtd_${i}" step="0.001" min="0" placeholder="Ex: 2.500" oninput="perdasController.updateGridVisibility()"></div><div class="grid-cell" data-label="Tipo de Perda"><select id="perdaTipo_${i}"><option value="">Motivo...</option><option value="Processo">Processo</option><option value="Carregamento">Carregamento</option><option value="Avaria">Avaria</option></select></div><div class="grid-cell" data-label="Observação"><input type="text" id="perdaObs_${i}" placeholder="Detalhes..."></div></div>`);
+      c.insertAdjacentHTML('beforeend', `<div class="grid-row perda-row" id="perdaRow_${i}" style="grid-template-columns: minmax(200px,3fr) 2fr 1.4fr 1.2fr 2fr;"><div class="grid-cell" data-label="Produto"><input type="text" list="listaProdutosPerda" id="perdaProd_${i}" placeholder="Comece a digitar..." onchange="perdasController.onPerdaProdChange(${i})" autocomplete="off"></div><div class="grid-cell" data-label="Lote (Saldo)"><input type="text" list="listaLotesGlobais" id="perdaLote_${i}" placeholder="Lote (Ex: 3574)" autocomplete="off" onchange="perdasController.onPerdaLoteChange(${i})" oninput="perdasController.limparSaldo(${i})"><div id="perdaSaldo_${i}" style="font-size: 11px; font-weight: 800; color: #475569; margin-top: 4px;"></div></div><div class="grid-cell" data-label="Qtd (t)"><input type="number" id="perdaQtd_${i}" step="0.001" min="0" placeholder="Ex: 2.500" oninput="perdasController.updateGridVisibility()"></div><div class="grid-cell" data-label="Tipo de Perda"><select id="perdaTipo_${i}"><option value="">Motivo...</option><option value="Processo">Processo</option><option value="Carregamento">Carregamento</option><option value="Avaria">Avaria</option></select></div><div class="grid-cell" data-label="Observação"><input type="text" id="perdaObs_${i}" placeholder="Detalhes..."></div></div>`);
     }
   },
 
@@ -482,7 +482,7 @@ const perdasController = {
     if (pVal && (!uiBuilder.lotesMap || !uiBuilder.lotesMap[pVal])) pp.style.borderColor = 'var(--danger)';
     else {
       pp.style.borderColor = 'var(--success)';
-      if (!pl.value) { ps.innerText = 'Digite o lote para ver saldo...'; ps.style.color = 'var(--text-muted)'; }
+      if (!pl.value) { ps.innerText = 'Digite o lote para ver saldo...'; ps.style.color = '#475569'; }
     }
     this.updateGridVisibility();
   },
@@ -490,7 +490,7 @@ const perdasController = {
   limparSaldo(index) {
     const ps = document.getElementById(`perdaSaldo_${index}`);
     const pl = document.getElementById(`perdaLote_${index}`);
-    if (ps) { ps.innerText = 'Pressione Enter para buscar...'; ps.style.color = 'var(--text-muted)'; }
+    if (ps) { ps.innerText = 'Pressione Enter para buscar...'; ps.style.color = '#475569'; }
     if (pl) pl.style.borderColor = 'var(--border)';
   },
 

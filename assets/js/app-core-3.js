@@ -423,7 +423,7 @@ const dashboardEngine = {
         <div style="text-align:center; padding:48px 24px; background:#FFFFFF; border:2px solid var(--warning); border-radius:var(--radius-lg); box-shadow:var(--shadow-soft);">
           <div style="font-size:54px; margin-bottom:12px;">📭</div>
           <div style="font-family:'Montserrat'; font-weight:900; font-size:18px; color:var(--primary); margin-bottom:8px;">Nenhum carregamento para hoje (${hojeStr})</div>
-          <div style="font-size:14px; color:var(--text-muted); margin-bottom:16px;">Verifique o terminal de debug (🐞) para ver todos os registros.</div>
+          <div style="font-size:14px; color:#475569; margin-bottom:16px;">Verifique o terminal de debug (🐞) para ver todos os registros.</div>
           <div style="display:flex; flex-direction:column; gap:12px; align-items:center;">
             <button onclick="dashboardEngine.mostrarTodosRegistros()" style="background:var(--secondary); color:white; padding:12px 24px; border-radius:8px; font-weight:800; font-size:13px;">📋 MOSTRAR TODOS OS REGISTROS</button>
           </div>
@@ -632,7 +632,7 @@ const dashboardEngine = {
             <div class="carga-card-status"><span class="time-badge">📅 ${dateStr}</span></div>
           </div>
           <div class="carga-card-body">
-            <div style="font-size:13px; color:var(--text-muted);">
+            <div style="font-size:13px; color:#475569;">
               Total: ${itens.reduce((s, i) => s + Number(i.qtd || 0), 0).toFixed(3)}t | ${itens.length} pedido(s)
             </div>
           </div>
