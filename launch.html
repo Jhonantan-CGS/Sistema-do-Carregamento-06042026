@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#1976D2">
+<meta name="theme-color" content="#0F0F0F">
 <meta name="description" content="Entrada segura e versionada do aplicativo CYSY Expedição e Carregamento.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,13 +16,14 @@
 <style>
   :root {
     color-scheme: dark;
-    --bg: #06091A;
-    --panel: rgba(10, 16, 44, 0.90);
-    --panel-border: rgba(80, 130, 255, 0.24);
-    --accent: #00D4FF;
-    --accent-strong: #2563EB;
-    --text: #E2E8F0;
-    --muted: #94A3B8;
+    --bg: #0F0F0F;
+    --panel: rgba(255, 255, 255, 0.08);
+    --panel-border: rgba(255, 255, 255, 0.20);
+    --accent: #00FFCC;
+    --accent-strong: #4DA3FF;
+    --accent-pink: #FF4081;
+    --text: #EAEAEA;
+    --muted: #B8C1D1;
   }
   * { box-sizing: border-box; }
   body {
@@ -31,12 +32,12 @@
     display: grid;
     place-items: center;
     padding: 24px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     background:
-      radial-gradient(ellipse 120% 60% at 5% -5%,   rgba(37, 99, 235, 0.22), transparent 52%),
-      radial-gradient(ellipse  70% 70% at 95%  15%,  rgba(124, 58, 237, 0.18), transparent 50%),
-      radial-gradient(ellipse  60% 55% at 50% 110%,  rgba(0, 200, 150, 0.12), transparent 50%),
-      linear-gradient(180deg, #06091A 0%, #0A0F2A 55%, #060B1E 100%);
+      radial-gradient(circle at 8% 10%, rgba(255, 64, 129, 0.20), transparent 28%),
+      radial-gradient(circle at 92% 12%, rgba(0, 255, 204, 0.16), transparent 26%),
+      radial-gradient(circle at 50% 100%, rgba(77, 163, 255, 0.14), transparent 34%),
+      linear-gradient(135deg, #0F0F0F 0%, #191A1F 56%, #10131B 100%);
     background-attachment: fixed;
     color: var(--text);
   }
@@ -48,8 +49,8 @@
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     box-shadow:
-      0 28px 70px rgba(0, 5, 40, 0.70),
-      0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+      0 28px 70px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     padding: 36px;
   }
   .brand { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
@@ -57,21 +58,19 @@
     width: 68px;
     height: 68px;
     border-radius: 18px;
-    background: rgba(10, 16, 44, 0.90);
+    background: rgba(255, 255, 255, 0.08);
     padding: 10px;
-    border: 1px solid rgba(0, 212, 255, 0.40);
+    border: 1px solid rgba(0, 255, 204, 0.36);
     box-shadow:
-      0 0 30px rgba(0, 200, 255, 0.30),
-      0 8px 20px rgba(0, 10, 60, 0.50);
+      0 0 26px rgba(0, 255, 204, 0.16),
+      0 8px 20px rgba(0, 0, 0, 0.40);
   }
   h1 {
     margin: 0 0 6px;
     font-size: 28px;
     font-weight: 800;
-    background: linear-gradient(125deg, #60A5FA, #818CF8, #34D399);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent-pink);
+    text-shadow: 0 0 14px rgba(255, 64, 129, 0.42);
   }
   .eyebrow {
     margin: 0;
@@ -80,9 +79,9 @@
     text-transform: uppercase;
     font-weight: 800;
     color: var(--accent);
-    text-shadow: 0 0 18px rgba(0, 212, 255, 0.45);
+    text-shadow: 0 0 18px rgba(0, 255, 204, 0.35);
   }
-  p { margin: 0 0 16px; line-height: 1.6; color: #94A3B8; }
+  p { margin: 0 0 16px; line-height: 1.6; color: var(--muted); }
   .actions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -105,59 +104,59 @@
     cursor: pointer;
     text-align: center;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-    background: linear-gradient(155deg, #3B82F6 0%, #1D4ED8 100%);
-    color: #fff;
-    border: none;
+    background: linear-gradient(135deg, #00FFCC 0%, #00D0A8 100%);
+    color: #0F0F0F;
+    border: 1px solid rgba(0, 255, 204, 0.28);
     box-shadow:
-      0 6px 0 0 #0C2D7E,
-      0 10px 28px rgba(37, 99, 235, 0.50),
+      0 6px 0 0 rgba(0, 120, 96, 0.85),
+      0 10px 28px rgba(0, 255, 204, 0.28),
       inset 0 1px 0 rgba(255, 255, 255, 0.22);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
   }
   .btn:hover {
-    background: linear-gradient(155deg, #60A5FA 0%, #2563EB 100%);
+    background: linear-gradient(135deg, #5EFFE0 0%, #00FFCC 100%);
     box-shadow:
-      0 6px 0 0 #0C2D7E,
-      0 16px 36px rgba(37, 99, 235, 0.60),
+      0 6px 0 0 rgba(0, 120, 96, 0.78),
+      0 16px 36px rgba(0, 255, 204, 0.34),
       inset 0 1px 0 rgba(255, 255, 255, 0.28);
     transform: translateY(-2px);
   }
   .btn:active {
     transform: translateY(5px);
     box-shadow:
-      0 1px 0 0 #0C2D7E,
-      0 4px 12px rgba(37, 99, 235, 0.30),
+      0 1px 0 0 rgba(0, 120, 96, 0.78),
+      0 4px 12px rgba(0, 255, 204, 0.24),
       inset 0 2px 8px rgba(0, 0, 0, 0.25);
   }
   .btn.secondary {
-    background: linear-gradient(155deg, rgba(20, 30, 72, 0.95), rgba(12, 18, 50, 0.95));
-    color: #CBD5E1;
-    border: 1px solid rgba(80, 130, 255, 0.30);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(0, 255, 204, 0.28);
     box-shadow:
-      0 4px 0 rgba(0, 5, 30, 0.60),
-      0 8px 20px rgba(0, 10, 60, 0.40),
+      0 4px 0 rgba(10, 14, 22, 0.82),
+      0 8px 20px rgba(0, 0, 0, 0.34),
       inset 0 1px 0 rgba(255, 255, 255, 0.07);
     text-shadow: none;
   }
   .btn.secondary:hover {
-    border-color: rgba(96, 165, 250, 0.50);
+    border-color: rgba(0, 255, 204, 0.40);
     transform: translateY(-1px);
-    color: #E2E8F0;
+    color: #EAFBF8;
+    background: rgba(255, 255, 255, 0.12);
   }
   .status {
     margin-top: 18px;
     padding: 14px 16px;
     border-radius: 16px;
-    border: 1px solid rgba(80, 130, 255, 0.24);
-    background: rgba(6, 10, 28, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
     font-size: 13px;
     color: var(--muted);
-    box-shadow: inset 0 2px 8px rgba(0, 5, 30, 0.30);
+    box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.04);
   }
   .sub { font-size: 13px; color: var(--muted); margin-top: 18px; }
   code {
-    color: #60A5FA;
-    background: rgba(37, 99, 235, 0.12);
+    color: var(--accent);
+    background: rgba(0, 255, 204, 0.10);
     padding: 2px 6px;
     border-radius: 4px;
   }
@@ -165,16 +164,16 @@
     margin-top: 20px;
     padding: 18px 20px;
     border-radius: 20px;
-    border: 1px solid rgba(80, 130, 255, 0.24);
-    background: rgba(10, 16, 44, 0.80);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
   .install-guide strong {
     display: block;
     margin-bottom: 12px;
     font-size: 15px;
-    color: #E2E8F0;
+    color: #F1F5FB;
   }
   .install-guide ol {
     margin: 0 0 0 18px;
@@ -182,27 +181,27 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    color: #94A3B8;
+    color: var(--muted);
     font-size: 13px;
     line-height: 1.55;
   }
   .install-guide p {
     margin: 12px 0 0;
     font-size: 12px;
-    color: #64748B;
+    color: #A8B5C9;
   }
   .install-guide[data-tone="warning"] {
-    background: rgba(70, 45, 0, 0.55);
-    border-color: rgba(255, 190, 0, 0.30);
+    background: rgba(255, 190, 0, 0.12);
+    border-color: rgba(255, 190, 0, 0.28);
   }
   .install-guide[data-tone="warning"] strong { color: #FFF3AE; }
   .install-guide[data-tone="success"] {
-    background: rgba(0, 55, 36, 0.55);
-    border-color: rgba(0, 200, 119, 0.30);
+    background: rgba(0, 255, 204, 0.12);
+    border-color: rgba(0, 255, 204, 0.28);
   }
   .install-guide[data-tone="success"] strong { color: #A7F3D0; }
   @media (max-width: 640px) {
-    body { padding: 16px; background: linear-gradient(180deg, #06091A 0%, #0A0F2A 55%, #060B1E 100%); }
+    body { padding: 16px; background: linear-gradient(180deg, #0F0F0F 0%, #17171C 58%, #10131B 100%); }
     .card { padding: 24px; }
     h1 { font-size: 23px; }
     .actions { grid-template-columns: 1fr; }
