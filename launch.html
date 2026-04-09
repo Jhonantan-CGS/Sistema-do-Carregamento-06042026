@@ -3,27 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0F0F0F">
+<meta name="theme-color" content="#08101F">
 <meta name="description" content="Entrada segura e versionada do aplicativo CYSY Expedição e Carregamento.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r08">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r08" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r08">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r09">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r09" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r09">
 <title>CYSY Expedição e Carregamento | Acesso Seguro</title>
 <style>
   :root {
     color-scheme: dark;
-    --bg: #0F0F0F;
-    --panel: rgba(255, 255, 255, 0.08);
-    --panel-border: rgba(255, 255, 255, 0.20);
-    --accent: #00FFCC;
-    --accent-strong: #4DA3FF;
-    --accent-heading: #4DA3FF;
-    --text: #EAEAEA;
-    --muted: #B8C1D1;
+    --bg: #08101F;
+    --panel: rgba(10, 17, 32, 0.74);
+    --panel-border: rgba(148, 163, 184, 0.18);
+    --accent: #1DE9B6;
+    --accent-strong: #4EA8FF;
+    --accent-alt: #8C6BFF;
+    --accent-heading: #F4F7FD;
+    --text: #F4F7FD;
+    --muted: #9AAAC1;
   }
   * { box-sizing: border-box; }
   body {
@@ -34,10 +35,10 @@
     padding: 24px;
     font-family: "Segoe UI", Arial, sans-serif;
     background:
-      radial-gradient(circle at 8% 10%, rgba(77, 163, 255, 0.20), transparent 28%),
-      radial-gradient(circle at 92% 12%, rgba(0, 255, 204, 0.16), transparent 26%),
-      radial-gradient(circle at 50% 100%, rgba(77, 163, 255, 0.14), transparent 34%),
-      linear-gradient(135deg, #0F0F0F 0%, #191A1F 56%, #10131B 100%);
+      radial-gradient(circle at 8% 10%, rgba(78, 168, 255, 0.22), transparent 28%),
+      radial-gradient(circle at 92% 12%, rgba(140, 107, 255, 0.16), transparent 26%),
+      radial-gradient(circle at 50% 100%, rgba(29, 233, 182, 0.10), transparent 34%),
+      linear-gradient(155deg, #040816 0%, #08101F 48%, #111A2F 100%);
     background-attachment: fixed;
     color: var(--text);
   }
@@ -60,9 +61,9 @@
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.08);
     padding: 10px;
-    border: 1px solid rgba(0, 255, 204, 0.36);
+    border: 1px solid rgba(148, 163, 184, 0.18);
     box-shadow:
-      0 0 26px rgba(0, 255, 204, 0.16),
+      0 0 26px rgba(78, 168, 255, 0.14),
       0 8px 20px rgba(0, 0, 0, 0.40);
   }
   h1 {
@@ -70,7 +71,7 @@
     font-size: 28px;
     font-weight: 800;
     color: var(--accent-heading);
-    text-shadow: 0 0 14px rgba(77, 163, 255, 0.42);
+    text-shadow: 0 0 18px rgba(78, 168, 255, 0.22);
   }
   .eyebrow {
     margin: 0;
@@ -79,7 +80,7 @@
     text-transform: uppercase;
     font-weight: 800;
     color: var(--accent);
-    text-shadow: 0 0 18px rgba(0, 255, 204, 0.35);
+    text-shadow: 0 0 16px rgba(29, 233, 182, 0.26);
   }
   p { margin: 0 0 16px; line-height: 1.6; color: var(--muted); }
   .actions {
@@ -104,33 +105,33 @@
     cursor: pointer;
     text-align: center;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-    background: linear-gradient(135deg, #00FFCC 0%, #00D0A8 100%);
-    color: #0F0F0F;
-    border: 1px solid rgba(0, 255, 204, 0.28);
+    background: linear-gradient(135deg, #4EA8FF 0%, #8C6BFF 100%);
+    color: #FFFFFF;
+    border: 1px solid rgba(113, 142, 255, 0.22);
     box-shadow:
-      0 6px 0 0 rgba(0, 120, 96, 0.85),
-      0 10px 28px rgba(0, 255, 204, 0.28),
+      0 6px 0 0 rgba(27, 45, 102, 0.88),
+      0 10px 28px rgba(78, 168, 255, 0.26),
       inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
   .btn:hover {
-    background: linear-gradient(135deg, #5EFFE0 0%, #00FFCC 100%);
+    background: linear-gradient(135deg, #67B8FF 0%, #9E85FF 100%);
     box-shadow:
-      0 6px 0 0 rgba(0, 120, 96, 0.78),
-      0 16px 36px rgba(0, 255, 204, 0.34),
+      0 6px 0 0 rgba(27, 45, 102, 0.78),
+      0 16px 36px rgba(78, 168, 255, 0.32),
       inset 0 1px 0 rgba(255, 255, 255, 0.28);
     transform: translateY(-2px);
   }
   .btn:active {
     transform: translateY(5px);
     box-shadow:
-      0 1px 0 0 rgba(0, 120, 96, 0.78),
-      0 4px 12px rgba(0, 255, 204, 0.24),
+      0 1px 0 0 rgba(27, 45, 102, 0.76),
+      0 4px 12px rgba(78, 168, 255, 0.24),
       inset 0 2px 8px rgba(0, 0, 0, 0.25);
   }
   .btn.secondary {
     background: rgba(255, 255, 255, 0.08);
-    color: var(--accent);
-    border: 1px solid rgba(0, 255, 204, 0.28);
+    color: var(--text);
+    border: 1px solid rgba(148, 163, 184, 0.16);
     box-shadow:
       0 4px 0 rgba(10, 14, 22, 0.82),
       0 8px 20px rgba(0, 0, 0, 0.34),
@@ -138,7 +139,7 @@
     text-shadow: none;
   }
   .btn.secondary:hover {
-    border-color: rgba(0, 255, 204, 0.40);
+    border-color: rgba(113, 142, 255, 0.26);
     transform: translateY(-1px);
     color: #EAFBF8;
     background: rgba(255, 255, 255, 0.12);
@@ -148,7 +149,7 @@
     padding: 14px 16px;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
     font-size: 13px;
     color: var(--muted);
     box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.04);
@@ -156,7 +157,7 @@
   .sub { font-size: 13px; color: var(--muted); margin-top: 18px; }
   code {
     color: var(--accent);
-    background: rgba(0, 255, 204, 0.10);
+    background: rgba(78, 168, 255, 0.10);
     padding: 2px 6px;
     border-radius: 4px;
   }
@@ -191,17 +192,17 @@
     color: #A8B5C9;
   }
   .install-guide[data-tone="warning"] {
-    background: rgba(255, 190, 0, 0.12);
-    border-color: rgba(255, 190, 0, 0.28);
+    background: rgba(255, 158, 75, 0.12);
+    border-color: rgba(255, 158, 75, 0.24);
   }
   .install-guide[data-tone="warning"] strong { color: #FFF3AE; }
   .install-guide[data-tone="success"] {
-    background: rgba(0, 255, 204, 0.12);
-    border-color: rgba(0, 255, 204, 0.28);
+    background: rgba(29, 233, 182, 0.12);
+    border-color: rgba(29, 233, 182, 0.24);
   }
   .install-guide[data-tone="success"] strong { color: #A7F3D0; }
   @media (max-width: 640px) {
-    body { padding: 16px; background: linear-gradient(180deg, #0F0F0F 0%, #17171C 58%, #10131B 100%); }
+    body { padding: 16px; background: linear-gradient(180deg, #040816 0%, #08101F 58%, #111A2F 100%); }
     .card { padding: 24px; }
     h1 { font-size: 23px; }
     .actions { grid-template-columns: 1fr; }
@@ -224,7 +225,7 @@
     </div>
     <div class="status" id="entryStatus">Preparando versão pública atual do aplicativo...</div>
     <div class="install-guide" id="installGuideCard" data-tone="info"></div>
-      <p class="sub">URL recomendada de acesso imediato: <code>.../Sistema%20do%20Carregamento/launch.html?v=20260409r08</code></p>
+      <p class="sub">URL recomendada de acesso imediato: <code>.../Sistema%20do%20Carregamento/launch.html?v=20260409r09</code></p>
   </main>
   <script>
     (() => {
@@ -420,7 +421,7 @@
 
       renderGuide();
       if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js?v=20260409r08', { scope: './' })
+      navigator.serviceWorker.register('./service-worker.js?v=20260409r09', { scope: './' })
           .then(() => renderGuide())
           .catch(() => {
             const context = detectContext();

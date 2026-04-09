@@ -9,8 +9,8 @@
   "display_override": ["standalone", "minimal-ui", "browser"],
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#0F0F0F",
-  "theme_color": "#0F0F0F",
+  "background_color": "#08101F",
+  "theme_color": "#08101F",
   "launch_handler": {
     "client_mode": "focus-existing"
   },

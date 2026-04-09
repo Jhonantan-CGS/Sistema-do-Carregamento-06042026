@@ -39,7 +39,7 @@ window.onunhandledrejection = function(event) {
 const config = {
   app: {
     version: '20260406.02',
-    buildTag: '20260409r08',
+    buildTag: '20260409r09',
     versionStorageKey: 'cysyAppVersion'
   },
   base: {

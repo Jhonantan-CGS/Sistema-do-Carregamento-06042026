@@ -521,6 +521,24 @@ const dashboardEngine = {
       let timeBadgeClass = 'time-badge';
       if (statusInteligente.code === 'AGENDADO') timeBadgeClass += ' alert';
       if (statusInteligente.code === 'ATRASADO' || statusInteligente.code === 'BLOQUEADO') timeBadgeClass += ' late';
+      const statusProgress = bloqueado
+        ? 16
+        : ({
+            ATRASADO: 32,
+            AGENDADO: 46,
+            AGUARDANDO: 58,
+            CARREGANDO: 78,
+            FATURAMENTO: 100
+          }[statusInteligente.code] ?? 52);
+      const progressTone = bloqueado
+        ? 'danger'
+        : ({
+            ATRASADO: 'danger',
+            AGENDADO: 'warning',
+            AGUARDANDO: 'neutral',
+            CARREGANDO: 'info',
+            FATURAMENTO: 'success'
+          }[statusInteligente.code] ?? 'neutral');
 
       const rncHTML = rncMatches.length ? `
         <div style="background: rgba(239, 68, 68, 0.10); border: 1px solid rgba(239, 68, 68, 0.24); border-left: 6px solid #EF4444; padding: 16px; border-radius: 12px; color: #FEE2E2;">
@@ -584,6 +602,15 @@ const dashboardEngine = {
               ${statusInteligente.code !== 'FATURAMENTO' && statusInteligente.code !== 'BLOQUEADO' ? `<button class="btn-status-manual" onclick="truckStatusManager.iniciarFaturamento('${escapeHTML(placa)}')">📤 ENVIAR P/ FATURAMENTO</button>` : ''}
             </div>
             <div style="font-size:13px; font-weight:700; color:#B8C1D1;">${escapeHTML(statusInteligente.msg)}</div>
+            <div class="status-progress status-progress-${progressTone}">
+              <div class="status-progress-copy">
+                <span>Andamento operacional</span>
+                <strong>${statusProgress}%</strong>
+              </div>
+              <div class="status-progress-track">
+                <span class="status-progress-bar" style="width:${statusProgress}%"></span>
+              </div>
+            </div>
             ${evidenciaHTML}
             ${rncHTML}
             ${produtosHTML}

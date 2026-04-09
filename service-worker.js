@@ -1,43 +1,43 @@
-const CACHE_NAME = 'cysy-log360-v20260409r08';
+const CACHE_NAME = 'cysy-log360-v20260409r09';
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
 const PWA_START_URL = './app-shell.html?source=pwa';
 const APP_SHELL = [
   './',
   './index.html',
-  './index.html?v=20260409r08',
+  './index.html?v=20260409r09',
   './launch.html',
-  './launch.html?v=20260409r08',
+  './launch.html?v=20260409r09',
   './app-shell.html',
-  './app-shell.html?v=20260409r08',
+  './app-shell.html?v=20260409r09',
   PWA_START_URL,
   './offline.html',
   './manifest.webmanifest',
-  './manifest.webmanifest?v=20260409r08',
+  './manifest.webmanifest?v=20260409r09',
   './assets/css/modern.css',
-  './assets/css/modern.css?v=20260409r08',
+  './assets/css/modern.css?v=20260409r09',
   './assets/css/theme-3d.css',
-  './assets/css/theme-3d.css?v=20260409r08',
+  './assets/css/theme-3d.css?v=20260409r09',
   './assets/logo.svg',
   './assets/icons/favicon.png',
-  './assets/icons/favicon.png?v=20260409r08',
+  './assets/icons/favicon.png?v=20260409r09',
   './assets/icons/apple-touch-icon.png',
-  './assets/icons/apple-touch-icon.png?v=20260409r08',
+  './assets/icons/apple-touch-icon.png?v=20260409r09',
   './assets/icons/icon-192.png',
-  './assets/icons/icon-192.png?v=20260409r08',
+  './assets/icons/icon-192.png?v=20260409r09',
   './assets/icons/icon-512.png',
-  './assets/icons/icon-512.png?v=20260409r08',
+  './assets/icons/icon-512.png?v=20260409r09',
   './assets/icons/icon-512-maskable.png',
-  './assets/icons/icon-512-maskable.png?v=20260409r08',
+  './assets/icons/icon-512-maskable.png?v=20260409r09',
   './assets/js/app-core-1.js',
-  './assets/js/app-core-1.js?v=20260409r08',
+  './assets/js/app-core-1.js?v=20260409r09',
   './assets/js/app-core-2.js',
-  './assets/js/app-core-2.js?v=20260409r08',
+  './assets/js/app-core-2.js?v=20260409r09',
   './assets/js/app-core-3.js',
-  './assets/js/app-core-3.js?v=20260409r08',
+  './assets/js/app-core-3.js?v=20260409r09',
   './assets/js/app-core-5.js',
-  './assets/js/app-core-5.js?v=20260409r08',
+  './assets/js/app-core-5.js?v=20260409r09',
   './assets/js/app-core-6.js',
-  './assets/js/app-core-6.js?v=20260409r08'
+  './assets/js/app-core-6.js?v=20260409r09'
 ];
 
 self.addEventListener('install', (event) => {
@@ -109,11 +109,11 @@ async function handleAppRequest(req) {
   } catch (_) {
     if (isNavigation) {
       return cached || await caches.match(PWA_START_URL) ||
-      await caches.match('./app-shell.html?v=20260409r08') ||
+      await caches.match('./app-shell.html?v=20260409r09') ||
         await caches.match('./app-shell.html') ||
-      await caches.match('./launch.html?v=20260409r08') ||
+      await caches.match('./launch.html?v=20260409r09') ||
         await caches.match('./launch.html') ||
-      await caches.match('./index.html?v=20260409r08') ||
+      await caches.match('./index.html?v=20260409r09') ||
         await caches.match('./index.html') ||
         await caches.match('./offline.html');
     }
