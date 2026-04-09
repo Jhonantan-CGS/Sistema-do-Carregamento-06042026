@@ -114,7 +114,7 @@ const appController = {
 
   async handleRefresh(isManual = false) {
     if (!navigator.onLine) {
-      if (isManual) alert("Sem conexão. O app permanece operando em modo offline.");
+      if (isManual) alert("Sem conexÃ£o. O app permanece operando em modo offline.");
       return;
     }
 
@@ -157,7 +157,7 @@ const appController = {
       syncManager.refreshSyncView();
       this.persistCachedState(new Date());
 
-      debugEngine.log(isManual ? "Atualização manual concluída." : "Atualização automática concluída.", "success");
+      debugEngine.log(isManual ? "AtualizaÃ§Ã£o manual concluÃ­da." : "AtualizaÃ§Ã£o automÃ¡tica concluÃ­da.", "success");
     } catch (error) {
       const fe = document.getElementById('fatalError');
       if (fe) fe.style.display = 'block';
@@ -168,7 +168,7 @@ const appController = {
   },
 
   async limpezaCompleta() {
-    const confirma = confirm("Esta ação fará uma limpeza forçada do site: cache, cookies, dados locais, fila offline, logs, históricos internos e resíduos de versões antigas serão removidos deste navegador. Deseja continuar?");
+    const confirma = confirm("Esta aÃ§Ã£o farÃ¡ uma limpeza forÃ§ada do site: cache, cookies, dados locais, fila offline, logs, histÃ³ricos internos e resÃ­duos de versÃµes antigas serÃ£o removidos deste navegador. Deseja continuar?");
     if (!confirma) return;
     uiBuilder.toggleLoader(true, "Limpando cache, cookies e dados antigos...");
     try {
@@ -283,7 +283,7 @@ const appController = {
         });
       } catch (_) {}
 
-      alert("Limpeza concluída. Cache, cookies e dados locais do site foram removidos. O sistema será recarregado limpo.");
+      alert("Limpeza concluÃ­da. Cache, cookies e dados locais do site foram removidos. O sistema serÃ¡ recarregado limpo.");
       location.replace(`${location.pathname}?clean=${Date.now()}`);
     } finally {
       uiBuilder.toggleLoader(false);
@@ -296,7 +296,7 @@ const appController = {
     const acomp = sa ? sa.value : '';
     const itemsCarga = uiBuilder.getSelectedCargaItems();
     if (!acomp || !Array.isArray(itemsCarga) || itemsCarga.length === 0) {
-      return alert("⚠️ Preencha Responsável e selecione a carga por placa ou cliente.");
+      return alert("âš ï¸ Preencha ResponsÃ¡vel e selecione a carga por placa ou cliente.");
     }
     const cli = [...new Set(itemsCarga.map(i => i.cliente))].join(' | ');
     const ped = [...new Set(itemsCarga.map(i => i.pedido))].join(' | ');
@@ -308,7 +308,7 @@ const appController = {
         : (document.getElementById(`card_${c.id}`)?.dataset.value || '');
       if (c.type !== 'text' && !selectedValue) missingCheck = true;
     });
-    if (missingCheck) return alert("⚠️ Responda todos os itens do Checklist.");
+    if (missingCheck) return alert("âš ï¸ Responda todos os itens do Checklist.");
 
     const base64Frente = document.getElementById('base64Frente')?.value || '';
     const base64Traseira = document.getElementById('base64Traseira')?.value || '';
@@ -322,7 +322,7 @@ const appController = {
     const isEmptyPlateSentinel = typeof plateRules !== 'undefined' && plateRules.isEmpty(rawPlate);
     const isValidPlate = typeof plateRules === 'undefined' ? Boolean(rawPlate) : plateRules.isValid(rawPlate);
     if (hasPlateText && !isEmptyPlateSentinel && !isValidPlate) {
-      return alert("⚠️ Informe uma placa válida. Formatos aceitos: ABC1234, ABC1D23, ABCD123 e CAL042.");
+      return alert("âš ï¸ Informe uma placa vÃ¡lida. Formatos aceitos: ABC1234, ABC1D23, ABCD123 e CAL042.");
     }
     const normalizedPlate = !hasPlateText
       ? ''
@@ -353,17 +353,17 @@ const appController = {
       const qPerda = parseBRNumber(document.getElementById(`inpPerda_${i}`)?.value || '');
       const mPerda = document.getElementById(`selMotivo_${i}`)?.value || '';
 
-      if (q < 0 || qPerda < 0) return alert("⛔ Valores negativos.");
+      if (q < 0 || qPerda < 0) return alert("â›” Valores negativos.");
       if (p_val && (q > 0 || qPerda > 0)) {
         hasMaterial = true;
         if (!payload.produto) payload.produto = p_val;
-        if (qPerda > 0 && !mPerda) return alert("⛔ Informe motivo da perda.");
+        if (qPerda > 0 && !mPerda) return alert("â›” Informe motivo da perda.");
         payload.quantidadeTotal += q;
         payload.linhasOperacao.push({ produto: p_val, quantidade: q, lote: l, perda: qPerda, motivoPerda: mPerda || "-" });
       }
     }
 
-    if (!hasMaterial) return alert("⚠️ Informe a quantidade de pelo menos um produto.");
+    if (!hasMaterial) return alert("âš ï¸ Informe a quantidade de pelo menos um produto.");
 
     config.checklist.forEach(c => {
       const textNode = document.getElementById(`chk_text_${c.id}`);
@@ -371,7 +371,7 @@ const appController = {
         ? uiBuilder.getChecklistValue(c.id)
         : (document.getElementById(`card_${c.id}`)?.dataset.value || '');
       payload.checklist[c.lbl] = c.type === 'text'
-        ? (textNode ? textNode.value || 'Sem observações adicionais' : 'Sem observações adicionais')
+        ? (textNode ? textNode.value || 'Sem observaÃ§Ãµes adicionais' : 'Sem observaÃ§Ãµes adicionais')
         : (val || '');
     });
 
@@ -382,18 +382,18 @@ const appController = {
     payload.imageCount = meta.imageCount;
 
     if (dbManager.isSent(meta.syncId, meta.fingerprint) || dbManager.isFingerprintSent(meta.fingerprint)) {
-      alert("Este checklist já foi enviado anteriormente e não pode ser reenviado.");
+      alert("Este checklist jÃ¡ foi enviado anteriormente e nÃ£o pode ser reenviado.");
       return;
     }
     const dupOpen = await dbManager.findOpenDuplicate(meta.syncId, meta.fingerprint);
     if (dupOpen) {
-      toastManager.show('Este checklist já está na fila de sincronização.', 'warning');
+      toastManager.show('Este checklist jÃ¡ estÃ¡ na fila de sincronizaÃ§Ã£o.', 'warning');
       uiBuilder.switchTab(null, 'sync');
       return;
     }
 
     this.isSubmitting = true;
-    uiBuilder.toggleLoader(true, "Transmitindo Operação...");
+    uiBuilder.toggleLoader(true, "Transmitindo OperaÃ§Ã£o...");
     try {
       const resp = await apiService.sendDataToAppScript(payload);
       if (resp && resp.success) {
@@ -403,13 +403,12 @@ const appController = {
           .filter((row) => row.fingerprint === meta.fingerprint)
           .map((row) => dbManager.markAsSent(row.id, { deduplicado: true, origem: 'online-direto' })));
         backupManager.addEntry('OPERACAO', { statusEnvio: 'ONLINE', payload, syncId: meta.syncId, fingerprint: meta.fingerprint });
-        alert("✅ SUCESSO!");
+        alert("âœ… SUCESSO!");
         uiBuilder.clearDependentFields();
-        if (sp) sp.value = '';
         uiBuilder.updateGlobalUpdateTimestamp();
         this.silentRefresh();
       } else {
-        alert("❌ ERRO DO SCRIPT:\n\n" + (resp.message || "Erro desconhecido."));
+        alert("âŒ ERRO DO SCRIPT:\n\n" + (resp.message || "Erro desconhecido."));
       }
     } catch(err) {
       const queued = await dbManager.savePending('OPERACAO', payload, {
@@ -421,22 +420,21 @@ const appController = {
       });
       if (!queued.ok) {
         if (queued.reason === 'OFFLINE_LIMIT') {
-          toastManager.show(`Limite offline atingido: máximo de ${queued.limit} carregamentos pendentes com imagem.`, 'error', 5500);
+          toastManager.show(`Limite offline atingido: mÃ¡ximo de ${queued.limit} carregamentos pendentes com imagem.`, 'error', 5500);
           alert(`Limite offline atingido (${queued.limit}). Sincronize os pendentes para continuar.`);
           uiBuilder.switchTab(null, 'sync');
         } else if (queued.reason === 'JA_ENVIADO') {
-          alert("Este checklist já foi enviado anteriormente e não pode ser reenviado.");
+          alert("Este checklist jÃ¡ foi enviado anteriormente e nÃ£o pode ser reenviado.");
         } else if (queued.reason === 'DUPLICADO_LOCAL') {
-          toastManager.show('Checklist já existe na fila de sincronização.', 'warning');
+          toastManager.show('Checklist jÃ¡ existe na fila de sincronizaÃ§Ã£o.', 'warning');
           uiBuilder.switchTab(null, 'sync');
         } else {
           alert("Falha ao salvar na fila offline.");
         }
       } else {
         backupManager.addEntry('OPERACAO', { statusEnvio: 'PENDENTE_SYNC', payload, syncId: meta.syncId, fingerprint: meta.fingerprint });
-        alert("📡 MODO OFFLINE!\n\nChecklist salvo no dispositivo.");
+        alert("ðŸ“¡ MODO OFFLINE!\n\nChecklist salvo no dispositivo.");
         uiBuilder.clearDependentFields();
-        if (sp) sp.value = '';
         const pending = await dbManager.getAllPending();
         this.currentPendingPlacas = (pending || []).filter(pd => pd.type === 'OPERACAO').map(pd => pd.payload.placa);
         dashboardEngine.renderExecTable(this.lastParsedData, this.currentPendingPlacas);
@@ -466,13 +464,13 @@ const perdasController = {
     if (!document.getElementById('listaLotesGlobais')) c.insertAdjacentHTML('beforebegin', '<datalist id="listaLotesGlobais"></datalist>');
     c.querySelectorAll('.perda-row').forEach(row => row.remove());
     for (let i = 1; i <= this.maxRows; i++) {
-      c.insertAdjacentHTML('beforeend', `<div class="grid-row perda-row" id="perdaRow_${i}" style="grid-template-columns: minmax(200px,3fr) 2fr 1.4fr 1.2fr 2fr;"><div class="grid-cell" data-label="Produto"><input type="text" list="listaProdutosPerda" id="perdaProd_${i}" placeholder="Comece a digitar..." onchange="perdasController.onPerdaProdChange(${i})" autocomplete="off"></div><div class="grid-cell" data-label="Lote (Saldo)"><input type="text" list="listaLotesGlobais" id="perdaLote_${i}" placeholder="Lote (Ex: 3574)" autocomplete="off" onchange="perdasController.onPerdaLoteChange(${i})" oninput="perdasController.limparSaldo(${i})"><div id="perdaSaldo_${i}" style="font-size: 11px; font-weight: 800; color: #475569; margin-top: 4px;"></div></div><div class="grid-cell" data-label="Qtd (t)"><input type="number" id="perdaQtd_${i}" step="0.001" min="0" placeholder="Ex: 2.500" oninput="perdasController.updateGridVisibility()"></div><div class="grid-cell" data-label="Tipo de Perda"><select id="perdaTipo_${i}"><option value="">Motivo...</option><option value="Processo">Processo</option><option value="Carregamento">Carregamento</option><option value="Avaria">Avaria</option></select></div><div class="grid-cell" data-label="Observação"><input type="text" id="perdaObs_${i}" placeholder="Detalhes..."></div></div>`);
+      c.insertAdjacentHTML('beforeend', `<div class="grid-row perda-row" id="perdaRow_${i}" style="grid-template-columns: minmax(200px,3fr) 2fr 1.4fr 1.2fr 2fr;"><div class="grid-cell" data-label="Produto"><input type="text" list="listaProdutosPerda" id="perdaProd_${i}" placeholder="Comece a digitar..." onchange="perdasController.onPerdaProdChange(${i})" autocomplete="off"></div><div class="grid-cell" data-label="Lote (Saldo)"><input type="text" list="listaLotesGlobais" id="perdaLote_${i}" placeholder="Lote (Ex: 3574)" autocomplete="off" onchange="perdasController.onPerdaLoteChange(${i})" oninput="perdasController.limparSaldo(${i})"><div id="perdaSaldo_${i}" style="font-size: 11px; font-weight: 800; color: #475569; margin-top: 4px;"></div></div><div class="grid-cell" data-label="Qtd (t)"><input type="number" id="perdaQtd_${i}" step="0.001" min="0" placeholder="Ex: 2.500" oninput="perdasController.updateGridVisibility()"></div><div class="grid-cell" data-label="Tipo de Perda"><select id="perdaTipo_${i}"><option value="">Motivo...</option><option value="Processo">Processo</option><option value="Carregamento">Carregamento</option><option value="Avaria">Avaria</option></select></div><div class="grid-cell" data-label="ObservaÃ§Ã£o"><input type="text" id="perdaObs_${i}" placeholder="Detalhes..."></div></div>`);
     }
   },
 
   addPerdaRow() {
     if (this.visibleRows >= this.maxRows) {
-      toastManager.show(`Limite atingido: máximo de ${this.maxRows} blocos de perda.`, 'warning');
+      toastManager.show(`Limite atingido: mÃ¡ximo de ${this.maxRows} blocos de perda.`, 'warning');
       return;
     }
     this.visibleRows++;
@@ -496,7 +494,7 @@ const perdasController = {
       const atingiuMax = this.visibleRows >= this.maxRows;
       btn.disabled = atingiuMax;
       btn.style.opacity = atingiuMax ? '0.65' : '1';
-      btn.textContent = atingiuMax ? `➕ LIMITE DE ${this.maxRows} BLOCOS` : `➕ ADICIONAR BLOCO DE PERDA (${this.visibleRows}/${this.maxRows})`;
+      btn.textContent = atingiuMax ? `âž• LIMITE DE ${this.maxRows} BLOCOS` : `âž• ADICIONAR BLOCO DE PERDA (${this.visibleRows}/${this.maxRows})`;
     }
   },
 
@@ -560,11 +558,11 @@ const perdasController = {
       loteInput.style.borderColor = 'var(--success)';
       prodInput.style.borderColor = 'var(--success)';
     } else if (matches.length > 1) {
-      lblSaldo.innerText = `⚠️ ${matches.length} lotes com o final ${val}.`;
+      lblSaldo.innerText = `âš ï¸ ${matches.length} lotes com o final ${val}.`;
       lblSaldo.style.color = 'var(--warning)';
       loteInput.style.borderColor = 'var(--warning)';
     } else {
-      lblSaldo.innerText = `❌ Não encontrado.`;
+      lblSaldo.innerText = `âŒ NÃ£o encontrado.`;
       lblSaldo.style.color = 'var(--danger)';
       loteInput.style.borderColor = 'var(--danger)';
     }
@@ -589,7 +587,7 @@ const perdasController = {
     if (this.isSubmitting) return;
     const pa = document.getElementById('perdaAcomp');
     const acomp = pa ? pa.value : '';
-    if (!acomp) return alert('⚠️ Responsável não identificado.');
+    if (!acomp) return alert('âš ï¸ ResponsÃ¡vel nÃ£o identificado.');
     const perdas = [];
 
     for (let i = 1; i <= this.maxRows; i++) {
@@ -600,14 +598,14 @@ const perdasController = {
       const pt = document.getElementById(`perdaTipo_${i}`);
       const po = document.getElementById(`perdaObs_${i}`);
       if (pRaw || lRaw || q > 0) {
-        if (!pRaw || !lRaw || q <= 0) return alert(`⚠️ A Linha ${i} está incompleta.`);
+        if (!pRaw || !lRaw || q <= 0) return alert(`âš ï¸ A Linha ${i} estÃ¡ incompleta.`);
         const loteValido = (uiBuilder.lotesFlat || []).find(item => item.lote.toUpperCase() === lRaw.toUpperCase() && normalizeName(item.produto) === p);
-        if (!loteValido) return alert(`⚠️ O Lote "${lRaw}" não existe (Linha ${i}).`);
-        perdas.push({ produto: pRaw, qtd: q, lote: lRaw, tipo: pt ? pt.value || 'Não informado' : 'Não informado', obs: po ? po.value : '' });
+        if (!loteValido) return alert(`âš ï¸ O Lote "${lRaw}" nÃ£o existe (Linha ${i}).`);
+        perdas.push({ produto: pRaw, qtd: q, lote: lRaw, tipo: pt ? pt.value || 'NÃ£o informado' : 'NÃ£o informado', obs: po ? po.value : '' });
       }
     }
 
-    if (perdas.length === 0) return alert('⚠️ Preencha ao menos uma perda.');
+    if (perdas.length === 0) return alert('âš ï¸ Preencha ao menos uma perda.');
     uiBuilder.toggleLoader(true, "Transmitindo Baixa...");
     const payload = { tipo: 'BAIXA_PERDA', dataHora: new Date().toLocaleString('pt-BR'), acomp, perdas };
     const meta = dbManager.buildMeta('BAIXA_PERDA', payload);
@@ -633,11 +631,11 @@ const perdasController = {
       if (resp.success) {
         dbManager.markSent(meta.syncId, meta.fingerprint, 'BAIXA_PERDA', payload);
         backupManager.addEntry('BAIXA_PERDA', { statusEnvio: 'ONLINE', payload, syncId: meta.syncId });
-        alert('✅ PERDA REGISTRADA COM SUCESSO!');
+        alert('âœ… PERDA REGISTRADA COM SUCESSO!');
         uiBuilder.updateGlobalUpdateTimestamp();
         this.limparPerda();
       } else {
-        alert("❌ ERRO DO SCRIPT:\n\n" + resp.message);
+        alert("âŒ ERRO DO SCRIPT:\n\n" + resp.message);
       }
     } catch(err) {
       const queued = await dbManager.savePending('BAIXA_PERDA', payload, {
@@ -648,12 +646,12 @@ const perdasController = {
       });
       if (queued.ok) {
         backupManager.addEntry('BAIXA_PERDA', { statusEnvio: 'PENDENTE_SYNC', payload, syncId: meta.syncId });
-        alert("📡 MODO OFFLINE!\n\nSalvo no dispositivo.");
+        alert("ðŸ“¡ MODO OFFLINE!\n\nSalvo no dispositivo.");
         this.limparPerda();
       } else if (queued.reason === 'JA_ENVIADO') {
-        alert("Esse registro de perda já foi enviado.");
+        alert("Esse registro de perda jÃ¡ foi enviado.");
       } else if (queued.reason === 'DUPLICADO_LOCAL') {
-        toastManager.show('Esse registro de perda já está na fila.', 'warning');
+        toastManager.show('Esse registro de perda jÃ¡ estÃ¡ na fila.', 'warning');
       }
       syncManager.updateStatus(navigator.onLine);
     } finally {
@@ -668,7 +666,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     await appController.initApp();
   } catch (error) {
-    reportClientError(`Falha na inicialização: ${error.message}`);
+    reportClientError(`Falha na inicializaÃ§Ã£o: ${error.message}`);
     const fe = document.getElementById('fatalError');
     if (fe) fe.style.display = 'block';
   }

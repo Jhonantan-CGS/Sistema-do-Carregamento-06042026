@@ -6,17 +6,17 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://sheets.googleapis.com https://*.googleapis.com https://*.googleusercontent.com https://api.open-meteo.com; worker-src 'self' blob:; font-src 'self' data:; manifest-src 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#08101F">
-<meta name="description" content="Sistema operacional CYSY Expedição e Carregamento">
+<meta name="description" content="Sistema operacional CYSY ExpediÃ§Ã£o e Carregamento">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r09" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r09">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r09">
-  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r09">
-  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r09">
-<title>CYSY Expedição e Carregamento</title>
+<meta name="apple-mobile-web-app-title" content="CYSY ExpediÃ§Ã£o">
+<link rel="icon" href="./assets/icons/favicon.png?v=20260409r11" type="image/png">
+<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r11">
+<link rel="manifest" href="./manifest.webmanifest?v=20260409r11">
+<link rel="stylesheet" href="./assets/css/modern.css?v=20260409r11">
+<link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r11">
+<title>CYSY ExpediÃ§Ã£o e Carregamento</title>
 <style>
 :root{
     color-scheme: dark;
@@ -692,14 +692,14 @@
     font-size: 0;
   }
   .map-card-more summary::after {
-    content: '▾';
+    content: 'â–¾';
     float: right;
     font-size: 11px;
     color: #1D4ED8;
     margin-left: 8px;
   }
   .map-card-more[open] summary::after {
-    content: '▴';
+    content: 'â–´';
   }
   .btn-secondary {
     min-height: 40px;
@@ -2217,14 +2217,14 @@
     font-size: 0;
   }
   .map-tech-card summary::after {
-    content: '▾';
+    content: 'â–¾';
     float: right;
     font-size: 11px;
     color: #0F172A;
     margin-left: 8px;
   }
   .map-tech-card[open] summary::after {
-    content: '▴';
+    content: 'â–´';
   }
   .map-tech-counter {
     font-size: 12px;
@@ -6380,36 +6380,36 @@
 
   <div id="loginOverlay" class="overlay">
     <div class="modal-box">
-      <img src="./assets/logo.svg" width="104" style="margin: 0 auto; border-radius:14px; box-shadow:0 0 40px rgba(0,212,255,0.4);" alt="CYSY Expedição e Carregamento">
-      <h2>Acesso CYSY Expedição</h2>
+      <img src="./assets/logo.svg" width="104" style="margin: 0 auto; border-radius:14px; box-shadow:0 0 40px rgba(0,212,255,0.4);" alt="CYSY ExpediÃ§Ã£o e Carregamento">
+      <h2>Acesso CYSY ExpediÃ§Ã£o</h2>
       <p>Informe <strong>Nome e Sobrenome</strong> para habilitar rastreabilidade e alertas operacionais do sistema.</p>
-      <input type="text" id="loginNameInput" placeholder="Nome e sobrenome" autocomplete="off">
+      <input type="text" id="loginNameInput" placeholder="Nome e sobrenome" autocomplete="off" aria-label="Nome e sobrenome do responsÃ¡vel">
       <button class="btn-success" onclick="loginManager.entrar()" style="height: 56px;">ENTRAR</button>
     </div>
   </div>
 
   <div id="globalAlertOverlay" class="overlay priority-alert-overlay">
-    <div id="globalAlertStack" class="priority-alert-stack" role="dialog" aria-label="Alertas prioritários pendentes"></div>
+    <div id="globalAlertStack" class="priority-alert-stack" role="dialog" aria-label="Alertas prioritÃ¡rios pendentes"></div>
   </div>
 
   <div id="loaderOverlay" class="overlay" style="flex-direction: column; gap: 16px;">
-    <div style="font-size: 40px; animation: pop 1s infinite alternate;">📦</div>
+    <div style="font-size: 40px; animation: pop 1s infinite alternate;">ðŸ“¦</div>
     <p id="loaderText" style="color:white; font-family:'Montserrat'; font-weight:900; font-size:16px; letter-spacing: 1px;">Sincronizando...</p>
   </div>
 
   <header>
     <div class="header-main">
       <div class="header-brand">
-          <img src="./assets/logo.svg" class="logo-3d" style="width:73px; height:73px; border-radius:14px; object-fit:contain;" alt="CYSY Expedição e Carregamento">
+          <img src="./assets/logo.svg" class="logo-3d" style="width:73px; height:73px; border-radius:14px; object-fit:contain;" alt="CYSY ExpediÃ§Ã£o e Carregamento">
         <div class="header-brand-copy">
           <div class="header-title-row">
-              <h1 class="header-title">CYSY Expedição e Carregamento</h1>
-            <div class="status-badge syncing" id="netStatusBadge" style="width: fit-content; font-size:11px;">● Conectando...</div>
-            <div id="headerAlertCounter" class="status-badge header-alert-counter" onclick="priorityAlertManager.openTopAlert()" title="Abrir alerta prioritário">🚨 0 alertas</div>
+              <h1 class="header-title">CYSY ExpediÃ§Ã£o e Carregamento</h1>
+            <div class="status-badge syncing" id="netStatusBadge" style="width: fit-content; font-size:11px;">â— Conectando...</div>
+            <button type="button" id="headerAlertCounter" class="status-badge header-alert-counter header-alert-btn" onclick="priorityAlertManager.openTopAlert()" title="Abrir alerta prioritÃ¡rio" aria-label="Abrir alerta prioritÃ¡rio">ðŸš¨ 0 alertas</button>
           </div>
           <div class="header-subline">
             <div id="userLoggedName" class="header-user"></div>
-            <div id="lastUpdateText" class="header-last-update">Última: --</div>
+            <div id="lastUpdateText" class="header-last-update">Ãšltima: --</div>
           </div>
         </div>
       </div>
@@ -6417,10 +6417,10 @@
         <div class="header-meta">
           <div id="clockWidget" class="header-clock">--:--:--</div>
         </div>
-        <div class="header-actions" aria-label="Ações rápidas">
+        <div class="header-actions" aria-label="AÃ§Ãµes rÃ¡pidas">
           <button type="button" id="syncStatusBtn" class="header-action-btn quick-action-btn quick-action-sync" onclick="uiBuilder.toggleSyncDrawer()">Sincronizar</button>
           <button type="button" class="header-action-btn quick-action-btn refresh" onclick="appController.handleRefresh(true)">Atualizar</button>
-          <button type="button" class="header-action-btn quick-action-btn quick-action-permissions" onclick="permissionManager.requestAll(true); toastManager.show('Solicitação de permissões executada.', 'info');">Permissões</button>
+          <button type="button" class="header-action-btn quick-action-btn quick-action-permissions" onclick="permissionManager.requestAll(true); toastManager.show('SolicitaÃ§Ã£o de permissÃµes executada.', 'info');">PermissÃµes</button>
           <button type="button" class="header-action-btn quick-action-btn exit" onclick="loginManager.logout()">Sair</button>
         </div>
       </div>
@@ -6428,69 +6428,69 @@
 
     <div class="weather-bar">
       <div class="weather-stats" style="font-size:12px;">
-        <span style="color:var(--neon-cyan); font-weight:900;">📍 JAGUARUNA/SC • BASE CYSY</span>
-        <span>🌡️ Hoje: <b id="wTempNow">--</b> | Amanhã: <b id="wTempTom">--</b></span>
-        <span>💨 Vento: <b id="wWindNow">--</b></span>
-        <span>🌧️ Chuva: <b id="wRainTom">--</b></span>
-        <span>☀️ UV: <b id="wUvTom">--</b></span>
+        <span style="color:var(--neon-cyan); font-weight:900;">ðŸ“ JAGUARUNA/SC â€¢ BASE CYSY</span>
+        <span>ðŸŒ¡ï¸ Hoje: <b id="wTempNow">--</b> | AmanhÃ£: <b id="wTempTom">--</b></span>
+        <span>ðŸ’¨ Vento: <b id="wWindNow">--</b></span>
+        <span>ðŸŒ§ï¸ Chuva: <b id="wRainTom">--</b></span>
+        <span>â˜€ï¸ UV: <b id="wUvTom">--</b></span>
         <span id="weatherConditionIcon" style="margin-left:8px;font-size:14px;"></span>
       </div>
       <div id="priorityAlertBar" class="priority-alert-bar" data-severity="danger">
         <div class="priority-alert-copy">
-          <div id="priorityAlertChip" class="priority-alert-chip">🚨 Prioridade máxima</div>
+          <div id="priorityAlertChip" class="priority-alert-chip">ðŸš¨ Prioridade mÃ¡xima</div>
           <div id="priorityAlertTitleBar" class="priority-alert-title">Nenhum alerta pendente.</div>
-          <div id="priorityAlertBodyBar" class="priority-alert-body">Quando houver alertas críticos, eles aparecerão aqui até confirmação do usuário.</div>
+          <div id="priorityAlertBodyBar" class="priority-alert-body">Quando houver alertas crÃ­ticos, eles aparecerÃ£o aqui atÃ© confirmaÃ§Ã£o do usuÃ¡rio.</div>
         </div>
         <div class="priority-alert-actions">
           <button type="button" class="priority-alert-btn secondary" onclick="priorityAlertManager.openTopAlert()">Ver alerta</button>
-          <button type="button" class="priority-alert-btn primary" onclick="priorityAlertManager.acknowledgeTopAlert()">Confirmar visualização</button>
+          <button type="button" class="priority-alert-btn primary" onclick="priorityAlertManager.acknowledgeTopAlert()">Confirmar visualizaÃ§Ã£o</button>
         </div>
       </div>
     </div>
 
-    <div class="tabs">
-      <div class="tab-btn tab-btn-pending active" data-tab="dash" onclick="uiBuilder.switchTab(event, 'dash')">
-        <span class="tab-icon-3d" aria-hidden="true">📋</span>
+    <div class="tabs" role="tablist" aria-label="NavegaÃ§Ã£o principal">
+      <div class="tab-btn tab-btn-pending active" data-tab="dash" role="tab" id="tab-btn-dash" tabindex="0" aria-selected="true" aria-controls="tab-dash" onclick="uiBuilder.switchTab(event, 'dash')" onkeydown="uiBuilder.onTabKeydown(event)">
+        <span class="tab-icon-3d" aria-hidden="true">ðŸ“‹</span>
         <span class="tab-copy"><strong>Pendentes</strong><small>Lotes e prioridades</small></span>
       </div>
-      <div class="tab-btn tab-btn-release" data-tab="op" onclick="uiBuilder.switchTab(event, 'op')">
-        <span class="tab-icon-3d" aria-hidden="true">🚛</span>
-        <span class="tab-copy"><strong>Liberação</strong><small>Checklist e envio</small></span>
+      <div class="tab-btn tab-btn-release" data-tab="op" role="tab" id="tab-btn-op" tabindex="-1" aria-selected="false" aria-controls="tab-op" onclick="uiBuilder.switchTab(event, 'op')" onkeydown="uiBuilder.onTabKeydown(event)">
+        <span class="tab-icon-3d" aria-hidden="true">ðŸš›</span>
+        <span class="tab-copy"><strong>LiberaÃ§Ã£o</strong><small>Checklist e envio</small></span>
       </div>
-      <div class="tab-btn tab-btn-loss" data-tab="perdas" onclick="uiBuilder.switchTab(event, 'perdas')">
-        <span class="tab-icon-3d" aria-hidden="true">⚠️</span>
-        <span class="tab-copy"><strong>Perdas</strong><small>Baixas e análise</small></span>
+      <div class="tab-btn tab-btn-loss" data-tab="perdas" role="tab" id="tab-btn-perdas" tabindex="-1" aria-selected="false" aria-controls="tab-perdas" onclick="uiBuilder.switchTab(event, 'perdas')" onkeydown="uiBuilder.onTabKeydown(event)">
+        <span class="tab-icon-3d" aria-hidden="true">âš ï¸</span>
+        <span class="tab-copy"><strong>Perdas</strong><small>Baixas e anÃ¡lise</small></span>
       </div>
-      <div class="tab-btn tab-btn-sync" data-tab="sync" onclick="uiBuilder.switchTab(event, 'sync')">
-        <span class="tab-icon-3d" aria-hidden="true">🔄</span>
-        <span class="tab-copy"><strong>Sincronização</strong><small>Fila e integridade</small></span>
+      <div class="tab-btn tab-btn-sync" data-tab="sync" role="tab" id="tab-btn-sync" tabindex="-1" aria-selected="false" aria-controls="tab-sync" onclick="uiBuilder.switchTab(event, 'sync')" onkeydown="uiBuilder.onTabKeydown(event)">
+        <span class="tab-icon-3d" aria-hidden="true">ðŸ”„</span>
+        <span class="tab-copy"><strong>SincronizaÃ§Ã£o</strong><small>Fila e integridade</small></span>
       </div>
     </div>
   </header>
 
   <div class="container">
     <div id="fatalError" style="display:none; background: var(--danger-bg); border: 2px solid var(--danger); border-radius: var(--radius-lg); padding: 24px; text-align: center; color: var(--danger); font-family: 'Montserrat'; font-weight: 800; font-size: 16px; margin-bottom: 20px;">
-      ❌ Falha de Comunicação.<br><span style="font-size:12px; color:#7F1D1D;">Verifique sua conexão ou limpe os Logs no Terminal. O aplicativo continua rodando offline.</span><br>
-      <button class="btn-danger" onclick="appController.handleRefresh(true)" style="margin-top: 12px; border-radius: 12px;">🔄 TENTAR NOVAMENTE</button>
+      âŒ Falha de ComunicaÃ§Ã£o.<br><span style="font-size:12px; color:#7F1D1D;">Verifique sua conexÃ£o ou limpe os Logs no Terminal. O aplicativo continua rodando offline.</span><br>
+      <button class="btn-danger" onclick="appController.handleRefresh(true)" style="margin-top: 12px; border-radius: 12px;">ðŸ”„ TENTAR NOVAMENTE</button>
     </div>
 
-    <div id="tab-dash" class="tab-content active">
+    <div id="tab-dash" class="tab-content active" role="tabpanel" aria-labelledby="tab-btn-dash" aria-hidden="false">
       <div id="bannerContainer"></div>
       <div id="tabelaDiariaContainer" class="anim-slide-up"></div>
     </div>
 
-    <div id="tab-op" class="tab-content">
+    <div id="tab-op" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-op" aria-hidden="true">
       <section class="section anim-slide-up">
-        <div class="section-header"><h2>🏢 Dados da Operação</h2></div>
+        <div class="section-header"><h2>ðŸ¢ Dados da OperaÃ§Ã£o</h2></div>
         <div class="grid-form">
           <div class="form-group"><label>Data e Hora</label><input type="text" id="inpDataHora" readonly></div>
-          <div class="form-group"><label>Responsável Operacional</label><input type="text" id="selAcomp" readonly></div>
+          <div class="form-group"><label>ResponsÃ¡vel Operacional</label><input type="text" id="selAcomp" readonly></div>
           <div class="form-group" style="grid-column: 1 / -1;">
-            <label>Buscar Carga por Placa 🚛 *</label>
-            <select id="selPlacaBusca" onchange="uiBuilder.onPlacaChange()" style="border-color: var(--neon-cyan); border-width: 2px;"><option value="">Aguardando sincronização...</option></select>
+            <label>Buscar Carga por Placa ðŸš› *</label>
+            <select id="selPlacaBusca" onchange="uiBuilder.onPlacaChange()" style="border-color: var(--neon-cyan); border-width: 2px;"><option value="">Aguardando sincronizaÃ§Ã£o...</option></select>
           </div>
           <div class="form-group" style="grid-column: 1 / -1;">
-            <label>Buscar Carga por Cliente 👤 *</label>
+            <label>Buscar Carga por Cliente ðŸ‘¤ *</label>
             <select id="selClienteBusca" onchange="uiBuilder.onClienteChange()" style="border-color: var(--neon-cyan); border-width: 2px;"><option value="">Selecione o Cliente...</option></select>
           </div>
           <div id="pedidosContainer" style="grid-column: 1 / -1; display: none;">
@@ -6501,20 +6501,20 @@
       </section>
 
       <section class="section anim-slide-up">
-        <div class="section-header"><h2>🚛 Transporte</h2></div>
+        <div class="section-header"><h2>ðŸš› Transporte</h2></div>
         <div class="grid-form">
           <div class="form-group">
-            <label>Placa do Veículo *</label>
+            <label>Placa do VeÃ­culo *</label>
             <input type="text" id="inpPlaca" autocomplete="off" placeholder="Ex: ABC-1234" oninput="uiBuilder.verificarPlacaJaCarregou()">
-            <div id="badgeJaCarregou" style="display:none; color:var(--danger); font-size:11px; font-weight:800; margin-top:4px;">🚨 JÁ CARREGOU HOJE</div>
+            <div id="badgeJaCarregou" style="display:none; color:var(--danger); font-size:11px; font-weight:800; margin-top:4px;">ðŸš¨ JÃ CARREGOU HOJE</div>
           </div>
           <div class="form-group"><label>Motorista</label><input type="text" id="inpMotorista" autocomplete="off"></div>
-          <div class="form-group" style="grid-column: 1 / -1;"><label>Observações do Documento</label><textarea id="inpObs" oninput="uiBuilder.verificarPlacaJaCarregou()"></textarea></div>
+          <div class="form-group" style="grid-column: 1 / -1;"><label>ObservaÃ§Ãµes do Documento</label><textarea id="inpObs" oninput="uiBuilder.verificarPlacaJaCarregou()"></textarea></div>
         </div>
       </section>
 
       <section class="section anim-slide-up">
-        <div class="section-header"><h2>📦 Produtos e Lotes</h2></div>
+        <div class="section-header"><h2>ðŸ“¦ Produtos e Lotes</h2></div>
         <div class="table-wrapper">
           <div class="unified-grid" id="materialsContainer">
             <div class="grid-header" style="grid-template-columns: minmax(200px, 3fr) 1.2fr 2fr 1.2fr 2fr;">
@@ -6525,56 +6525,56 @@
       </section>
 
       <section class="section anim-slide-up">
-        <div class="section-header"><h2>🛡️ Checklist</h2></div>
+        <div class="section-header"><h2>ðŸ›¡ï¸ Checklist</h2></div>
         <div class="grid-check" id="checklistGrid"></div>
       </section>
 
       <section class="section anim-slide-up">
-        <div class="section-header"><h2>📷 Fotos (Opcional)</h2></div>
-        <p style="font-size:12px; font-weight:700; color:#475569; margin-bottom:12px;">As fotos do checklist são opcionais e podem ser anexadas apenas quando necessário.</p>
+        <div class="section-header"><h2>ðŸ“· Fotos (Opcional)</h2></div>
+        <p style="font-size:12px; font-weight:700; color:#475569; margin-bottom:12px;">As fotos do checklist sÃ£o opcionais e podem ser anexadas apenas quando necessÃ¡rio.</p>
         <div class="grid-form" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-          <div class="form-group"><label>Frente (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileFrente" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewFrente', 'base64Frente')"><div class="img-preview" id="previewFrente"><span>📷 Câmera</span></div><input type="hidden" id="base64Frente"></div></div>
-          <div class="form-group"><label>Traseira (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileTraseira" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewTraseira', 'base64Traseira')"><div class="img-preview" id="previewTraseira"><span>📷 Câmera</span></div><input type="hidden" id="base64Traseira"></div></div>
-          <div class="form-group"><label>Assoalho (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileAssoalho" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewAssoalho', 'base64Assoalho')"><div class="img-preview" id="previewAssoalho"><span>📷 Câmera</span></div><input type="hidden" id="base64Assoalho"></div></div>
+          <div class="form-group"><label>Frente (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileFrente" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewFrente', 'base64Frente')"><div class="img-preview" id="previewFrente"><span>ðŸ“· CÃ¢mera</span></div><input type="hidden" id="base64Frente"></div></div>
+          <div class="form-group"><label>Traseira (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileTraseira" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewTraseira', 'base64Traseira')"><div class="img-preview" id="previewTraseira"><span>ðŸ“· CÃ¢mera</span></div><input type="hidden" id="base64Traseira"></div></div>
+          <div class="form-group"><label>Assoalho (Opcional)</label><div class="file-upload-wrapper"><input type="file" id="fileAssoalho" accept="image/*" capture="environment" onchange="uiBuilder.handleImageUpload(event, 'previewAssoalho', 'base64Assoalho')"><div class="img-preview" id="previewAssoalho"><span>ðŸ“· CÃ¢mera</span></div><input type="hidden" id="base64Assoalho"></div></div>
         </div>
       </section>
 
       <section class="section anim-slide-up" style="background: transparent; border: none; padding: 0; box-shadow: none;">
         <div class="grid-form" style="grid-template-columns: 1fr 1fr;">
-          <button class="btn-success" style="height: 60px;" onclick="appController.submitFinal('APROVADO')">✅ LIBERAR VEÍCULO</button>
-          <button class="btn-danger" style="height: 60px;" onclick="appController.submitFinal('BLOQUEADO')">⛔ BLOQUEAR</button>
+          <button class="btn-success" style="height: 60px;" onclick="appController.submitFinal('APROVADO')">âœ… LIBERAR VEÃCULO</button>
+          <button class="btn-danger" style="height: 60px;" onclick="appController.submitFinal('BLOQUEADO')">â›” BLOQUEAR</button>
         </div>
       </section>
     </div>
 
-    <div id="tab-perdas" class="tab-content">
+    <div id="tab-perdas" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-perdas" aria-hidden="true">
       <section class="section anim-slide-up">
-        <div class="section-header"><h2>📉 Baixa de Perdas</h2></div>
+        <div class="section-header"><h2>ðŸ“‰ Baixa de Perdas</h2></div>
         <div class="grid-form" style="margin-bottom: 20px;">
-          <div class="form-group"><label>Responsável</label><input type="text" id="perdaAcomp" readonly></div>
+          <div class="form-group"><label>ResponsÃ¡vel</label><input type="text" id="perdaAcomp" readonly></div>
         </div>
         <div class="table-wrapper">
           <div class="unified-grid" id="perdasContainer">
             <div class="grid-header" style="grid-template-columns: minmax(200px,3fr) 2fr 1.4fr 1.2fr 2fr;">
-              <div data-label="Produto">Produto</div><div data-label="Lote">Lote</div><div data-label="Qtd (t)">Qtd (t)</div><div data-label="Tipo">Tipo</div><div data-label="Obs">Observação</div>
+              <div data-label="Produto">Produto</div><div data-label="Lote">Lote</div><div data-label="Qtd (t)">Qtd (t)</div><div data-label="Tipo">Tipo</div><div data-label="Obs">ObservaÃ§Ã£o</div>
             </div>
           </div>
         </div>
         <div class="grid-form" style="margin-top: 24px;">
-          <button type="button" id="btnAddPerdaRow" class="btn btn-secondary btn-loss-add" onclick="perdasController.addPerdaRow()" style="height: 60px;">➕ ADICIONAR BLOCO DE PERDA</button>
-          <button class="btn-success" onclick="perdasController.submitPerda()" style="height: 60px;">✅ REGISTRAR BAIXA</button>
+          <button type="button" id="btnAddPerdaRow" class="btn btn-secondary btn-loss-add" onclick="perdasController.addPerdaRow()" style="height: 60px;">âž• ADICIONAR BLOCO DE PERDA</button>
+          <button class="btn-success" onclick="perdasController.submitPerda()" style="height: 60px;">âœ… REGISTRAR BAIXA</button>
         </div>
       </section>
     </div>
 
-    <div id="tab-sync" class="tab-content">
+    <div id="tab-sync" class="tab-content" role="tabpanel" aria-labelledby="tab-btn-sync" aria-hidden="true">
       <section class="section anim-slide-up">
         <div class="section-header">
-          <h2>🔁 Central de Sincronização</h2>
+          <h2>ðŸ” Central de SincronizaÃ§Ã£o</h2>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-            <div id="syncOnlineState" class="status-badge syncing">● Sincronizando...</div>
-            <button class="btn btn-primary sync-cta" onclick="syncManager.processQueue()" style="min-height:44px; font-size:11px;">⟳ Sincronizar agora</button>
-            <button class="btn btn-secondary sync-retry" onclick="syncManager.retryAllErrors()" style="min-height:44px; font-size:11px;">↺ Reenviar erros</button>
+            <div id="syncOnlineState" class="status-badge syncing">â— Sincronizando...</div>
+            <button class="btn btn-primary sync-cta" onclick="syncManager.processQueue()" style="min-height:44px; font-size:11px;">âŸ³ Sincronizar agora</button>
+            <button class="btn btn-secondary sync-retry" onclick="syncManager.retryAllErrors()" style="min-height:44px; font-size:11px;">â†º Reenviar erros</button>
           </div>
         </div>
         <div class="sync-metrics">
@@ -6587,15 +6587,15 @@
             <div class="value" id="syncCountError">0</div>
           </div>
           <div class="sync-metric-card">
-            <div class="label">Enviados (histórico local)</div>
+            <div class="label">Enviados (histÃ³rico local)</div>
             <div class="value" id="syncCountSent">0</div>
           </div>
           <div class="sync-metric-card">
-            <div class="label">Operações offline</div>
+            <div class="label">OperaÃ§Ãµes offline</div>
             <div class="value" id="syncCountOps">0/10</div>
           </div>
         </div>
-        <div class="sync-status-note">Última sincronização: <span id="syncLastSyncAt">--</span></div>
+        <div class="sync-status-note">Ãšltima sincronizaÃ§Ã£o: <span id="syncLastSyncAt">--</span></div>
 
         <div class="sync-group">
           <h3>Aguardando internet / enviando</h3>
@@ -6613,8 +6613,8 @@
         </div>
         <div class="sync-utilities">
           <div class="sync-utilities-head">
-            <h3>Utilitários do sistema</h3>
-            <p>As ações administrativas foram movidas para cá para manter o painel principal mais direto.</p>
+            <h3>UtilitÃ¡rios do sistema</h3>
+            <p>As aÃ§Ãµes administrativas foram movidas para cÃ¡ para manter o painel principal mais direto.</p>
           </div>
           <div class="sync-utility-grid">
             <button type="button" id="installAppBtn" onclick="installManager.installApp()" title="Instalar aplicativo no dispositivo" class="header-action-btn" style="display:none;">Instalar app</button>
@@ -6629,20 +6629,20 @@
 
   <div id="faturamentoOverlay" class="overlay">
     <div class="modal-box" style="max-width: 520px; text-align: left;">
-      <h2 style="font-size:20px;">📤 Enviar para Faturamento</h2>
+      <h2 style="font-size:20px;">ðŸ“¤ Enviar para Faturamento</h2>
       <p style="margin-bottom: 6px;">Placa/Lote em fluxo: <strong id="faturamentoPlaca">-</strong></p>
       <p class="modal-support-copy">Anexe obrigatoriamente a <strong>imagem da carga pronta</strong> para concluir o envio ao faturamento.</p>
       <div class="form-group">
-        <label>Imagem da carga pronta (Obrigatória neste fluxo)</label>
+        <label>Imagem da carga pronta (ObrigatÃ³ria neste fluxo)</label>
         <div class="file-upload-wrapper">
           <input type="file" id="faturamentoImgInput" accept="image/*" capture="environment" onchange="truckStatusManager.onImagemFaturamentoChange(event)">
-          <div class="img-preview" id="faturamentoImgPreview"><span>📷 Anexar imagem da carga pronta</span></div>
+          <div class="img-preview" id="faturamentoImgPreview"><span>ðŸ“· Anexar imagem da carga pronta</span></div>
           <input type="hidden" id="faturamentoImgBase64">
         </div>
       </div>
       <div id="faturamentoError" style="display:none; color:#FCA5A5; background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.45); border-radius:8px; padding:10px; font-size:12px; font-weight:700;"></div>
       <div style="display:flex; gap:10px; margin-top:8px;">
-        <button class="btn-success" style="flex:1; min-height:48px;" onclick="truckStatusManager.confirmarFaturamentoComImagem()">✅ Confirmar envio com imagem</button>
+        <button class="btn-success" style="flex:1; min-height:48px;" onclick="truckStatusManager.confirmarFaturamentoComImagem()">âœ… Confirmar envio com imagem</button>
         <button type="button" class="modal-secondary-btn" onclick="truckStatusManager.fecharModalFaturamento()">Cancelar</button>
       </div>
     </div>
@@ -6651,15 +6651,15 @@
 
   <footer>
     <div class="watermark-content">
-<span>Jhonantan Cardoso Gonçalves, Totalis Systems- Plataforma Logística de Operação</span>
+<span>Jhonantan Cardoso GonÃ§alves, Totalis Systems- Plataforma LogÃ­stica de OperaÃ§Ã£o</span>
       <span class="footer-contact-chip">(48) 99215-9791</span>
     </div>
   </footer>
 
-  <script src="./assets/js/app-core-1.js?v=20260409r09"></script>
-  <script src="./assets/js/app-core-2.js?v=20260409r09"></script>
-  <script src="./assets/js/app-core-3.js?v=20260409r09"></script>
-  <script src="./assets/js/app-core-5.js?v=20260409r09"></script>
-  <script src="./assets/js/app-core-6.js?v=20260409r09"></script>
+<script src="./assets/js/app-core-1.js?v=20260409r11"></script>
+<script src="./assets/js/app-core-2.js?v=20260409r11"></script>
+<script src="./assets/js/app-core-3.js?v=20260409r11"></script>
+<script src="./assets/js/app-core-5.js?v=20260409r11"></script>
+<script src="./assets/js/app-core-6.js?v=20260409r11"></script>
 </body>
 </html>

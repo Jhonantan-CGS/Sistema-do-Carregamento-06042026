@@ -30,7 +30,7 @@ const loginManager = {
     }, 1200);
   },
   logout() {
-    if (!confirm("Deseja realmente sair? Dados não salvos serão perdidos.")) return;
+    if (!confirm("Deseja realmente sair? Dados nÃ£o salvos serÃ£o perdidos.")) return;
     soundManager.play('click');
     backupManager.addEntry('LOGOUT', { usuario: safeStorage.getItem('cysyUser', ''), dataHora: new Date().toLocaleString('pt-BR') });
     try { wakeLockManager.release(); } catch (_) {}
@@ -46,7 +46,7 @@ const loginManager = {
     if (op) op.value = name;
     if (perda) perda.value = name;
     if (userNameEl) {
-      userNameEl.innerText = `👤 ${name}`;
+      userNameEl.innerText = `ðŸ‘¤ ${name}`;
       userNameEl.style.display = 'block';
     }
   },
@@ -90,8 +90,8 @@ const dbManager = {
     const normalizedType = String(type || payload.tipo || '').toUpperCase();
 
     // Baixa de perdas precisa considerar os itens informados; antes
-    // gerávamos sempre o mesmo hash, fazendo qualquer nova baixa ser
-    // tratada como duplicada. Incluímos acompanhandte e cada linha de perda
+    // gerÃ¡vamos sempre o mesmo hash, fazendo qualquer nova baixa ser
+    // tratada como duplicada. IncluÃ­mos acompanhandte e cada linha de perda
     // na assinatura para permitir envios distintos.
     if (normalizedType === 'BAIXA_PERDA') {
       const perdasSig = Array.isArray(payload.perdas)
@@ -284,7 +284,7 @@ const dbManager = {
     return new Promise((resolve) => {
       if (!('indexedDB' in window)) {
         this.db = null;
-        debugEngine.log("IndexedDB indisponível. Usando fila em memória.", "warn");
+        debugEngine.log("IndexedDB indisponÃ­vel. Usando fila em memÃ³ria.", "warn");
         return resolve();
       }
       let settled = false;
@@ -311,12 +311,12 @@ const dbManager = {
         };
         req.onerror = () => {
           this.db = null;
-          debugEngine.log("Falha ao abrir IndexedDB. Fila offline em memória.", "warn");
+          debugEngine.log("Falha ao abrir IndexedDB. Fila offline em memÃ³ria.", "warn");
           done();
         };
         req.onblocked = () => {
           this.db = null;
-          debugEngine.log("IndexedDB bloqueado por outra aba. Fila offline em memória.", "warn");
+          debugEngine.log("IndexedDB bloqueado por outra aba. Fila offline em memÃ³ria.", "warn");
           done();
         };
       } catch (err) {
@@ -536,7 +536,7 @@ const backupManager = {
     return new Promise((resolve) => {
       if (!('indexedDB' in window)) {
         this.db = null;
-        debugEngine.log("Backup em IndexedDB indisponível. Usando memória.", "warn");
+        debugEngine.log("Backup em IndexedDB indisponÃ­vel. Usando memÃ³ria.", "warn");
         return resolve();
       }
       let settled = false;
@@ -629,16 +629,16 @@ const backupManager = {
     const file = event?.target?.files?.[0];
     if (!file) return;
     if (file.size > 25 * 1024 * 1024) {
-      toastManager.show('Backup excede 25MB e foi bloqueado por segurança.', 'error');
+      toastManager.show('Backup excede 25MB e foi bloqueado por seguranÃ§a.', 'error');
       return;
     }
     try {
       const raw = await file.text();
       const parsed = safeJsonParse(raw, null);
       if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.logs)) {
-        throw new Error('Formato inválido: logs ausentes.');
+        throw new Error('Formato invÃ¡lido: logs ausentes.');
       }
-      const confirma = confirm(`Restaurar backup com ${parsed.logs.length} log(s)? Os dados locais atuais serão sobrescritos.`);
+      const confirma = confirm(`Restaurar backup com ${parsed.logs.length} log(s)? Os dados locais atuais serÃ£o sobrescritos.`);
       if (!confirma) return;
       const datasets = parsed.datasets || {};
       const storageSnapshot = datasets.storageSnapshot || {};
@@ -739,7 +739,7 @@ const syncManager = {
   async init() {
     window.addEventListener('online', async () => {
       this.isOnline = true;
-      toastManager.show('Conexão restabelecida. Sincronização automática iniciada.', 'info');
+      toastManager.show('ConexÃ£o restabelecida. SincronizaÃ§Ã£o automÃ¡tica iniciada.', 'info');
       await this.updateStatus(true, { autoProcess: false });
       await this.processQueue();
     });
@@ -771,14 +771,14 @@ const syncManager = {
     if (!badge) return;
 
     if (this.isSyncing) {
-      badge.innerHTML = '🔄 Sincronizando...';
+      badge.innerHTML = 'ðŸ”„ Sincronizando...';
       badge.className = 'status-badge syncing';
     } else if (this.isOnline) {
-      badge.innerHTML = `🟢 ONLINE ${count > 0 ? `| Fila: ${count}` : ''}`;
+      badge.innerHTML = `ðŸŸ¢ ONLINE ${count > 0 ? `| Fila: ${count}` : ''}`;
       badge.className = 'status-badge online';
       if (count > 0 && options.autoProcess !== false) this.processQueue();
     } else {
-      badge.innerHTML = `🔴 OFFLINE ${count > 0 ? `| Fila: ${count}` : ''}`;
+      badge.innerHTML = `ðŸ”´ OFFLINE ${count > 0 ? `| Fila: ${count}` : ''}`;
       badge.className = 'status-badge offline';
     }
     await this.refreshSyncView();
@@ -839,7 +839,7 @@ const syncManager = {
             });
             successCount++;
           } else {
-            throw new Error(resp?.message || 'Resposta inválida do endpoint.');
+            throw new Error(resp?.message || 'Resposta invÃ¡lida do endpoint.');
           }
         } catch(e) {
           const msg = e?.message || 'Falha ao sincronizar';
@@ -877,12 +877,12 @@ const syncManager = {
       const all = await dbManager.getAllRecords({ includeSent: false });
       const row = all.find((item) => String(item.id) === String(idOrSyncId) || String(item.syncId) === String(idOrSyncId));
       if (!row) {
-        toastManager.show('Item não encontrado para reprocessamento.', 'warning');
+        toastManager.show('Item nÃ£o encontrado para reprocessamento.', 'warning');
         return;
       }
       if (dbManager.isSent(row.syncId, row.fingerprint) || dbManager.isFingerprintSent(row.fingerprint)) {
         await dbManager.markAsSent(row.id, { deduplicado: true, origem: 'retry' });
-        toastManager.show('Esse registro já foi enviado anteriormente.', 'info');
+        toastManager.show('Esse registro jÃ¡ foi enviado anteriormente.', 'info');
         await this.refreshSyncView();
         return;
       }
@@ -907,7 +907,7 @@ const syncManager = {
     const snapshot = await dbManager.getSyncSnapshot();
     const ids = (snapshot.errors || []).map((row) => row.id);
     if (ids.length === 0) {
-      toastManager.show('Não há itens com erro para reenviar.', 'info');
+      toastManager.show('NÃ£o hÃ¡ itens com erro para reenviar.', 'info');
       return;
     }
     if (!this.isOnline) {
@@ -922,12 +922,12 @@ const swManager = {
   async init() {
     if (!('serviceWorker' in navigator)) {
       debugEngine.updateSWStatus(false);
-      debugEngine.log("Service Worker não suportado neste navegador.", "warn");
+      debugEngine.log("Service Worker nÃ£o suportado neste navegador.", "warn");
       return;
     }
     try {
       await cacheJanitor.firstBootClear();
-  const buildTag = String(config.app.buildTag || '20260409r09');
+    const buildTag = String(config.app.buildTag || '20260409r11');
       const reg = await navigator.serviceWorker.register(`./service-worker.js?v=${buildTag}`, { scope: './' });
       if (navigator.storage?.persist) {
         try {
@@ -972,14 +972,14 @@ const installManager = {
   },
   getManualInstallMessage() {
     const context = this.getContext();
-    if (!context.isSecure) return 'Para instalar como aplicativo real no smartphone, abra este sistema pela URL HTTPS publicada. Arquivo local ou HTTP não habilitam instalação PWA.';
-    if (context.isIOSNonSafari) return 'No iPhone/iPad, abra este sistema no Safari e use Compartilhar > "Adicionar à Tela de Início". Chrome e Edge no iOS não instalam PWA diretamente.';
-    if (context.isSafari) return 'No Safari do iPhone/iPad: toque em Compartilhar e escolha "Adicionar à Tela de Início".';
-    if (context.isAndroid && context.isChromeLike) return 'No Chrome Android: use o botão de instalar. Se o prompt não aparecer, abra o menu ⋮ e toque em "Instalar aplicativo".';
-    if (context.isSamsungBrowser) return 'No Samsung Internet: abra o menu e use a opção de instalar ou adicionar à tela inicial.';
-    if (context.isEdge) return 'No Microsoft Edge: abra o menu e vá em Aplicativos > Instalar este site como aplicativo.';
-    if (context.isChromeLike) return 'No Chrome: use o menu do navegador e procure a opção de instalar este aplicativo.';
-    return 'A instalação automática não ficou disponível neste navegador. Use o menu do navegador para instalar ou adicionar à tela inicial.';
+    if (!context.isSecure) return 'Para instalar como aplicativo real no smartphone, abra este sistema pela URL HTTPS publicada. Arquivo local ou HTTP nÃ£o habilitam instalaÃ§Ã£o PWA.';
+    if (context.isIOSNonSafari) return 'No iPhone/iPad, abra este sistema no Safari e use Compartilhar > "Adicionar Ã  Tela de InÃ­cio". Chrome e Edge no iOS nÃ£o instalam PWA diretamente.';
+    if (context.isSafari) return 'No Safari do iPhone/iPad: toque em Compartilhar e escolha "Adicionar Ã  Tela de InÃ­cio".';
+    if (context.isAndroid && context.isChromeLike) return 'No Chrome Android: use o botÃ£o de instalar. Se o prompt nÃ£o aparecer, abra o menu â‹® e toque em "Instalar aplicativo".';
+    if (context.isSamsungBrowser) return 'No Samsung Internet: abra o menu e use a opÃ§Ã£o de instalar ou adicionar Ã  tela inicial.';
+    if (context.isEdge) return 'No Microsoft Edge: abra o menu e vÃ¡ em Aplicativos > Instalar este site como aplicativo.';
+    if (context.isChromeLike) return 'No Chrome: use o menu do navegador e procure a opÃ§Ã£o de instalar este aplicativo.';
+    return 'A instalaÃ§Ã£o automÃ¡tica nÃ£o ficou disponÃ­vel neste navegador. Use o menu do navegador para instalar ou adicionar Ã  tela inicial.';
   },
   updateButtonState() {
     const btn = document.getElementById('installAppBtn');
@@ -1004,21 +1004,21 @@ const installManager = {
     }
     if (context.isIOSNonSafari) {
       btn.textContent = 'Abrir no Safari';
-      btn.title = 'No iPhone/iPad, a instalação deve ser feita pelo Safari.';
+      btn.title = 'No iPhone/iPad, a instalaÃ§Ã£o deve ser feita pelo Safari.';
       return;
     }
     if (context.isSafari) {
       btn.textContent = 'Instalar no Safari';
-      btn.title = 'Mostrar os passos para adicionar o app à Tela de Início.';
+      btn.title = 'Mostrar os passos para adicionar o app Ã  Tela de InÃ­cio.';
       return;
     }
     if (context.isAndroid && context.isChromeLike) {
       btn.textContent = 'Instalar app';
-      btn.title = 'Se o prompt não abrir, use o menu do navegador para instalar.';
+      btn.title = 'Se o prompt nÃ£o abrir, use o menu do navegador para instalar.';
       return;
     }
     btn.textContent = 'Como instalar';
-    btn.title = 'Ver instruções de instalação para este navegador.';
+    btn.title = 'Ver instruÃ§Ãµes de instalaÃ§Ã£o para este navegador.';
   },
   init() {
     const btn = document.getElementById('installAppBtn');
@@ -1035,7 +1035,7 @@ const installManager = {
       event.preventDefault();
       this.deferredPrompt = event;
       this.updateButtonState();
-      toastManager.show('Aplicativo disponível para instalação.', 'success');
+      toastManager.show('Aplicativo disponÃ­vel para instalaÃ§Ã£o.', 'success');
     });
     window.addEventListener('appinstalled', () => {
       this.deferredPrompt = null;
@@ -1051,7 +1051,7 @@ const installManager = {
     const btn = document.getElementById('installAppBtn');
     const context = this.getContext();
     if (this.isStandalone()) {
-      toastManager.show('O aplicativo já está instalado neste dispositivo.', 'info');
+      toastManager.show('O aplicativo jÃ¡ estÃ¡ instalado neste dispositivo.', 'info');
       this.updateButtonState();
       return;
     }
@@ -1066,10 +1066,10 @@ const installManager = {
     this.deferredPrompt.prompt();
     const choice = await this.deferredPrompt.userChoice;
     if (choice?.outcome === 'accepted') {
-      toastManager.show('Instalação iniciada.', 'success');
+      toastManager.show('InstalaÃ§Ã£o iniciada.', 'success');
       if (btn) btn.style.display = 'none';
     } else {
-      toastManager.show('Instalação cancelada pelo usuário.', 'warning');
+      toastManager.show('InstalaÃ§Ã£o cancelada pelo usuÃ¡rio.', 'warning');
     }
     this.deferredPrompt = null;
     this.updateButtonState();
@@ -1143,7 +1143,7 @@ const versionManager = {
     safeStorage.setItem(key, current);
     safeStorage.setItem(`${key}:updatedAt`, new Date().toISOString());
     backupManager.addEntry('VERSAO_CACHE_LIMPO', { versaoAnterior: old || 'N/A', versaoAtual: current });
-    toastManager.show(`Cache técnico atualizado para versão ${current} sem perda de dados.`, 'info', 4200);
+    toastManager.show(`Cache tÃ©cnico atualizado para versÃ£o ${current} sem perda de dados.`, 'info', 4200);
   }
 };
 
@@ -1317,10 +1317,10 @@ const priorityAlertManager = {
   getIcon(alert = {}) {
     if (alert.icon) return alert.icon;
     const severity = this.normalizeSeverity(alert.severity);
-    if (severity === 'danger') return '🚨';
-    if (severity === 'warning') return '⚠️';
-    if (severity === 'success') return '✅';
-    return 'ℹ️';
+    if (severity === 'danger') return 'ðŸš¨';
+    if (severity === 'warning') return 'âš ï¸';
+    if (severity === 'success') return 'âœ…';
+    return 'â„¹ï¸';
   },
 
   getCurrentTabId() {
@@ -1340,7 +1340,7 @@ const priorityAlertManager = {
 
   getActionLabel(actionKey = '') {
     const action = String(actionKey || '');
-    if (action === 'tab_op') return '📋 Abrir liberação';
+    if (action === 'tab_op') return 'ðŸ“‹ Abrir liberaÃ§Ã£o';
     return '';
   },
 
@@ -1371,9 +1371,9 @@ const priorityAlertManager = {
       String(alert?.source || '').toLowerCase()
     ].join(' | ');
     const legacyTokens = [
-      'localização mapeada',
+      'localizaÃ§Ã£o mapeada',
       'localizacao mapeada',
-      'sem localização',
+      'sem localizaÃ§Ã£o',
       'sem localizacao',
       'mapeamento',
       'mapa dos lotes',
@@ -1501,11 +1501,11 @@ const priorityAlertManager = {
     lines.push(`Origem: ${alert.source || 'sistema'}`);
     lines.push(`Criado em: ${new Date(alert.createdAt || Date.now()).toLocaleString('pt-BR')}`);
     if (alert.lastNotifiedAt) {
-      lines.push(`Último lembrete: ${new Date(alert.lastNotifiedAt).toLocaleString('pt-BR')}`);
+      lines.push(`Ãšltimo lembrete: ${new Date(alert.lastNotifiedAt).toLocaleString('pt-BR')}`);
     } else {
-      lines.push('Último lembrete: aguardando primeira notificação');
+      lines.push('Ãšltimo lembrete: aguardando primeira notificaÃ§Ã£o');
     }
-    if (alert.actionLabel) lines.push(`Ação sugerida: ${alert.actionLabel}`);
+    if (alert.actionLabel) lines.push(`AÃ§Ã£o sugerida: ${alert.actionLabel}`);
     return lines.join('\n');
   },
 
@@ -1547,7 +1547,7 @@ const priorityAlertManager = {
       if (counter) {
         counter.classList.remove('show', 'critical', 'warning', 'info');
         counter.style.display = 'none';
-        counter.textContent = '🚨 0 alertas';
+        counter.textContent = 'ðŸš¨ 0 alertas';
       }
       return;
     }
@@ -1555,7 +1555,7 @@ const priorityAlertManager = {
     bar.style.display = '';
     bar.classList.add('active');
     bar.dataset.severity = this.normalizeSeverity(top.severity);
-    chip.textContent = `${this.getIcon(top)} Prioridade máxima • ${active.length} pendente(s)`;
+    chip.textContent = `${this.getIcon(top)} Prioridade mÃ¡xima â€¢ ${active.length} pendente(s)`;
     title.textContent = top.title;
     body.textContent = top.body;
     if (counter) {
@@ -1598,16 +1598,16 @@ const priorityAlertManager = {
       return `<article class="priority-alert-card" data-severity="${escapeHTML(severity)}" data-alert-id="${escapeHTML(alert.id)}">
         <div class="priority-alert-card-head">
           <div class="priority-alert-card-title">
-            <span class="priority-alert-card-subtitle">${escapeHTML(this.getIcon(alert))} alerta prioritário ${visibleAlerts.length > 1 ? `• ${index + 1}/${visibleAlerts.length}` : ''}</span>
+            <span class="priority-alert-card-subtitle">${escapeHTML(this.getIcon(alert))} alerta prioritÃ¡rio ${visibleAlerts.length > 1 ? `â€¢ ${index + 1}/${visibleAlerts.length}` : ''}</span>
             <h3>${escapeHTML(alert.title)}</h3>
           </div>
-          <button type="button" class="priority-alert-card-close" onclick="priorityAlertManager.dismissOverlayAlert('${escapeHTML(alert.id)}')" aria-label="Fechar alerta sem confirmar">×</button>
+          <button type="button" class="priority-alert-card-close" onclick="priorityAlertManager.dismissOverlayAlert('${escapeHTML(alert.id)}')" aria-label="Fechar alerta sem confirmar">Ã—</button>
         </div>
         <div class="priority-alert-card-body">${escapeHTML(alert.body)}</div>
         <div class="priority-modal-meta">${escapeHTML(this.buildMeta(alert))}</div>
         <div class="priority-modal-actions">
           ${actionLabel}
-          <button class="btn-success" type="button" onclick="priorityAlertManager.acknowledgeAlert('${escapeHTML(alert.id)}')" style="height:56px;">✅ Confirmar visualização</button>
+          <button class="btn-success" type="button" onclick="priorityAlertManager.acknowledgeAlert('${escapeHTML(alert.id)}')" style="height:56px;">âœ… Confirmar visualizaÃ§Ã£o</button>
           <button class="priority-alert-btn ghost" type="button" onclick="priorityAlertManager.dismissOverlayAlert('${escapeHTML(alert.id)}')">Lembrar depois</button>
         </div>
       </article>`;
@@ -1744,11 +1744,11 @@ const alertManager = {
       const dayKey = now.toISOString().slice(0, 10);
       priorityAlertManager.registerAlert({
         id: `carregamento_${stableHash(`${placa.value}|${match[0]}|${dayKey}`)}`,
-        title: '🕒 HORA DE CARREGAMENTO',
-        body: `A placa ${placa.value} está programada para agora (${match[0]}).`,
+        title: 'ðŸ•’ HORA DE CARREGAMENTO',
+        body: `A placa ${placa.value} estÃ¡ programada para agora (${match[0]}).`,
         severity: 'warning',
         actionKey: 'tab_op',
-        actionLabel: '📋 Abrir liberação',
+        actionLabel: 'ðŸ“‹ Abrir liberaÃ§Ã£o',
         source: 'agendamento'
       });
     }
@@ -1772,7 +1772,7 @@ const apiService = {
   globalLocSheetCheckedAt: 0,
   ensureSheetsConfig() {
     if (!config.api.key || !config.api.sheetId) {
-      debugEngine.log("Configuração da API do Google ausente.", "error");
+      debugEngine.log("ConfiguraÃ§Ã£o da API do Google ausente.", "error");
       throw new Error("API_KEY_NAO_CONFIGURADA");
     }
   },
@@ -1816,7 +1816,7 @@ const apiService = {
       
       return json.values || [];
     } catch(e) {
-      debugEngine.log(`Exceção no fetchSheetData: ${e.message}`, "error");
+      debugEngine.log(`ExceÃ§Ã£o no fetchSheetData: ${e.message}`, "error");
       debugEngine.updateAPIStatus(false, "(Falha)");
       throw e;
     }
@@ -1829,13 +1829,13 @@ const apiService = {
     try {
       const resInfo = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${config.api.estoqueSheetId}?key=${config.api.key}&fields=sheets.properties.title`);
       const infoJson = await resInfo.json();
-      if (!infoJson.sheets) throw new Error("Aba de estoque não encontrada");
+      if (!infoJson.sheets) throw new Error("Aba de estoque nÃ£o encontrada");
 
       const visible = infoJson.sheets;
       const now = new Date();
-      const meses = ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
+      const meses = ['JANEIRO','FEVEREIRO','MARÃ‡O','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];
       const t = visible.find(s => s.properties.title.toUpperCase() === `${meses[now.getMonth()]}/${now.getFullYear()}`) || visible[0];
-      if (!t) throw new Error("Nenhuma aba visível no estoque");
+      if (!t) throw new Error("Nenhuma aba visÃ­vel no estoque");
 
       const resData = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${config.api.estoqueSheetId}/values/'${encodeURIComponent(t.properties.title)}'!A:F?key=${config.api.key}&valueRenderOption=UNFORMATTED_VALUE`);
       const dataJson = await resData.json();
@@ -1850,7 +1850,7 @@ const apiService = {
   async fetchHistoricoData() {
     this.ensureSheetsConfig();
     if (!navigator.onLine) return [];
-    debugEngine.log("Buscando Histórico de Cargas...", "info");
+    debugEngine.log("Buscando HistÃ³rico de Cargas...", "info");
     try {
       const resInfo = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${config.api.historicoSheetId}?key=${config.api.key}&fields=sheets.properties.title`);
       const infoJson = await resInfo.json();
@@ -1861,7 +1861,7 @@ const apiService = {
       const json = await resData.json();
       return json.values || [];
     } catch (e) {
-      debugEngine.log(`Erro ao buscar Histórico: ${e.message}`, "warn");
+      debugEngine.log(`Erro ao buscar HistÃ³rico: ${e.message}`, "warn");
       return [];
     }
   },
@@ -1869,7 +1869,7 @@ const apiService = {
   async fetchRncData() {
     this.ensureSheetsConfig();
     if (!navigator.onLine) return [];
-    debugEngine.log("Buscando Reclamações (RNC)...", "info");
+    debugEngine.log("Buscando ReclamaÃ§Ãµes (RNC)...", "info");
     try {
       const resInfo = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${config.api.rncSheetId}?key=${config.api.key}&fields=sheets.properties.title`);
       const infoJson = await resInfo.json();
@@ -1899,7 +1899,7 @@ const apiService = {
     try {
       parsed = JSON.parse(text);
     } catch (_) {
-      throw new Error("Resposta inválida do Apps Script.");
+      throw new Error("Resposta invÃ¡lida do Apps Script.");
     }
     if (!parsed || !parsed.success) throw new Error(parsed?.message || "Apps Script retornou falha.");
     return parsed;

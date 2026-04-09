@@ -39,18 +39,18 @@ window.onunhandledrejection = function(event) {
 const config = {
   app: {
     version: '20260406.02',
-    buildTag: '20260409r09',
+    buildTag: '20260409r11',
     versionStorageKey: 'cysyAppVersion'
   },
   base: {
-    empresa: 'Cysy Mineração',
+    empresa: 'Cysy MineraÃ§Ã£o',
     endereco: 'Rod. SC 100 - Km 26 (Estrada Geral), Bairro Riacho dos Franciscos, Jaguaruna - SC, CEP 88715-000',
     enderecoCurto: 'Rod. SC 100 / Rodovia Claudino Abel Botega, Jaguaruna - SC',
-    atividade: 'Extração mineral para corretivos, adubos e fertilizantes',
+    atividade: 'ExtraÃ§Ã£o mineral para corretivos, adubos e fertilizantes',
     cep: '88715-000',
     lat: -28.6131180,
     lon: -48.9518536,
-    coordLabel: "28° 36' 47\" S, 48° 57' 07\" O",
+    coordLabel: "28Â° 36' 47\" S, 48Â° 57' 07\" O",
     areaPolygon: [
       [-28.6127389, -48.9530531],
       [-28.6134971, -48.9518058],
@@ -69,16 +69,16 @@ const config = {
     timeoutMs: 15000
   },
   checklist: [
-    {id:'carroceria', lbl:'Baú ou carroceria limpa, livre de resíduos?', type:'yn'},
-    {id:'umidade', lbl:'Ausência de umidade que comprometa o produto?', type:'yn'},
+    {id:'carroceria', lbl:'BaÃº ou carroceria limpa, livre de resÃ­duos?', type:'yn'},
+    {id:'umidade', lbl:'AusÃªncia de umidade que comprometa o produto?', type:'yn'},
     {id:'lona', lbl:'Lona ou cobertura em bom estado?', type:'yn'},
-    {id:'estrutura', lbl:'Laterais e piso em boas condições estruturais?', type:'yn'},
-    {id:'indicacao', lbl:'Carregado conforme instrução do motorista?', type:'yn'},
+    {id:'estrutura', lbl:'Laterais e piso em boas condiÃ§Ãµes estruturais?', type:'yn'},
+    {id:'indicacao', lbl:'Carregado conforme instruÃ§Ã£o do motorista?', type:'yn'},
     {id:'excesso', lbl:'A carga foi realizada com excesso de peso?', type:'yn_r'},
     {id:'poeira', lbl:'Produto carregado com excesso de poeira?', type:'yn_r'},
     {id:'tamanho', lbl:'O tamanho da carroceria adequado?', type:'yn'},
-    {id:'forracao', lbl:'Há necessidade de forração extra?', type:'yn_r'},
-    {id:'obs_geral', lbl:'Observações gerais de qualidade:', type:'text'}
+    {id:'forracao', lbl:'HÃ¡ necessidade de forraÃ§Ã£o extra?', type:'yn_r'},
+    {id:'obs_geral', lbl:'ObservaÃ§Ãµes gerais de qualidade:', type:'text'}
   ]
 };
 
@@ -252,15 +252,15 @@ const debugEngine = {
   },
   updateAPIStatus(connected, detail = '') {
     const el = document.getElementById('dbgStatusAPI');
-    if (el) el.textContent = connected ? `🟢 API Conectada ${detail}` : `🔴 API Falha ${detail}`;
+    if (el) el.textContent = connected ? `ðŸŸ¢ API Conectada ${detail}` : `ðŸ”´ API Falha ${detail}`;
   },
   updateNetStatus(online) {
     const el = document.getElementById('dbgStatusNet');
-    if (el) el.textContent = online ? '🟢 Online' : '🔴 Offline';
+    if (el) el.textContent = online ? 'ðŸŸ¢ Online' : 'ðŸ”´ Offline';
   },
   updateSWStatus(active) {
     const el = document.getElementById('dbgStatusSW');
-    if (el) el.textContent = active ? '🟢 SW Ativo' : '⚪ SW Inativo';
+    if (el) el.textContent = active ? 'ðŸŸ¢ SW Ativo' : 'âšª SW Inativo';
   },
   togglePanel() {
     this.isOpen = !this.isOpen;
@@ -273,7 +273,7 @@ const debugEngine = {
     navigator.clipboard.writeText(texto).then(() => {
       alert("Logs copiados! Envie para o desenvolvedor.");
     }).catch(() => {
-      alert("Não foi possível copiar automaticamente. Copie manualmente no painel.");
+      alert("NÃ£o foi possÃ­vel copiar automaticamente. Copie manualmente no painel.");
     });
   },
   async runFullTest() {
@@ -281,7 +281,7 @@ const debugEngine = {
     
     this.log("--- Teste 1: Verificando LocalStorage ---", "info");
     const user = safeStorage.getItem('cysyUser', '');
-    this.log(`Usuário logado: ${user || 'NENHUM'}`, user ? "success" : "warn");
+    this.log(`UsuÃ¡rio logado: ${user || 'NENHUM'}`, user ? "success" : "warn");
     
     this.log("--- Teste 2: Testando parseSheetDate ---", "info");
     const testDates = [
@@ -290,7 +290,7 @@ const debugEngine = {
       "20-03-2026",
       new Date(),
       45678,
-      "20 de Março de 2026",
+      "20 de MarÃ§o de 2026",
       "03/20/2026"
     ];
     testDates.forEach(d => {
@@ -404,7 +404,7 @@ const toastManager = {
   },
   show(msg, type = 'info', duration = 3500) {
     this.init();
-    const icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' };
+    const icons = { success: 'âœ“', error: 'âœ•', warning: 'âš ', info: 'â„¹' };
     const colors = {
       success: { bg: '#ECFDF5', border: '#10B981', text: '#047857', iconBg: '#D1FAE5' },
       error: { bg: '#FEF2F2', border: '#EF4444', text: '#B91C1C', iconBg: '#FEE2E2' },
@@ -414,7 +414,7 @@ const toastManager = {
     const c = colors[type] || colors.info;
     const toast = document.createElement('div');
     toast.style.cssText = `background:${c.bg};border:1px solid ${c.border};border-left:5px solid ${c.border};border-radius:14px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;animation:slideUp 0.2s ease;box-shadow:0 10px 22px rgba(15,23,42,0.12);pointer-events:auto;width:100%;`;
-    toast.innerHTML = `<span style="flex:0 0 auto;width:32px;height:32px;border-radius:10px;background:${c.iconBg};display:inline-flex;align-items:center;justify-content:center;font-size:17px;color:${c.text};font-weight:900;">${icons[type] || '•'}</span><span style="color:#0F172A;font-size:14px;line-height:1.45;font-weight:800;">${escapeHTML(msg)}</span>`;
+    toast.innerHTML = `<span style="flex:0 0 auto;width:32px;height:32px;border-radius:10px;background:${c.iconBg};display:inline-flex;align-items:center;justify-content:center;font-size:17px;color:${c.text};font-weight:900;">${icons[type] || 'â€¢'}</span><span style="color:#0F172A;font-size:14px;line-height:1.45;font-weight:800;">${escapeHTML(msg)}</span>`;
     this.container.appendChild(toast);
     setTimeout(() => {
       toast.style.opacity = '0';
@@ -450,9 +450,9 @@ const envManager = {
       const uvTom = daily.uv_index_max[1] || '--';
 
       const ids = [
-        ['wTempNow', `${tempNow}°C`],
+        ['wTempNow', `${tempNow}Â°C`],
         ['wWindNow', `${windNow} km/h`],
-        ['wTempTom', `${tempTom}°C`],
+        ['wTempTom', `${tempTom}Â°C`],
         ['wRainTom', `${rainTom}%`],
         ['wUvTom', uvTom]
       ];
@@ -469,52 +469,52 @@ const envManager = {
       if (windNow > 25 || daily.wind_speed_10m_max[0] > 35 || daily.wind_speed_10m_max[1] > 35) {
         alertBanner.style.background = 'rgba(220, 38, 38, 0.2)';
         alertBanner.style.color = '#FCA5A5';
-        alertBanner.innerHTML = '⚠️ VENTO FORTE: Risco de Lonas Voando!';
+        alertBanner.innerHTML = 'âš ï¸ VENTO FORTE: Risco de Lonas Voando!';
         if (canRegisterPriority) {
           window.priorityAlertManager.registerAlert({
             id: `weather_wind_${todayKey}`,
-            title: '⚠️ ALERTA DE VENTO FORTE',
-            body: 'Reforce lonas e proteções. Há risco operacional com vento forte na área da Cysy.',
+            title: 'âš ï¸ ALERTA DE VENTO FORTE',
+            body: 'Reforce lonas e proteÃ§Ãµes. HÃ¡ risco operacional com vento forte na Ã¡rea da Cysy.',
             severity: 'danger',
             actionKey: 'tab_op',
-            actionLabel: '📋 Abrir liberação',
+            actionLabel: 'ðŸ“‹ Abrir liberaÃ§Ã£o',
             source: 'clima'
           });
         }
       } else if (cur.precipitation > 0 || daily.precipitation_probability_max[0] > 60 || daily.precipitation_probability_max[1] > 60) {
         alertBanner.style.background = 'rgba(220, 38, 38, 0.2)';
         alertBanner.style.color = '#FCA5A5';
-        alertBanner.innerHTML = '🌧️ ALERTA DE CHUVA: Proteja os materiais expostos.';
+        alertBanner.innerHTML = 'ðŸŒ§ï¸ ALERTA DE CHUVA: Proteja os materiais expostos.';
         if (canRegisterPriority) {
           window.priorityAlertManager.registerAlert({
             id: `weather_rain_${todayKey}`,
-            title: '🌧️ ALERTA DE CHUVA',
-            body: 'Proteja os materiais expostos e confirme a revisão operacional da área.',
+            title: 'ðŸŒ§ï¸ ALERTA DE CHUVA',
+            body: 'Proteja os materiais expostos e confirme a revisÃ£o operacional da Ã¡rea.',
             severity: 'danger',
             actionKey: 'tab_op',
-            actionLabel: '📋 Abrir liberação',
+            actionLabel: 'ðŸ“‹ Abrir liberaÃ§Ã£o',
             source: 'clima'
           });
         }
       } else if (tempNow > 32 || daily.temperature_2m_max[0] > 33 || daily.temperature_2m_max[1] > 33 || Number(uvTom) >= 8) {
         alertBanner.style.background = 'rgba(220, 38, 38, 0.2)';
         alertBanner.style.color = '#FCA5A5';
-        alertBanner.innerHTML = '☀️ SOL EXTREMO: Atenção aos materiais sensíveis.';
+        alertBanner.innerHTML = 'â˜€ï¸ SOL EXTREMO: AtenÃ§Ã£o aos materiais sensÃ­veis.';
         if (canRegisterPriority) {
           window.priorityAlertManager.registerAlert({
             id: `weather_sun_${todayKey}`,
-            title: '☀️ ALERTA DE SOL EXTREMO',
-            body: 'Monitore os materiais sensíveis. O risco de ressecamento e aquecimento está elevado.',
+            title: 'â˜€ï¸ ALERTA DE SOL EXTREMO',
+            body: 'Monitore os materiais sensÃ­veis. O risco de ressecamento e aquecimento estÃ¡ elevado.',
             severity: 'warning',
             actionKey: 'tab_op',
-            actionLabel: '📋 Abrir liberação',
+            actionLabel: 'ðŸ“‹ Abrir liberaÃ§Ã£o',
             source: 'clima'
           });
         }
       } else {
         alertBanner.style.background = 'rgba(16, 185, 129, 0.2)';
         alertBanner.style.color = '#34D399';
-        alertBanner.innerHTML = '✅ Clima atual favorável para a operação.';
+        alertBanner.innerHTML = 'âœ… Clima atual favorÃ¡vel para a operaÃ§Ã£o.';
       }
     } catch(e) {}
   }
@@ -552,9 +552,9 @@ const wakeLockManager = {
   getManualHintMessage() {
     const ua = navigator.userAgent || '';
     if (/Android/i.test(ua)) {
-      return 'Para máxima estabilidade, remova a otimização de bateria do navegador/PWA nas configurações do Android.';
+      return 'Para mÃ¡xima estabilidade, remova a otimizaÃ§Ã£o de bateria do navegador/PWA nas configuraÃ§Ãµes do Android.';
     }
-    return 'Se o dispositivo continuar suspendendo a tela, desative restrições de energia para o navegador/PWA.';
+    return 'Se o dispositivo continuar suspendendo a tela, desative restriÃ§Ãµes de energia para o navegador/PWA.';
   },
 
   async enableOnFirstAccess(fromUserGesture = false) {
@@ -570,7 +570,7 @@ const wakeLockManager = {
     if (!this.isSupported()) {
       if (fromUserGesture && safeStorage.getItem(this.supportToastKey, 'false') !== 'true') {
         safeStorage.setItem(this.supportToastKey, 'true');
-        toastManager.show('Este navegador não suporta manter a tela ativa automaticamente.', 'warning', 5200);
+        toastManager.show('Este navegador nÃ£o suporta manter a tela ativa automaticamente.', 'warning', 5200);
       }
       return false;
     }
@@ -586,11 +586,11 @@ const wakeLockManager = {
         }
       });
       if (fromUserGesture) {
-        toastManager.show('Tela ativa protegida para operação em campo.', 'success', 3800);
+        toastManager.show('Tela ativa protegida para operaÃ§Ã£o em campo.', 'success', 3800);
       }
       return true;
     } catch (err) {
-      debugEngine.log(`Wake Lock indisponível: ${err.message}`, 'warn');
+      debugEngine.log(`Wake Lock indisponÃ­vel: ${err.message}`, 'warn');
       if (fromUserGesture && safeStorage.getItem(this.manualHintKey, 'false') !== 'true') {
         safeStorage.setItem(this.manualHintKey, 'true');
         toastManager.show(this.getManualHintMessage(), 'warning', 6500);
@@ -681,19 +681,19 @@ const permissionManager = {
     const secure = window.isSecureContext && location.protocol === 'https:';
     const msgBase = "Erro ao obter GPS.";
     if (!secure) {
-      return `${msgBase} Abra em HTTPS para habilitar localização precisa.`;
+      return `${msgBase} Abra em HTTPS para habilitar localizaÃ§Ã£o precisa.`;
     }
     if (!err) {
-      return `${msgBase} Autorize a localização no navegador/PWA e tente novamente.`;
+      return `${msgBase} Autorize a localizaÃ§Ã£o no navegador/PWA e tente novamente.`;
     }
     if (err.code === 1) {
       if (this.isSafari()) {
-        return `${msgBase} No Safari/iOS, ative Localização para este site (Ajustes > Safari > Localização) e permita também no modo PWA.`;
+        return `${msgBase} No Safari/iOS, ative LocalizaÃ§Ã£o para este site (Ajustes > Safari > LocalizaÃ§Ã£o) e permita tambÃ©m no modo PWA.`;
       }
-      return `${msgBase} Permissão de localização negada. Libere GPS para este site e tente novamente.`;
+      return `${msgBase} PermissÃ£o de localizaÃ§Ã£o negada. Libere GPS para este site e tente novamente.`;
     }
-    if (err.code === 2) return `${msgBase} Sinal indisponível. Vá para área aberta e tente novamente.`;
+    if (err.code === 2) return `${msgBase} Sinal indisponÃ­vel. VÃ¡ para Ã¡rea aberta e tente novamente.`;
     if (err.code === 3) return `${msgBase} Tempo de resposta excedido. Verifique GPS e conectividade.`;
-    return `${msgBase} Verifique permissões do navegador/PWA e se o acesso está em HTTPS.`;
+    return `${msgBase} Verifique permissÃµes do navegador/PWA e se o acesso estÃ¡ em HTTPS.`;
   }
 };

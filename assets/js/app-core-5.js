@@ -10,6 +10,7 @@ const uiBuilder = {
   checklistState: {},
 
   init() {
+    this.applyAccessibilityMetadata();
     this.buildChecklistUI();
     this.initChecklistInteractions();
     this.buildUnifiedGrid();
@@ -22,20 +23,89 @@ const uiBuilder = {
     }
   },
 
+  applyAccessibilityMetadata() {
+    const tabList = document.querySelector('.tabs');
+    if (tabList) {
+      tabList.setAttribute('role', 'tablist');
+      tabList.setAttribute('aria-label', 'NavegaÃ§Ã£o principal');
+    }
+
+    document.querySelectorAll('.tab-btn[data-tab]').forEach((button) => {
+      const tabId = button.dataset.tab;
+      const panel = document.getElementById(`tab-${tabId}`);
+      if (!tabId || !panel) return;
+      button.setAttribute('role', 'tab');
+      button.id = button.id || `tab-btn-${tabId}`;
+      button.setAttribute('aria-controls', panel.id);
+      button.setAttribute('aria-selected', button.classList.contains('active') ? 'true' : 'false');
+      button.setAttribute('tabindex', button.classList.contains('active') ? '0' : '-1');
+      if (!button.dataset.a11yBound && !button.getAttribute('onkeydown')) {
+        button.addEventListener('keydown', (event) => this.onTabKeydown(event));
+        button.dataset.a11yBound = 'true';
+      }
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', button.id);
+      panel.setAttribute('aria-hidden', panel.classList.contains('active') ? 'false' : 'true');
+    });
+
+    [
+      ['fileFrente', 'Enviar foto frontal opcional do veÃ­culo'],
+      ['fileTraseira', 'Enviar foto traseira opcional do veÃ­culo'],
+      ['fileAssoalho', 'Enviar foto opcional do assoalho'],
+      ['faturamentoImgInput', 'Anexar imagem da carga pronta para faturamento'],
+      ['restoreBackupInput', 'Selecionar arquivo de backup para restauraÃ§Ã£o'],
+    ].forEach(([id, label]) => {
+      const input = document.getElementById(id);
+      if (input && !input.getAttribute('aria-label')) input.setAttribute('aria-label', label);
+    });
+
+    if (!document.getElementById('a11yAuditStyles')) {
+      const style = document.createElement('style');
+      style.id = 'a11yAuditStyles';
+      style.textContent = `
+        .header-alert-counter.header-alert-btn { border: none; outline: none; }
+        .tab-btn:focus-visible,
+        .header-alert-btn:focus-visible,
+        input[type="file"]:focus-visible + .img-preview {
+          outline: 3px solid rgba(56, 189, 248, 0.9);
+          outline-offset: 3px;
+          box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.16);
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  },
+
   switchTab(event, tabId) {
     const previousTabId = document.querySelector('.tab-content.active')?.id?.replace(/^tab-/, '') || '';
     const shouldPlayTabSound = Boolean(event?.currentTarget) && previousTabId !== tabId;
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach((b) => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+      b.setAttribute('tabindex', '-1');
+    });
+    document.querySelectorAll('.tab-content').forEach((c) => {
+      c.classList.remove('active');
+      c.setAttribute('aria-hidden', 'true');
+    });
 
-    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    if (event && event.currentTarget) {
+      event.currentTarget.classList.add('active');
+      event.currentTarget.setAttribute('aria-selected', 'true');
+      event.currentTarget.setAttribute('tabindex', '0');
+    }
     if (!event) {
       const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
-      if (targetBtn) targetBtn.classList.add('active');
+      if (targetBtn) {
+        targetBtn.classList.add('active');
+        targetBtn.setAttribute('aria-selected', 'true');
+        targetBtn.setAttribute('tabindex', '0');
+      }
     }
     const tabEl = document.getElementById(`tab-${tabId}`);
     if (!tabEl) return;
     tabEl.classList.add('active');
+    tabEl.setAttribute('aria-hidden', 'false');
     if (shouldPlayTabSound && typeof soundManager !== 'undefined') soundManager.play('tab');
     if (typeof priorityAlertManager !== 'undefined') {
       if (tabId === 'op' || tabId === 'perdas') priorityAlertManager.hideOverlay();
@@ -47,6 +117,31 @@ const uiBuilder = {
     }
   },
 
+  onTabKeydown(event) {
+    const currentButton = event.currentTarget;
+    const tabs = Array.from(currentButton?.closest('.tabs')?.querySelectorAll('.tab-btn[data-tab]') || []);
+    if (!currentButton || tabs.length === 0) return;
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.switchTab(event, currentButton.dataset.tab);
+      return;
+    }
+
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+
+    let nextIndex = tabs.indexOf(currentButton);
+    if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = tabs.length - 1;
+    else {
+      const direction = ['ArrowLeft', 'ArrowUp'].includes(event.key) ? -1 : 1;
+      nextIndex = (nextIndex + direction + tabs.length) % tabs.length;
+    }
+
+    tabs[nextIndex]?.focus();
+  },
+
   updateTimestamp() {
     const d1 = document.getElementById('inpDataHora');
     if (d1) d1.value = new Date().toLocaleString('pt-BR');
@@ -54,7 +149,7 @@ const uiBuilder = {
 
   updateGlobalUpdateTimestamp(date = new Date()) {
     const el = document.getElementById('lastUpdateText');
-    if (el) el.innerText = `Última atualização: ${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR')}`;
+    if (el) el.innerText = `Ãšltima atualizaÃ§Ã£o: ${date.toLocaleDateString('pt-BR')} ${date.toLocaleTimeString('pt-BR')}`;
   },
 
   buildChecklistUI() {
@@ -65,7 +160,7 @@ const uiBuilder = {
       if (c.type === 'text') {
         return `<div class="check-card check-text-card" id="card_${c.id}">
           <div class="check-title">${escapeHTML(c.lbl)}</div>
-          <textarea id="chk_text_${c.id}" placeholder="Observações adicionais..." style="min-height: 100px; margin-top: 12px; border-width:2px;"></textarea>
+          <textarea id="chk_text_${c.id}" placeholder="ObservaÃ§Ãµes adicionais..." style="min-height: 100px; margin-top: 12px; border-width:2px;"></textarea>
         </div>`;
       }
       const isInv = c.type === 'yn_r';
@@ -80,7 +175,7 @@ const uiBuilder = {
             role="radio" aria-checked="false">SIM</button>
           <button type="button" class="check-opt ${naoClass}"
             data-check-id="${c.id}" data-check-value="nao"
-            role="radio" aria-checked="false">NÃO</button>
+            role="radio" aria-checked="false">NÃƒO</button>
         </div>
       </div>`;
     }).join('');
@@ -184,7 +279,7 @@ const uiBuilder = {
     for (let i = 1; i <= 10; i++) {
       m.insertAdjacentHTML('beforeend', `<div class="grid-row" id="gridRow_${i}"><div class="grid-cell" data-label="Produto Liberado"><div id="lblDestino_${i}" style="font-size: 10px; font-weight: 900; color: var(--secondary); margin-bottom: 8px; display: none;"></div><select id="selProd_${i}" onchange="uiBuilder.onProdChange(${i})" title="Selecione o produto liberado nesta linha"><option value="">Selecione o produto liberado...</option></select></div><div class="grid-cell" data-label="Carregado (t)"><input type="number" id="inpQtd_${i}" step="0.001" min="0" placeholder="Ex: 12.500" title="Informe a quantidade carregada em toneladas" oninput="uiBuilder.recalcularLinhas(${i})"></div><div class="grid-cell" data-label="Lote Utilizado"><input type="search" id="inpBuscaLote_${i}" class="lot-search-input" placeholder="Selecione primeiro o produto..." title="Digite parte do lote para localizar mais rapido" autocomplete="off" spellcheck="false" disabled oninput="uiBuilder.onLoteSearchInput(${i})"><select id="selLote_${i}" onchange="uiBuilder.onLoteChange(${i})" title="Escolha o lote fisico usado no carregamento" data-all-options="[]"><option value="">Selecione o lote fisico...</option></select><div id="lblSaldo_${i}" style="font-size: 11px; font-weight: 800; color: var(--success); margin-top: 4px;"></div></div><div class="grid-cell" data-label="Avaria (t)"><input type="number" id="inpPerda_${i}" step="0.001" min="0" placeholder="Ex: 0.150" title="Preencha apenas se houve perda no item"></div><div class="grid-cell" data-label="Motivo Avaria"><select id="selMotivo_${i}" title="Obrigatorio quando houver avaria"><option value="">Selecione o motivo da avaria...</option><option value="Rasgo na embalagem">Rasgo</option><option value="Qualidade">Qualidade</option><option value="Transporte">Transporte</option></select></div></div>`);
     }
-    m.parentElement.insertAdjacentHTML('beforeend', `<div style="padding: 16px; text-align: center; background: linear-gradient(180deg, rgba(15, 23, 42, 0.68), rgba(30, 41, 59, 0.52)); border-top: 1px solid rgba(96, 165, 250, 0.12);"><button type="button" id="btnToggleGridRows" onclick="uiBuilder.toggleGridRows()" style="background: transparent; border: 2px dashed rgba(96, 165, 250, 0.42); color: #BFDBFE; box-shadow: none;">⬇ Expandir linha</button></div>`);
+    m.parentElement.insertAdjacentHTML('beforeend', `<div style="padding: 16px; text-align: center; background: linear-gradient(180deg, rgba(15, 23, 42, 0.68), rgba(30, 41, 59, 0.52)); border-top: 1px solid rgba(96, 165, 250, 0.12);"><button type="button" id="btnToggleGridRows" onclick="uiBuilder.toggleGridRows()" style="background: transparent; border: 2px dashed rgba(96, 165, 250, 0.42); color: #BFDBFE; box-shadow: none;">â¬‡ Expandir linha</button></div>`);
   },
 
   getSortedLoteEntries(lotesObj = {}) {
@@ -274,7 +369,7 @@ const uiBuilder = {
     const preview = document.getElementById(previewId);
     const hiddenInput = document.getElementById(hiddenInputId);
     if (!file) {
-      if (preview) { preview.classList.remove('has-image'); preview.style.backgroundImage = 'none'; preview.innerHTML = '<span>📷 Câmera</span>'; }
+      if (preview) { preview.classList.remove('has-image'); preview.style.backgroundImage = 'none'; preview.innerHTML = '<span>ðŸ“· CÃ¢mera</span>'; }
       if (hiddenInput) hiddenInput.value = '';
       return;
     }
@@ -292,7 +387,7 @@ const uiBuilder = {
         canvas.height = height;
         canvas.getContext('2d').drawImage(img, 0, 0, width, height);
         const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
-        if (preview) { preview.style.backgroundImage = `url(${dataUrl})`; preview.classList.add('has-image'); preview.innerHTML = '<span>Foto Pronta ✔️</span>'; }
+        if (preview) { preview.style.backgroundImage = `url(${dataUrl})`; preview.classList.add('has-image'); preview.innerHTML = '<span>Foto Pronta âœ”ï¸</span>'; }
         if (hiddenInput) hiddenInput.value = dataUrl;
       };
       img.src = e.target.result;
@@ -322,7 +417,7 @@ const uiBuilder = {
         else row.style.display = 'none';
       }
     }
-    if (btn) btn.innerHTML = totalShown >= 10 ? '⬆ Ocultar vazias' : '⬇ Expandir linha';
+    if (btn) btn.innerHTML = totalShown >= 10 ? 'â¬† Ocultar vazias' : 'â¬‡ Expandir linha';
   },
 
   populateSelects(parsedData) {
@@ -370,7 +465,7 @@ const uiBuilder = {
     const allObs = items.map(i => i.obsStr).filter(Boolean);
     let motEncontrado = '';
     for (const obs of allObs) {
-      const match = /MOT(?:ORISTA)?[:\s]+([A-ZÀ-Úa-z\s]+?)(?:\s*-|\s*CPF|\s*RG|$)/i.exec(obs);
+      const match = /MOT(?:ORISTA)?[:\s]+([A-ZÃ€-Ãša-z\s]+?)(?:\s*-|\s*CPF|\s*RG|$)/i.exec(obs);
       if (match) motEncontrado = match[1].trim();
     }
 
@@ -401,7 +496,7 @@ const uiBuilder = {
       if (rowIdx > 10) return;
       const sel = document.getElementById(`selProd_${rowIdx}`);
       const lbl = document.getElementById(`lblDestino_${rowIdx}`);
-      if (lbl) { lbl.innerText = `📦 ${item.cliente} 📍 ${item.destino}`; lbl.style.display = 'inline-block'; }
+      if (lbl) { lbl.innerText = `ðŸ“¦ ${item.cliente} ðŸ“ ${item.destino}`; lbl.style.display = 'inline-block'; }
       if (sel) { sel.value = item.produto; sel.dataset.sugQtd = item.qtd; }
       this.onProdChange(rowIdx, item.qtd);
       rowIdx++;
@@ -441,7 +536,7 @@ const uiBuilder = {
     if (ta) ta.value = '';
     ['Frente', 'Traseira', 'Assoalho'].forEach(id => {
       const preview = document.getElementById(`preview${id}`);
-      if (preview) { preview.style.backgroundImage = 'none'; preview.classList.remove('has-image'); preview.innerHTML = '<span>📷 Câmera</span>'; }
+      if (preview) { preview.style.backgroundImage = 'none'; preview.classList.remove('has-image'); preview.innerHTML = '<span>ðŸ“· CÃ¢mera</span>'; }
       const b = document.getElementById(`base64${id}`);
       if (b) b.value = '';
     });
@@ -475,7 +570,7 @@ const uiBuilder = {
     const items = this.localDataStore.filter(d => String(d.cliente || '').trim() === cliente);
     if (items.length === 0) return;
 
-    const confirmar = window.confirm(`Confirmar seleção do cliente ${cliente}?\n\nSerão carregados ${items.length} registro(s) vinculados a este cliente.`);
+    const confirmar = window.confirm(`Confirmar seleÃ§Ã£o do cliente ${cliente}?\n\nSerÃ£o carregados ${items.length} registro(s) vinculados a este cliente.`);
     if (!confirmar) {
       clienteSelect.value = '';
       return;
@@ -595,7 +690,7 @@ const uiBuilder = {
         const opt = lSel.options[lSel.selectedIndex];
         const sOrig = opt ? r(Number(opt.dataset.saldo) || 0) : 0;
         const sReal = r(sOrig - r((somaUsoPorLote[`${p}||${lSel.value}`] || 0) - r(qtdField.value)));
-        lblSaldo.innerText = `Disponível: ${formatTons(Math.max(0, sReal))} t`;
+        lblSaldo.innerText = `DisponÃ­vel: ${formatTons(Math.max(0, sReal))} t`;
         qtdField.max = formatTons(Math.max(0, sReal));
       }
     }
@@ -637,7 +732,7 @@ const uiBuilder = {
           <div><b>Imagens:</b> ${qtdImgs}</div>
           <div><b>Tentativas:</b> ${tentativas}</div>
           <div><b>Criado:</b> ${escapeHTML(this.formatSyncTime(row.createdAt))}</div>
-          <div><b>Última tentativa:</b> ${escapeHTML(this.formatSyncTime(row.lastAttemptAt))}</div>
+          <div><b>Ãšltima tentativa:</b> ${escapeHTML(this.formatSyncTime(row.lastAttemptAt))}</div>
           <div><b>Enviado:</b> ${escapeHTML(this.formatSyncTime(row.sentAt))}</div>
         </div>
         ${erro ? `<div style="font-size:11px; color:#9A3412; background:#FFF7ED; border:1px solid #FDBA74; border-radius:8px; padding:8px;"><b>Erro:</b> ${escapeHTML(erro)}</div>` : ''}
@@ -659,7 +754,7 @@ const uiBuilder = {
     const elOnline = document.getElementById('syncOnlineState');
     if (elOnline) {
       elOnline.className = `status-badge ${syncing ? 'syncing' : (online ? 'online' : 'offline')}`;
-      elOnline.innerText = syncing ? '● Sincronizando...' : (online ? '● Online' : '● Offline');
+      elOnline.innerText = syncing ? 'â— Sincronizando...' : (online ? 'â— Online' : 'â— Offline');
     }
     const elLast = document.getElementById('syncLastSyncAt');
     if (elLast) elLast.innerText = snapshot.lastSyncAt ? this.formatSyncTime(snapshot.lastSyncAt) : '--';
