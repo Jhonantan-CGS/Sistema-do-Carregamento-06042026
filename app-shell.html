@@ -11,11 +11,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="CYSY Expedição">
-  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r04" type="image/png">
-  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r04">
-  <link rel="manifest" href="./manifest.webmanifest?v=20260409r04">
-  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r04">
-  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r04">
+  <link rel="icon" href="./assets/icons/favicon.png?v=20260409r05" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png?v=20260409r05">
+  <link rel="manifest" href="./manifest.webmanifest?v=20260409r05">
+  <link rel="stylesheet" href="./assets/css/modern.css?v=20260409r05">
+  <link rel="stylesheet" href="./assets/css/theme-3d.css?v=20260409r05">
 <title>CYSY Expedição e Carregamento</title>
 <style>
 :root{
@@ -5205,6 +5205,297 @@
       grid-template-columns: 1fr !important;
     }
   }
+  @media (max-width: 768px) {
+    body {
+      background:
+        radial-gradient(circle at 14% 12%, rgba(77, 163, 255, 0.14), transparent 28%),
+        radial-gradient(circle at 86% 10%, rgba(0, 255, 204, 0.10), transparent 26%),
+        linear-gradient(180deg, #070A12 0%, #0B101A 48%, #0A0F18 100%) !important;
+      color: #E8EDF7 !important;
+      padding-bottom: 110px !important;
+    }
+    header {
+      box-shadow: none !important;
+    }
+    .header-main,
+    .weather-bar,
+    .tabs,
+    .section,
+    .table-wrapper,
+    .sync-group,
+    .sync-utilities,
+    .sync-metric-card,
+    .form-group,
+    .check-card,
+    .carga-card,
+    .priority-alert-card,
+    .priority-alert-card-empty {
+      background: rgba(11, 16, 26, 0.88) !important;
+      border-color: rgba(148, 163, 184, 0.16) !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      box-shadow:
+        0 16px 36px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    }
+    .header-main {
+      padding: 14px 14px 12px !important;
+      border-radius: 0 0 24px 24px !important;
+      gap: 14px !important;
+      align-items: stretch !important;
+    }
+    .header-brand {
+      align-items: flex-start !important;
+      gap: 12px !important;
+    }
+    .logo-3d {
+      width: 58px !important;
+      height: 58px !important;
+      border-radius: 16px !important;
+      background: rgba(13, 18, 31, 0.92) !important;
+      border-color: rgba(77, 163, 255, 0.22) !important;
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.24),
+        0 0 20px rgba(77, 163, 255, 0.10) !important;
+    }
+    .header-brand-copy {
+      gap: 8px !important;
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+    .header-title-row {
+      align-items: flex-start !important;
+      gap: 8px !important;
+      flex-direction: column !important;
+    }
+    .header-title {
+      font-size: 18px !important;
+      line-height: 1.15 !important;
+      letter-spacing: 0.01em !important;
+      color: #F3F7FD !important;
+      text-shadow: none !important;
+      max-width: 12ch !important;
+    }
+    .header-subline {
+      gap: 4px !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+    }
+    .header-user,
+    .header-last-update {
+      display: block !important;
+      font-size: 11px !important;
+      color: #AAB6C9 !important;
+    }
+    .header-side {
+      flex: none !important;
+      min-width: 0 !important;
+      gap: 10px !important;
+    }
+    .header-meta {
+      justify-content: flex-start !important;
+      min-height: 0 !important;
+    }
+    .header-clock {
+      font-size: 14px !important;
+      line-height: 1 !important;
+      color: rgba(232, 237, 247, 0.28) !important;
+      text-shadow: none !important;
+    }
+    .header-actions {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .header-action-btn,
+    .quick-action-btn {
+      min-height: 48px !important;
+      border-radius: 14px !important;
+      justify-content: center !important;
+      text-align: center !important;
+      padding: 10px 8px !important;
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.20),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    }
+    .header-action-btn.quick-action-btn.quick-action-sync,
+    .header-action-btn.quick-action-btn.quick-action-permissions {
+      background: rgba(20, 24, 34, 0.94) !important;
+    }
+    .header-action-btn.refresh {
+      background: linear-gradient(135deg, #5B9DFF 0%, #69D7F5 100%) !important;
+      color: #F8FBFF !important;
+    }
+    .header-action-btn.exit {
+      background: linear-gradient(135deg, #F06292 0%, #FF6B5F 100%) !important;
+      color: #FFFFFF !important;
+      border-color: rgba(255, 255, 255, 0.08) !important;
+    }
+    .weather-bar {
+      margin-top: 8px !important;
+      padding: 12px 14px !important;
+      border-radius: 20px !important;
+      border-top: 1px solid rgba(148, 163, 184, 0.16) !important;
+    }
+    .weather-stats {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+      padding: 0 !important;
+      font-size: 11px !important;
+      white-space: normal !important;
+      overflow: visible !important;
+    }
+    .weather-stats span {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      color: #C7D1E0 !important;
+      font-weight: 800 !important;
+      line-height: 1.35 !important;
+    }
+    .weather-stats span:first-child {
+      color: #F3F7FD !important;
+      font-size: 12px !important;
+    }
+    .tabs {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+      padding: 12px 14px !important;
+      overflow: visible !important;
+      white-space: normal !important;
+    }
+    .tab-btn {
+      min-width: 0 !important;
+      min-height: 92px !important;
+      width: 100% !important;
+      padding: 14px 12px !important;
+      border-radius: 16px !important;
+      align-items: center !important;
+    }
+    .tab-icon-3d {
+      width: 38px !important;
+      height: 38px !important;
+      flex-basis: 38px !important;
+    }
+    .tab-copy strong {
+      font-size: 13px !important;
+      line-height: 1.2 !important;
+    }
+    .tab-copy small {
+      font-size: 11px !important;
+      line-height: 1.35 !important;
+    }
+    .section {
+      margin: 0 12px 16px !important;
+      padding: 16px 14px !important;
+      border-radius: 20px !important;
+    }
+    .section-header {
+      margin-bottom: 14px !important;
+    }
+    .section-header h2 {
+      font-size: 18px !important;
+      color: #F3F7FD !important;
+      text-shadow: none !important;
+    }
+    .grid-form {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+    .form-group {
+      padding: 12px !important;
+      border-radius: 16px !important;
+      background: rgba(18, 24, 35, 0.92) !important;
+    }
+    label,
+    .sync-metric-card .label {
+      color: #A9BDD8 !important;
+      text-shadow: none !important;
+    }
+    input,
+    select,
+    textarea {
+      min-height: 48px !important;
+      font-size: 15px !important;
+      background: rgba(8, 12, 20, 0.84) !important;
+      border-color: rgba(148, 163, 184, 0.18) !important;
+    }
+    .sync-metrics,
+    .sync-utility-grid {
+      grid-template-columns: 1fr !important;
+      gap: 10px !important;
+    }
+    .table-wrapper {
+      overflow-x: hidden !important;
+    }
+    .unified-grid,
+    .grid-header,
+    .grid-row {
+      min-width: 0 !important;
+    }
+    .carga-card {
+      border-radius: 22px !important;
+      margin-inline: 0 !important;
+      overflow: hidden !important;
+    }
+    .carga-card-header,
+    .carga-card-body,
+    .carga-card-footer {
+      padding-inline: 14px !important;
+    }
+    .carga-card-header {
+      display: grid !important;
+      grid-template-columns: 1fr auto !important;
+      gap: 10px !important;
+      align-items: center !important;
+    }
+    .carga-cliente {
+      font-size: 13px !important;
+      line-height: 1.45 !important;
+      word-break: break-word !important;
+    }
+    .carga-card-footer {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 10px !important;
+      color: #AAB6C9 !important;
+    }
+    .carga-card-footer .btn-status-manual,
+    .carga-card-footer button {
+      width: 100% !important;
+    }
+    footer {
+      padding: 18px 14px 26px !important;
+      color: #AEBACC !important;
+      text-align: center !important;
+    }
+    .watermark-content {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #AEBACC !important;
+    }
+    .watermark-content span {
+      color: #AEBACC !important;
+      opacity: 1 !important;
+      line-height: 1.45 !important;
+      max-width: 32ch !important;
+    }
+    .footer-contact-chip {
+      background: rgba(18, 24, 35, 0.94) !important;
+      color: #E8EDF7 !important;
+      border-color: rgba(148, 163, 184, 0.18) !important;
+      margin-top: 0 !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -5487,10 +5778,10 @@
     </div>
   </footer>
 
-  <script src="./assets/js/app-core-1.js?v=20260409r04"></script>
-  <script src="./assets/js/app-core-2.js?v=20260409r04"></script>
-  <script src="./assets/js/app-core-3.js?v=20260409r04"></script>
-  <script src="./assets/js/app-core-5.js?v=20260409r04"></script>
-  <script src="./assets/js/app-core-6.js?v=20260409r04"></script>
+  <script src="./assets/js/app-core-1.js?v=20260409r05"></script>
+  <script src="./assets/js/app-core-2.js?v=20260409r05"></script>
+  <script src="./assets/js/app-core-3.js?v=20260409r05"></script>
+  <script src="./assets/js/app-core-5.js?v=20260409r05"></script>
+  <script src="./assets/js/app-core-6.js?v=20260409r05"></script>
 </body>
 </html>
